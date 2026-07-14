@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hizmetlerimiz | Menekşe Vize</title>
+  <meta name="description" content="Schengen, ABD, İngiltere, Kanada, Rusya, Dubai/BAE ve Avustralya için turistik, ticari, öğrenci, çalışma ve aile birleşimi vize danışmanlığı hizmetleri.">
+  <meta property="og:title" content="Hizmetlerimiz | Menekşe Vize">
+  <meta property="og:description" content="Ülke ve vize tipine göre filtrelenebilir vize danışmanlığı hizmetleri.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%236d4fe0'/%3E%3Ctext x='50' y='69' font-size='56' font-family='Georgia,serif' fill='%23f4f4f6' text-anchor='middle'%3EM%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="logo">Menekşe<span>Vize</span></a>
+      <input type="checkbox" id="menu-toggle" class="menu-toggle">
+      <label for="menu-toggle" class="hamburger" aria-label="Menüyü aç/kapat">
+        <span></span><span></span><span></span>
+      </label>
+      <nav class="nav-links">
+        <a href="index.html">Ana Sayfa</a>
+        <a href="hizmetler.html" aria-current="page">Hizmetler</a>
+        <a href="surec.html">Süreç</a>
+        <a href="evrak-rehberi.html">Evrak Rehberi</a>
+        <a href="sss.html">SSS</a>
+        <a href="iletisim.html" class="nav-cta">İletişim</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-header">
+      <span class="kicker">Hizmetlerimiz</span>
+      <h1>Ülke ve Vize Tipine Göre Danışmanlık</h1>
+      <p>Aşağıdaki filtrelerle size uygun ülke ve vize tipini hızlıca bulabilirsiniz.</p>
+    </section>
+
+    <section class="section" style="padding-top: 1rem;">
+      <div class="container">
+
+        <!-- Vize Tipi Tanımları -->
+        <div class="section-head">
+          <span class="kicker">Bilgi</span>
+          <h2>Vize Tipleri Nedir?</h2>
+        </div>
+        <div class="grid grid-4" style="margin-bottom: 4rem;">
+          <div class="card">
+            <h3>Turistik</h3>
+            <p>Tatil, ziyaret veya kısa süreli seyahat amaçlı başvurular.</p>
+          </div>
+          <div class="card">
+            <h3>Ticari</h3>
+            <p>Fuar, toplantı, iş görüşmesi gibi ticari faaliyetler için başvurular.</p>
+          </div>
+          <div class="card">
+            <h3>Öğrenci</h3>
+            <p>Yurt dışında eğitim almak isteyenler için öğrenci vizesi süreçleri.</p>
+          </div>
+          <div class="card">
+            <h3>Çalışma</h3>
+            <p>Yurt dışında bir işte çalışmak için gereken çalışma izni/vizesi.</p>
+          </div>
+          <div class="card">
+            <h3>Aile Birleşimi</h3>
+            <p>Yurt dışında yaşayan aile üyesinin yanına taşınmak için başvurular.</p>
+          </div>
+          <div class="card">
+            <h3>Transit</h3>
+            <p>Üçüncü bir ülkeye geçiş için havalimanında/kısa süreli transit vizeler.</p>
+          </div>
+          <div class="card">
+            <h3>E-Vize</h3>
+            <p>Elektronik ortamda başvurulan, hızlı sonuçlanan vize türleri.</p>
+          </div>
+        </div>
+
+        <!-- Filtreler -->
+        <div class="section-head">
+          <span class="kicker">Ülkeler</span>
+          <h2>Hizmet Verdiğimiz Ülkeler</h2>
+          <p>Bölge ya da vize tipine göre filtreleyerek size uygun seçeneği bulun.</p>
+        </div>
+
+        <div class="filter-bar" data-filter-group="region">
+          <button class="filter-btn active" data-filter-value="all">Tüm Bölgeler</button>
+          <button class="filter-btn" data-filter-value="avrupa">Avrupa</button>
+          <button class="filter-btn" data-filter-value="amerika">Amerika</button>
+          <button class="filter-btn" data-filter-value="orta-dogu">Orta Doğu</button>
+          <button class="filter-btn" data-filter-value="diger">Diğer</button>
+        </div>
+
+        <div class="filter-bar" data-filter-group="type">
+          <button class="filter-btn active" data-filter-value="all">Tüm Vize Tipleri</button>
+          <button class="filter-btn" data-filter-value="turistik">Turistik</button>
+          <button class="filter-btn" data-filter-value="ticari">Ticari</button>
+          <button class="filter-btn" data-filter-value="ogrenci">Öğrenci</button>
+          <button class="filter-btn" data-filter-value="calisma">Çalışma</button>
+          <button class="filter-btn" data-filter-value="aile-birlesimi">Aile Birleşimi</button>
+          <button class="filter-btn" data-filter-value="transit">Transit</button>
+          <button class="filter-btn" data-filter-value="e-vize">E-Vize</button>
+        </div>
+
+        <div class="grid grid-3">
+          <div class="card" id="schengen" data-filter-card data-region="avrupa" data-type="turistik ticari aile-birlesimi transit">
+            <div class="card-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 4 6 4 9s-1.5 6.5-4 9c-2.5-2.5-4-6-4-9s1.5-6.5 4-9z"/></svg>
+            </div>
+            <h3>Schengen Bölgesi</h3>
+            <p>29 Schengen ülkesi (Almanya, Fransa, İtalya, İspanya, Hollanda ve diğerleri) için turistik, ticari ve aile ziyareti vizeleri.</p>
+            <div class="tags">
+              <span class="tag">Turistik</span>
+              <span class="tag">Ticari</span>
+              <span class="tag">Aile Birleşimi</span>
+              <span class="tag">Transit</span>
+            </div>
+          </div>
+
+          <div class="card" id="abd" data-filter-card data-region="amerika" data-type="turistik ticari ogrenci calisma">
+            <div class="card-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M8 15h4"/></svg>
+            </div>
+            <h3>Amerika Birleşik Devletleri</h3>
+            <p>B1/B2 turistik-ticari vize, F1 öğrenci vizesi ve çalışma vizesi başvuru süreçleri için danışmanlık.</p>
+            <div class="tags">
+              <span class="tag">Turistik</span>
+              <span class="tag">Öğrenci</span>
+              <span class="tag">Çalışma</span>
+            </div>
+          </div>
+
+          <div class="card" id="ingiltere" data-filter-card data-region="avrupa" data-type="turistik aile-birlesimi ogrenci">
+            <div class="card-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10l8-6 8 6v10"/><path d="M9 20v-6h6v6"/></svg>
+            </div>
+            <h3>İngiltere</h3>
+            <p>Standart ziyaretçi vizesi, öğrenci vizesi ve aile birleşimi başvurularında uçtan uca destek.</p>
+            <div class="tags">
+              <span class="tag">Turistik</span>
+              <span class="tag">Öğrenci</span>
+              <span class="tag">Aile Birleşimi</span>
+            </div>
+          </div>
+
+          <div class="card" id="kanada" data-filter-card data-region="amerika" data-type="turistik calisma">
+            <div class="card-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3l18 18M10 10a3 3 0 104 4"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></svg>
+            </div>
+            <h3>Kanada</h3>
+            <p>Turistik ziyaretçi vizesi (TRV) ve çalışma izni başvurularında evrak ve süreç desteği.</p>
+            <div class="tags">
+              <span class="tag">Turistik</span>
+              <span class="tag">Çalışma</span>
+            </div>
+          </div>
+
+          <div class="card" id="dubai" data-filter-card data-region="orta-dogu" data-type="turistik ticari e-vize transit">
+            <div class="card-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="9"/></svg>
+            </div>
+            <h3>Dubai / BAE</h3>
+            <p>Turistik ve ticari e-vize başvuruları; hızlı sonuçlanan süreçlerde takip desteği.</p>
+            <div class="tags">
+              <span class="tag">E-Vize</span>
+              <span class="tag">Ticari</span>
+              <span class="tag">Transit</span>
+            </div>
+          </div>
+
+          <div class="card" id="rusya-avustralya" data-filter-card data-region="diger" data-type="turistik ticari e-vize">
+            <div class="card-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 16l4-4 4 2 5-6 7 8"/><path d="M2 20h20"/></svg>
+            </div>
+            <h3>Rusya &amp; Avustralya</h3>
+            <p>Rusya için turistik/ticari vize; Avustralya için elektronik vize (ETA) başvuru desteği.</p>
+            <div class="tags">
+              <span class="tag">Turistik</span>
+              <span class="tag">Ticari</span>
+              <span class="tag">E-Vize</span>
+            </div>
+          </div>
+        </div>
+
+        <p class="checklist-placeholder" id="noResults" style="display:none;">Seçilen filtrelere uygun ülke bulunamadı. Filtreleri sıfırlayarak tekrar deneyin.</p>
+
+        <div style="text-align:center; margin-top: 3rem;">
+          <a href="evrak-rehberi.html" class="btn btn-secondary">Evrak Rehberine Git</a>
+          <a href="iletisim.html" class="btn btn-gold">Ücretsiz Ön Görüşme Alın</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="logo">Menekşe<span>Vize</span></a>
+          <p>Schengen ve dünya genelinde vize başvurularınızda şeffaf süreç takibi ve kişiye özel evrak rehberliği sunan danışmanlık hizmeti.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Hızlı Linkler</h4>
+          <ul>
+            <li><a href="hizmetler.html">Hizmetler</a></li>
+            <li><a href="surec.html">Süreç</a></li>
+            <li><a href="evrak-rehberi.html">Evrak Rehberi</a></li>
+            <li><a href="sss.html">SSS</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>İletişim</h4>
+          <ul>
+            <li><a href="tel:+905416500621">0541 650 06 21</a></li>
+            <li><a href="mailto:meneksevize@gmail.com">meneksevize@gmail.com</a></li>
+            <li><a href="iletisim.html">İletişim Formu</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 Menekşe Vize. Tüm hakları saklıdır.</span>
+        <span>Nihai vize kararı ilgili konsolosluğa aittir.</span>
+      </div>
+    </div>
+  </footer>
+
+  <button class="back-to-top" id="backToTop" aria-label="Yukarı çık">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+  </button>
+
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/filters.js"></script>
+</body>
+</html>
