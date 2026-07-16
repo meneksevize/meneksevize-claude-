@@ -13,6 +13,7 @@ function parseCountryRow(row) {
     homeDescription: row.home_description,
     servicesDescription: row.services_description,
     intro: row.intro,
+    overview: row.overview,
     region: row.region,
     docsKey: row.docs_key,
     tags: JSON.parse(row.tags),
@@ -82,8 +83,8 @@ router.post('/', (req, res) => {
   const { maxOrder } = db.prepare('SELECT MAX(sort_order) AS maxOrder FROM countries').get();
 
   db.prepare(`
-    INSERT INTO countries (id, flag, title, home_description, services_description, intro, region, docs_key, tags, types, quick_facts, sort_order)
-    VALUES (@id, @flag, @title, @homeDescription, @servicesDescription, @intro, @region, @docsKey, @tags, @types, @quickFacts, @sortOrder)
+    INSERT INTO countries (id, flag, title, home_description, services_description, intro, overview, region, docs_key, tags, types, quick_facts, sort_order)
+    VALUES (@id, @flag, @title, @homeDescription, @servicesDescription, @intro, @overview, @region, @docsKey, @tags, @types, @quickFacts, @sortOrder)
   `).run({
     id,
     flag: body.flag || '🏳️',
@@ -91,6 +92,7 @@ router.post('/', (req, res) => {
     homeDescription: body.homeDescription || null,
     servicesDescription: body.servicesDescription || null,
     intro: body.intro || null,
+    overview: body.overview || null,
     region: body.region || 'diger',
     docsKey: body.docsKey || null,
     tags: JSON.stringify(body.tags ?? []),
@@ -115,7 +117,7 @@ router.put('/:id', (req, res) => {
   db.prepare(`
     UPDATE countries SET
       flag = @flag, title = @title, home_description = @homeDescription,
-      services_description = @servicesDescription, intro = @intro, region = @region,
+      services_description = @servicesDescription, intro = @intro, overview = @overview, region = @region,
       docs_key = @docsKey, tags = @tags, types = @types, quick_facts = @quickFacts
     WHERE id = @id
   `).run({
@@ -125,6 +127,7 @@ router.put('/:id', (req, res) => {
     homeDescription: body.homeDescription || null,
     servicesDescription: body.servicesDescription || null,
     intro: body.intro || null,
+    overview: body.overview || null,
     region: body.region || 'diger',
     docsKey: body.docsKey || null,
     tags: JSON.stringify(body.tags ?? []),

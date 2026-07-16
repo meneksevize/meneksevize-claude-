@@ -3,6 +3,7 @@ import useDocumentMeta from '../hooks/useDocumentMeta.js';
 import { useSiteData } from '../context/SiteDataContext.jsx';
 import { photos } from '../data/photos.js';
 import Reveal from '../components/Reveal.jsx';
+import CountryFlag from '../components/CountryFlag.jsx';
 import {
   ClockIcon, ChecklistIcon, RefreshIcon, ShieldIcon, StarIcon,
 } from '../components/icons.jsx';
@@ -44,6 +45,7 @@ export default function Home() {
   useDocumentMeta(
     'Menekşe Vize | Şeffaf ve Kişiye Özel Vize Danışmanlığı',
     'Menekşe Vize; Schengen, ABD, İngiltere, Kanada ve daha fazlası için şeffaf süreç takibi ve kişiye özel evrak rehberliğiyle vize danışmanlığı sunar.',
+    { image: photos.heroPlaneWindow, path: '/' },
   );
 
   return (
@@ -112,7 +114,7 @@ export default function Home() {
                 delay={Math.min(i * 15, 300)}
                 key={country.id}
               >
-                <span className="country-tile-flag">{country.flag}</span>
+                <CountryFlag country={country} className="country-tile-flag" />
                 <span className="country-tile-name">{country.title}</span>
               </Reveal>
             ))}

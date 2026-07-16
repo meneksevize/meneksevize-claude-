@@ -106,8 +106,8 @@ function seedCountries() {
   }
 
   const insert = db.prepare(`
-    INSERT INTO countries (id, flag, title, home_description, services_description, intro, region, docs_key, tags, types, quick_facts, sort_order)
-    VALUES (@id, @flag, @title, @homeDescription, @servicesDescription, @intro, @region, @docsKey, @tags, @types, @quickFacts, @sortOrder)
+    INSERT INTO countries (id, flag, title, home_description, services_description, intro, overview, region, docs_key, tags, types, quick_facts, sort_order)
+    VALUES (@id, @flag, @title, @homeDescription, @servicesDescription, @intro, @overview, @region, @docsKey, @tags, @types, @quickFacts, @sortOrder)
   `);
 
   const insertMany = db.transaction((rows) => {
@@ -119,6 +119,7 @@ function seedCountries() {
         homeDescription: country.homeDescription ?? null,
         servicesDescription: country.servicesDescription ?? null,
         intro: country.intro ?? null,
+        overview: country.overview ?? null,
         region: country.region,
         docsKey: country.docsKey ?? null,
         tags: JSON.stringify(country.tags ?? []),

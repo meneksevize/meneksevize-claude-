@@ -12,6 +12,7 @@ function parseCountryRow(row) {
     homeDescription: row.home_description,
     servicesDescription: row.services_description,
     intro: row.intro,
+    overview: row.overview,
     region: row.region,
     docsKey: row.docs_key,
     tags: JSON.parse(row.tags),

@@ -12,12 +12,14 @@
     "server:dev": "nodemon server/index.js",
     "dev:all": "concurrently -n VITE,API -c blue,green \"npm:dev\" \"npm:server:dev\"",
     "db:seed": "node server/db/seed.js",
+    "db:update-content": "node server/db/updateCountriesContent.js",
     "hash-password": "node server/scripts/hash-password.js",
     "start": "node server/index.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "better-sqlite3": "^11.3.0",
+    "country-flag-icons": "^1.6.20",
     "dotenv": "^16.4.5",
     "express": "^4.21.0",
     "express-session": "^1.18.0",

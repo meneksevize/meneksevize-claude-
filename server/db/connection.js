@@ -17,3 +17,10 @@ db.pragma('journal_mode = WAL');
 
 const schema = fs.readFileSync(path.join(__dirname, 'schema.sql'), 'utf8');
 db.exec(schema);
+
+// countries.overview eklendiğinde önceden var olan (schema.sql'in CREATE TABLE IF NOT
+// EXISTS'i etkilemediği) veritabanları için güvenli, tekrar çalıştırılabilir migration.
+const countryColumns = db.prepare('PRAGMA table_info(countries)').all().map((c) => c.name);
+if (!countryColumns.includes('overview')) {
+  db.exec('ALTER TABLE countries ADD COLUMN overview TEXT');
+}

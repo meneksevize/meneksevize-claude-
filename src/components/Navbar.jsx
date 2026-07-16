@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import { useSiteData, getDocsKey } from '../context/SiteDataContext.jsx';
 import { ChevronDownIcon, PhoneIcon } from './icons.jsx';
+import CountryFlag from './CountryFlag.jsx';
 
 const links = [
   { to: '/', label: 'Ana Sayfa', end: true },
@@ -84,7 +85,7 @@ export default function Navbar() {
                   <div className="nav-countries-list">
                     {schengenCountries.map((country) => (
                       <NavLink key={country.id} to={`/ulkeler/${country.id}`} onClick={closeAll}>
-                        <span className="flag-emoji">{country.flag}</span>
+                        <CountryFlag country={country} className="flag-emoji" />
                         {country.title}
                       </NavLink>
                     ))}
@@ -93,7 +94,7 @@ export default function Navbar() {
                   <div className="nav-countries-list">
                     {otherCountries.map((country) => (
                       <NavLink key={country.id} to={`/ulkeler/${country.id}`} onClick={closeAll}>
-                        <span className="flag-emoji">{country.flag}</span>
+                        <CountryFlag country={country} className="flag-emoji" />
                         {country.title}
                       </NavLink>
                     ))}

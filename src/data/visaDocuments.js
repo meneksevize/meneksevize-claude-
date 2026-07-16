@@ -5,10 +5,22 @@ export const visaData = {
   schengen: {
     label: 'Schengen Bölgesi',
     types: {
-      turistik: ['Pasaport (son 10 yıl içinde düzenlenmiş, dönüş tarihinden sonra en az 3 ay geçerli, en az 2 boş sayfa)', 'Biyometrik fotoğraf (son 6 ay içinde çekilmiş)', 'Doldurulmuş Schengen vize başvuru formu', 'Uçak bileti rezervasyonu', 'Otel/konaklama rezervasyonu', 'Seyahat sağlık sigortası (min. 30.000 € teminatlı)', 'Banka hesap özeti (son 3 ay)', 'Çalışma/maaş belgesi', 'Tam tekmil vukuatlı nüfus kayıt örneği'],
-      ticari: ['Pasaport', 'Biyometrik fotoğraf', 'Davet mektubu (iş ortağı/fuar)', 'Şirket faaliyet belgesi', 'Uçak-otel rezervasyonu', 'Seyahat sağlık sigortası (min. 30.000 €)', 'Banka hesap özeti'],
-      'aile-birlesimi': ['Pasaport', 'Biyometrik fotoğraf', 'Davetiye/ikametgah belgesi', 'Akrabalık belgesi', 'Seyahat sağlık sigortası', 'Banka hesap özeti'],
-      transit: ['Pasaport', 'Biyometrik fotoğraf', 'Devam uçuş bileti', 'Hedef ülke vizesi (varsa)'],
+      turistik: {
+        items: ['Pasaport (son 10 yıl içinde düzenlenmiş, dönüş tarihinden sonra en az 3 ay geçerli, en az 2 boş sayfa)', 'Biyometrik fotoğraf (son 6 ay içinde çekilmiş)', 'Doldurulmuş Schengen vize başvuru formu', 'Uçak bileti rezervasyonu', 'Otel/konaklama rezervasyonu', 'Seyahat sağlık sigortası (min. 30.000 € teminatlı)', 'Banka hesap özeti (son 3 ay)', 'Çalışma/maaş belgesi', 'Tam tekmil vukuatlı nüfus kayıt örneği'],
+        note: 'Schengen bölgesindeki 29 ülke aynı vize kuralları setini paylaşır: başvuru, ziyaret edeceğiniz ülke Türkiye\'de temsilcilik açmışsa doğrudan o ülkeye, birden fazla ülke ziyaret edilecekse en uzun süre kalınacak ya da ilk giriş yapılacak ülkeye yapılır. Seyahat sağlık sigortası tüm Schengen alanını kapsayacak ve minimum 30.000 Euro teminatlı olacak şekilde düzenlenmelidir; bu şart tüm üye ülkelerde ortaktır.',
+      },
+      ticari: {
+        items: ['Pasaport', 'Biyometrik fotoğraf', 'Davet mektubu (iş ortağı/fuar)', 'Şirket faaliyet belgesi', 'Uçak-otel rezervasyonu', 'Seyahat sağlık sigortası (min. 30.000 €)', 'Banka hesap özeti'],
+        note: 'Davet mektubu, ziyaret amacını (fuar, toplantı, iş ortaklığı) ve seyahat tarihlerini net şekilde belirtmelidir; şirketinizin faaliyet belgesiyle tutarlı olması değerlendirme sürecini hızlandırır.',
+      },
+      'aile-birlesimi': {
+        items: ['Pasaport', 'Biyometrik fotoğraf', 'Davetiye/ikametgah belgesi', 'Akrabalık belgesi', 'Seyahat sağlık sigortası', 'Banka hesap özeti'],
+        note: 'Davet eden kişinin ilgili ülkedeki ikamet/oturum belgesi ile aranızdaki akrabalık bağını gösteren resmi belge (nüfus kayıt örneği, evlilik cüzdanı vb.) birlikte sunulmalıdır.',
+      },
+      transit: {
+        items: ['Pasaport', 'Biyometrik fotoğraf', 'Devam uçuş bileti', 'Hedef ülke vizesi (varsa)'],
+        note: 'Havalimanı transit vizesi, uçağınızdan inmeden bir sonraki uçuşa aktarma yapacağınız durumlarda gerekir; hedef ülkenin vize şartına göre bazı milliyetler için havalimanı transit vizesi (Havalimanı Transit Vizesi - ATV) ayrıca zorunlu olabilir.',
+      },
     },
   },
   abd: {

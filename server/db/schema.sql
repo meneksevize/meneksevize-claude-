@@ -5,6 +5,7 @@ CREATE TABLE IF NOT EXISTS countries (
   home_description TEXT,
   services_description TEXT,
   intro TEXT,
+  overview TEXT,
   region TEXT NOT NULL,
   docs_key TEXT,
   tags TEXT NOT NULL DEFAULT '[]',

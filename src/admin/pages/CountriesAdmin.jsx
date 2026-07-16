@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { regionLabels } from '../../data/countries.js';
+import CountryFlag from '../../components/CountryFlag.jsx';
 
 const REGION_OPTIONS = Object.entries(regionLabels).filter(([key]) => key !== 'all');
 
@@ -12,6 +13,7 @@ const emptyForm = {
   homeDescription: '',
   servicesDescription: '',
   intro: '',
+  overview: '',
   tagsText: '',
   types: [],
   quickFacts: [{ label: '', value: '' }],
@@ -38,6 +40,7 @@ function formFromCountry(data) {
     homeDescription: data.homeDescription || '',
     servicesDescription: data.servicesDescription || '',
     intro: data.intro || '',
+    overview: data.overview || '',
     tagsText: (data.tags || []).join(', '),
     types,
     quickFacts: data.quickFacts?.length ? data.quickFacts : [{ label: '', value: '' }],
@@ -154,6 +157,7 @@ export default function CountriesAdmin() {
       homeDescription: form.homeDescription.trim(),
       servicesDescription: form.servicesDescription.trim(),
       intro: form.intro.trim(),
+      overview: form.overview.trim(),
       tags: form.tagsText.split(',').map((t) => t.trim()).filter(Boolean),
       types: form.types,
       quickFacts: form.quickFacts.filter((f) => f.label.trim() || f.value.trim()),
@@ -217,7 +221,7 @@ export default function CountriesAdmin() {
               <tbody>
                 {countries.map((c) => (
                   <tr key={c.id} onClick={() => openEdit(c.id)}>
-                    <td style={{ fontSize: '1.2rem' }}>{c.flag}</td>
+                    <td style={{ fontSize: '1.2rem' }}><CountryFlag country={c} /></td>
                     <td>{c.title}</td>
                     <td>{regionLabels[c.region] || c.region}</td>
                     <td>{c.docsKey || c.id}</td>
@@ -324,6 +328,16 @@ export default function CountriesAdmin() {
               id="intro"
               value={form.intro}
               onChange={(e) => setForm((p) => ({ ...p, intro: e.target.value }))}
+            />
+          </div>
+          <div className="admin-form-field full">
+            <label htmlFor="overview">Ülke Hakkında (detaylı bilgi paragrafı)</label>
+            <textarea
+              id="overview"
+              value={form.overview}
+              onChange={(e) => setForm((p) => ({ ...p, overview: e.target.value }))}
+              style={{ minHeight: 120 }}
+              placeholder="Ülke sayfasında 'Ülke Hakkında' bölümünde gösterilecek daha uzun, bilgilendirici metin."
             />
           </div>
           <div className="admin-form-field full">

@@ -5,6 +5,7 @@ import { useSiteData } from '../context/SiteDataContext.jsx';
 import { STAGES, getStageIndex } from '../data/stages.js';
 import { photos } from '../data/photos.js';
 import { CheckIcon } from '../components/icons.jsx';
+import CountryFlag from '../components/CountryFlag.jsx';
 
 export default function TrackApplication() {
   const { countries } = useSiteData();
@@ -90,7 +91,8 @@ export default function TrackApplication() {
               <div className="section-head">
                 <span className="kicker">{result.clientName}</span>
                 <h2>
-                  {country ? `${country.flag} ${country.title}` : 'Başvuru'} {result.visaType ? `— ${result.visaType}` : ''}
+                  {country && <CountryFlag country={country} className="country-detail-flag" />}
+                  {country ? country.title : 'Başvuru'} {result.visaType ? `— ${result.visaType}` : ''}
                 </h2>
                 <p>Son güncelleme: {new Date(result.updatedAt).toLocaleString('tr-TR')}</p>
               </div>

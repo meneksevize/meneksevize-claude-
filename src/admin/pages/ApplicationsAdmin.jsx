@@ -222,7 +222,7 @@ export default function ApplicationsAdmin() {
                 <select id="countryId" value={form.countryId} onChange={(e) => setForm((p) => ({ ...p, countryId: e.target.value }))}>
                   <option value="">Seçiniz</option>
                   {countries.map((c) => (
-                    <option value={c.id} key={c.id}>{c.flag} {c.title}</option>
+                    <option value={c.id} key={c.id}>{c.title}</option>
                   ))}
                 </select>
               </div>

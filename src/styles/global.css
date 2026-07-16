@@ -310,6 +310,26 @@ img, svg {
   flex-shrink: 0;
 }
 
+/* country-flag-icon: CountryFlag bileşeninin ürettiği SVG bayraklar (flag-icons/
+   emoji yerine) için taban boyutlandırma. Kapsayan bağlamdaki font-size (ör.
+   .flag-emoji, .country-tile-flag, .country-detail-flag) genişlik/yüksekliği
+   em cinsinden ölçekler. */
+.country-flag-icon {
+  display: inline-block;
+  width: 1.5em;
+  height: 1em;
+  vertical-align: middle;
+  flex-shrink: 0;
+  border-radius: 2px;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+.country-detail-flag {
+  font-size: 1.5rem;
+  margin-right: 0.6rem;
+  vertical-align: middle;
+}
+
 .nav-countries-all {
   display: block;
   text-align: center;
@@ -654,6 +674,19 @@ img, svg {
   font-size: 0.95rem;
 }
 
+.country-overview {
+  margin-bottom: 4rem;
+  border-left: 3px solid var(--gold);
+  background: linear-gradient(135deg, var(--surface-hover) 0%, var(--surface-color) 60%);
+}
+
+.country-overview p {
+  color: var(--text-color);
+  font-size: 1.05rem;
+  line-height: 1.75;
+  max-width: 68ch;
+}
+
 /* ---------- Grid yardımcıları ---------- */
 .grid {
   display: grid;
@@ -746,6 +779,18 @@ img, svg {
 .testimonial-card {
   display: flex;
   flex-direction: column;
+}
+
+.testimonial-card::after {
+  content: "\201D";
+  position: absolute;
+  top: 0.5rem;
+  right: 1.5rem;
+  font-family: var(--font-serif);
+  font-size: 5rem;
+  line-height: 1;
+  color: var(--accent-soft);
+  pointer-events: none;
 }
 
 .testimonial-stars {
@@ -909,6 +954,11 @@ img, svg {
   position: relative;
   font-size: 1.6rem;
   line-height: 1;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.country-tile:hover .country-tile-flag {
+  transform: scale(1.12);
 }
 
 .country-tile-name {

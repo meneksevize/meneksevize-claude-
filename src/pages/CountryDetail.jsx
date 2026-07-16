@@ -4,6 +4,7 @@ import { useSiteData, getDocsKey } from '../context/SiteDataContext.jsx';
 import { photos } from '../data/photos.js';
 import Reveal from '../components/Reveal.jsx';
 import { CheckIcon } from '../components/icons.jsx';
+import CountryFlag from '../components/CountryFlag.jsx';
 
 function visaTypeHeading(label, typeKey) {
   const text = label || typeKey;
@@ -19,7 +20,8 @@ export default function CountryDetail() {
 
   useDocumentMeta(
     country ? `${country.title} Vizesi | Menekşe Vize` : 'Ülke Bulunamadı | Menekşe Vize',
-    country ? `${country.title} için gerekli vize türleri, evraklar ve süreç bilgisi.` : undefined,
+    country ? (country.overview || country.intro || `${country.title} için gerekli vize türleri, evraklar ve süreç bilgisi.`) : undefined,
+    { image: photos.passportBoardingPass, path: country ? `/ulkeler/${country.id}` : undefined },
   );
 
   if (countries.length > 0 && !country) {
@@ -34,13 +36,13 @@ export default function CountryDetail() {
     <>
       <section className="page-header has-photo" style={{ '--page-photo': `url(${photos.passportBoardingPass})` }}>
         <span className="kicker">Ülkeler</span>
-        <h1><span style={{ marginRight: '0.5rem' }}>{country.flag}</span>{country.title} Vizesi</h1>
+        <h1><CountryFlag country={country} className="country-detail-flag" />{country.title} Vizesi</h1>
         <p>{country.intro}</p>
       </section>
 
       <section className="section" style={{ paddingTop: '1rem' }}>
         <div className="container">
-          <div className="grid grid-3" style={{ marginBottom: '4rem' }}>
+          <div className="grid grid-4" style={{ marginBottom: country.overview ? '3rem' : '4rem' }}>
             {country.quickFacts.map((fact, i) => (
               <Reveal as="div" className="card" delay={i * 70} key={fact.label}>
                 <h3 style={{ fontSize: '1rem' }}>{fact.label}</h3>
@@ -48,6 +50,13 @@ export default function CountryDetail() {
               </Reveal>
             ))}
           </div>
+
+          {country.overview && (
+            <Reveal as="div" className="card country-overview">
+              <span className="kicker">{country.title} Hakkında</span>
+              <p>{country.overview}</p>
+            </Reveal>
+          )}
 
           <div className="section-head">
             <span className="kicker">Vize Türleri &amp; Evraklar</span>

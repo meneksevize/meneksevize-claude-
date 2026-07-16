@@ -50,7 +50,7 @@ export default function DocumentGuide() {
                 >
                   <option value="">Seçiniz</option>
                   {countries.map((c) => (
-                    <option value={c.id} key={c.id}>{c.flag} {c.title}</option>
+                    <option value={c.id} key={c.id}>{c.title}</option>
                   ))}
                 </select>
               </div>
