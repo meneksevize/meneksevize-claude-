@@ -11,4 +11,5 @@ server/data/*.db-journal
 server/data/*.db-wal
 server/data/*.db-shm
 server/data/sessions.db
+server/data/backups/
 .devserver-logs

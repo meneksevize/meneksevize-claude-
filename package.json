@@ -13,6 +13,7 @@
     "dev:all": "concurrently -n VITE,API -c blue,green \"npm:dev\" \"npm:server:dev\"",
     "db:seed": "node server/db/seed.js",
     "db:update-content": "node server/db/updateCountriesContent.js",
+    "db:backup": "node server/scripts/backup-db.js",
     "hash-password": "node server/scripts/hash-password.js",
     "start": "node server/index.js"
   },
