@@ -20,7 +20,7 @@ const TOGGLES = [
   {
     key: 'email_notifications_enabled',
     label: 'Yeni başvuru geldiğinde e-posta ile bildir',
-    hint: 'Sunucudaki .env dosyasına SMTP_USER ve SMTP_APP_PASSWORD girilmiş olmalıdır (Gmail uygulama şifresi).',
+    hint: 'Sunucudaki .env dosyasına RESEND_API_KEY girilmiş olmalıdır.',
   },
 ];
 

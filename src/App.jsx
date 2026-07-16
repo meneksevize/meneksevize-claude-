@@ -1,3 +1,4 @@
+import { lazy, Suspense } from 'react';
 import {
   Routes, Route, Outlet, useLocation,
 } from 'react-router-dom';
@@ -11,25 +12,30 @@ import { SiteDataProvider, useSiteData } from './context/SiteDataContext.jsx';
 import { AdminAuthProvider } from './admin/AdminAuthContext.jsx';
 import RequireAdminAuth from './admin/RequireAdminAuth.jsx';
 import AdminLayout from './admin/AdminLayout.jsx';
-import Home from './pages/Home.jsx';
-import Services from './pages/Services.jsx';
-import Process from './pages/Process.jsx';
-import DocumentGuide from './pages/DocumentGuide.jsx';
-import FAQ from './pages/FAQ.jsx';
-import Contact from './pages/Contact.jsx';
-import CountryDetail from './pages/CountryDetail.jsx';
-import Blog from './pages/Blog.jsx';
-import BlogPost from './pages/BlogPost.jsx';
-import TrackApplication from './pages/TrackApplication.jsx';
-import AdminLogin from './admin/pages/Login.jsx';
-import AdminDashboard from './admin/pages/Dashboard.jsx';
-import AdminContacts from './admin/pages/ContactsAdmin.jsx';
-import AdminCountries from './admin/pages/CountriesAdmin.jsx';
-import AdminSettings from './admin/pages/SettingsAdmin.jsx';
-import AdminTestimonials from './admin/pages/TestimonialsAdmin.jsx';
-import AdminFaqs from './admin/pages/FaqsAdmin.jsx';
-import AdminBlog from './admin/pages/BlogAdmin.jsx';
-import AdminApplications from './admin/pages/ApplicationsAdmin.jsx';
+
+// Rota bazlı code-splitting: her sayfa ayrı bir chunk olarak yalnızca o rota
+// ziyaret edildiğinde indirilir — tek büyük JS paketi yerine ilk yükleme
+// süresini kısaltır.
+const Home = lazy(() => import('./pages/Home.jsx'));
+const Services = lazy(() => import('./pages/Services.jsx'));
+const Process = lazy(() => import('./pages/Process.jsx'));
+const DocumentGuide = lazy(() => import('./pages/DocumentGuide.jsx'));
+const FAQ = lazy(() => import('./pages/FAQ.jsx'));
+const Contact = lazy(() => import('./pages/Contact.jsx'));
+const About = lazy(() => import('./pages/About.jsx'));
+const CountryDetail = lazy(() => import('./pages/CountryDetail.jsx'));
+const Blog = lazy(() => import('./pages/Blog.jsx'));
+const BlogPost = lazy(() => import('./pages/BlogPost.jsx'));
+const TrackApplication = lazy(() => import('./pages/TrackApplication.jsx'));
+const AdminLogin = lazy(() => import('./admin/pages/Login.jsx'));
+const AdminDashboard = lazy(() => import('./admin/pages/Dashboard.jsx'));
+const AdminContacts = lazy(() => import('./admin/pages/ContactsAdmin.jsx'));
+const AdminCountries = lazy(() => import('./admin/pages/CountriesAdmin.jsx'));
+const AdminSettings = lazy(() => import('./admin/pages/SettingsAdmin.jsx'));
+const AdminTestimonials = lazy(() => import('./admin/pages/TestimonialsAdmin.jsx'));
+const AdminFaqs = lazy(() => import('./admin/pages/FaqsAdmin.jsx'));
+const AdminBlog = lazy(() => import('./admin/pages/BlogAdmin.jsx'));
+const AdminApplications = lazy(() => import('./admin/pages/ApplicationsAdmin.jsx'));
 
 function PublicLayoutInner() {
   const location = useLocation();
@@ -49,7 +55,9 @@ function PublicLayoutInner() {
       <Navbar />
       <main>
         <div key={location.pathname} className="page-transition">
-          <Outlet />
+          <Suspense fallback={<div className="admin-loading">Yükleniyor…</div>}>
+            <Outlet />
+          </Suspense>
         </div>
       </main>
       <Footer />
@@ -71,7 +79,9 @@ function PublicLayout() {
 function AdminRoot() {
   return (
     <AdminAuthProvider>
-      <Outlet />
+      <Suspense fallback={<div className="admin-loading">Yükleniyor…</div>}>
+        <Outlet />
+      </Suspense>
     </AdminAuthProvider>
   );
 }
@@ -89,6 +99,7 @@ export default function App() {
     <Routes>
       <Route element={<PublicLayout />}>
         <Route path="/" element={<Home />} />
+        <Route path="/hakkimizda" element={<About />} />
         <Route path="/hizmetler" element={<Services />} />
         <Route path="/ulkeler/:countryId" element={<CountryDetail />} />
         <Route path="/surec" element={<Process />} />

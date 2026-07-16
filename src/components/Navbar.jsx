@@ -6,6 +6,7 @@ import CountryFlag from './CountryFlag.jsx';
 
 const links = [
   { to: '/', label: 'Ana Sayfa', end: true },
+  { to: '/hakkimizda', label: 'Hakkımızda' },
   { to: '/hizmetler', label: 'Hizmetler' },
   { to: '/surec', label: 'Süreç' },
   { to: '/evrak-rehberi', label: 'Evrak Rehberi' },

@@ -17,6 +17,7 @@ export default function Footer() {
           <div className="footer-col">
             <h4>Hızlı Linkler</h4>
             <ul>
+              <li><Link to="/hakkimizda">Hakkımızda</Link></li>
               <li><Link to="/hizmetler">Hizmetler</Link></li>
               <li><Link to="/surec">Süreç</Link></li>
               <li><Link to="/evrak-rehberi">Evrak Rehberi</Link></li>
