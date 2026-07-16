@@ -5,7 +5,6 @@ import { ChevronDownIcon, PhoneIcon } from './icons.jsx';
 import CountryFlag from './CountryFlag.jsx';
 
 const links = [
-  { to: '/', label: 'Ana Sayfa', end: true },
   { to: '/hakkimizda', label: 'Hakkımızda' },
   { to: '/hizmetler', label: 'Hizmetler' },
   { to: '/surec', label: 'Süreç' },
@@ -60,15 +59,6 @@ export default function Navbar() {
         </button>
 
         <nav className={`nav-links ${open ? 'open' : ''}`}>
-          <NavLink
-            to="/"
-            end
-            onClick={closeAll}
-            className={({ isActive }) => (isActive ? 'active' : '')}
-          >
-            Ana Sayfa
-          </NavLink>
-
           <div className={`nav-countries ${countriesOpen ? 'open' : ''}`} ref={countriesRef}>
             <button
               type="button"
@@ -108,7 +98,7 @@ export default function Navbar() {
             )}
           </div>
 
-          {links.slice(1).map((link) => (
+          {links.map((link) => (
             <NavLink
               key={link.to}
               to={link.to}

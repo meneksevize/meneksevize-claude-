@@ -1,7 +1,11 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import useDocumentMeta from '../hooks/useDocumentMeta.js';
 import { useSiteData } from '../context/SiteDataContext.jsx';
+
+function stripHtml(html) {
+  return html.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+}
 
 export default function FAQ() {
   const { faqs } = useSiteData();
@@ -9,7 +13,38 @@ export default function FAQ() {
   useDocumentMeta(
     'Sıkça Sorulan Sorular | Menekşe Vize',
     'Menekşe Vize danışmanlık süreci, ücretlendirme, evrak ve randevu/mülakat hakkında sıkça sorulan sorular ve yanıtları.',
+    { path: '/sss' },
   );
+
+  // Google'ın FAQPage yapılandırılmış verisi: klasik arama sonuçlarında artık
+  // çoğunlukla resmi kurum/sağlık siteleriyle sınırlı olsa da, içerik anlama ve
+  // yapay zeka destekli arama özetleri (AI Overviews vb.) için hâlâ değerlidir.
+  useEffect(() => {
+    if (faqs.length === 0) return undefined;
+
+    const schema = {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: faqs.map((faq) => ({
+        '@type': 'Question',
+        name: faq.question,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: stripHtml(faq.answerHtml),
+        },
+      })),
+    };
+
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.id = 'faq-jsonld';
+    script.text = JSON.stringify(schema);
+    document.head.appendChild(script);
+
+    return () => {
+      document.getElementById('faq-jsonld')?.remove();
+    };
+  }, [faqs]);
 
   const groups = useMemo(() => {
     const byGroup = new Map();
