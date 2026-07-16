@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import useDocumentMeta from '../hooks/useDocumentMeta.js';
 import { useSiteData } from '../context/SiteDataContext.jsx';
 import { photos } from '../data/photos.js';
@@ -161,6 +162,11 @@ export default function Contact() {
                       placeholder="Seyahat amacınızı ve tahmini tarihinizi kısaca belirtebilirsiniz."
                     />
                   </div>
+                  <p className="form-note" style={{ marginBottom: '1rem' }}>
+                    Formu göndererek{' '}
+                    <Link to="/gizlilik-politikasi" style={{ color: 'var(--accent-color)' }}>Gizlilik Politikası ve KVKK Aydınlatma Metni</Link>
+                    {' '}kapsamında kişisel verilerinizin işlenmesini kabul etmiş olursunuz.
+                  </p>
                   <button type="submit" className="btn btn-gold" style={{ width: '100%' }} disabled={status === 'submitting'}>
                     {status === 'submitting' ? 'Gönderiliyor…' : 'Gönder'}
                   </button>

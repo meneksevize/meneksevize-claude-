@@ -23,6 +23,7 @@ const DocumentGuide = lazy(() => import('./pages/DocumentGuide.jsx'));
 const FAQ = lazy(() => import('./pages/FAQ.jsx'));
 const Contact = lazy(() => import('./pages/Contact.jsx'));
 const About = lazy(() => import('./pages/About.jsx'));
+const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy.jsx'));
 const CountryDetail = lazy(() => import('./pages/CountryDetail.jsx'));
 const Blog = lazy(() => import('./pages/Blog.jsx'));
 const BlogPost = lazy(() => import('./pages/BlogPost.jsx'));
@@ -109,6 +110,7 @@ export default function App() {
         <Route path="/blog" element={<Blog />} />
         <Route path="/blog/:slug" element={<BlogPost />} />
         <Route path="/takip" element={<TrackApplication />} />
+        <Route path="/gizlilik-politikasi" element={<PrivacyPolicy />} />
       </Route>
 
       <Route path="/admin" element={<AdminRoot />}>

@@ -37,6 +37,7 @@ export default function Footer() {
         </div>
         <div className="footer-bottom">
           <span>&copy; 2026 Menekşe Vize. Tüm hakları saklıdır.</span>
+          <Link to="/gizlilik-politikasi">Gizlilik Politikası (KVKK)</Link>
           <span>Nihai vize kararı ilgili konsolosluğa aittir.</span>
         </div>
       </div>
