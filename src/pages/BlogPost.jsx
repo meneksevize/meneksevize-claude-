@@ -24,7 +24,35 @@ export default function BlogPost() {
   useDocumentMeta(
     post ? `${post.title} | Menekşe Vize Blog` : 'Blog | Menekşe Vize',
     post?.excerpt || 'Menekşe Vize blog yazısı.',
+    { path: `/blog/${slug}`, image: post?.coverImageUrl },
   );
+
+  // Google için BlogPosting yapılandırılmış verisi (yazı başlığı, tarih, görsel).
+  useEffect(() => {
+    if (!post) return undefined;
+
+    const schema = {
+      '@context': 'https://schema.org',
+      '@type': 'BlogPosting',
+      headline: post.title,
+      description: post.excerpt,
+      datePublished: post.publishedAt,
+      image: post.coverImageUrl,
+      author: { '@type': 'Organization', name: 'Menekşe Vize' },
+      publisher: { '@type': 'Organization', name: 'Menekşe Vize' },
+      mainEntityOfPage: `https://meneksevize.com/blog/${slug}`,
+    };
+
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.id = 'blogpost-jsonld';
+    script.text = JSON.stringify(schema);
+    document.head.appendChild(script);
+
+    return () => {
+      document.getElementById('blogpost-jsonld')?.remove();
+    };
+  }, [post, slug]);
 
   if (status === 'loading') {
     return (

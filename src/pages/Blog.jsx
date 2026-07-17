@@ -11,6 +11,7 @@ export default function Blog() {
   useDocumentMeta(
     'Blog | Menekşe Vize',
     'Vize başvuru süreçleri, evrak ipuçları ve ülkelere özel rehberler hakkında yazılarımız.',
+    { path: '/blog' },
   );
 
   useEffect(() => {
