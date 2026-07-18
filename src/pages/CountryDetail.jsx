@@ -88,6 +88,11 @@ export default function CountryDetail() {
                         <span><strong>Önemli:</strong> {entry.note}</span>
                       </div>
                     )}
+                    <p style={{ marginTop: '1rem' }}>
+                      <Link to={`/ulkeler/${country.id}/${typeKey}`} style={{ color: 'var(--accent-color)' }}>
+                        {country.title} {visaTypeLabels[typeKey]} vizesi hakkında detaylı sayfa →
+                      </Link>
+                    </p>
                   </div>
                 </details>
               );

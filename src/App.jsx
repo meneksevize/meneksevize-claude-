@@ -25,6 +25,7 @@ const Contact = lazy(() => import('./pages/Contact.jsx'));
 const About = lazy(() => import('./pages/About.jsx'));
 const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy.jsx'));
 const CountryDetail = lazy(() => import('./pages/CountryDetail.jsx'));
+const CountryVisaType = lazy(() => import('./pages/CountryVisaType.jsx'));
 const Blog = lazy(() => import('./pages/Blog.jsx'));
 const BlogPost = lazy(() => import('./pages/BlogPost.jsx'));
 const TrackApplication = lazy(() => import('./pages/TrackApplication.jsx'));
@@ -103,6 +104,7 @@ export default function App() {
         <Route path="/hakkimizda" element={<About />} />
         <Route path="/hizmetler" element={<Services />} />
         <Route path="/ulkeler/:countryId" element={<CountryDetail />} />
+        <Route path="/ulkeler/:countryId/:visaType" element={<CountryVisaType />} />
         <Route path="/surec" element={<Process />} />
         <Route path="/evrak-rehberi" element={<DocumentGuide />} />
         <Route path="/sss" element={<FAQ />} />
