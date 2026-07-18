@@ -6,6 +6,7 @@ import { useSiteData } from '../context/SiteDataContext.jsx';
 import { photos } from '../data/photos.js';
 import Reveal from '../components/Reveal.jsx';
 import CountryFlag from '../components/CountryFlag.jsx';
+import Breadcrumbs from '../components/Breadcrumbs.jsx';
 
 const visaTypeInfo = [
   { title: 'Turistik', text: 'Tatil, ziyaret veya kısa süreli seyahat amaçlı başvurular.' },
@@ -40,6 +41,7 @@ export default function Services() {
 
   return (
     <>
+      <Breadcrumbs items={[{ label: 'Ana Sayfa', to: '/' }, { label: 'Hizmetler' }]} />
       <section className="page-header has-photo" style={{ '--page-photo': `url(${photos.worldMap})` }}>
         <span className="kicker">Hizmetlerimiz</span>
         <h1>Ülke ve Vize Tipine Göre Danışmanlık</h1>

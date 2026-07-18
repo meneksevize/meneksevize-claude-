@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import useDocumentMeta from '../hooks/useDocumentMeta.js';
+import Breadcrumbs from '../components/Breadcrumbs.jsx';
 
 export default function BlogPost() {
   const { slug } = useParams();
@@ -78,6 +79,12 @@ export default function BlogPost() {
 
   return (
     <>
+      <Breadcrumbs items={[
+        { label: 'Ana Sayfa', to: '/' },
+        { label: 'Blog', to: '/blog' },
+        { label: post.title },
+      ]}
+      />
       <section
         className={post.coverImageUrl ? 'page-header has-photo' : 'page-header'}
         style={post.coverImageUrl ? { '--page-photo': `url(${post.coverImageUrl})` } : undefined}

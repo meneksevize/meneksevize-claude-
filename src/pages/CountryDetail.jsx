@@ -5,6 +5,7 @@ import { photos } from '../data/photos.js';
 import Reveal from '../components/Reveal.jsx';
 import { CheckIcon } from '../components/icons.jsx';
 import CountryFlag from '../components/CountryFlag.jsx';
+import Breadcrumbs from '../components/Breadcrumbs.jsx';
 
 function visaTypeHeading(label, typeKey) {
   const text = label || typeKey;
@@ -34,6 +35,12 @@ export default function CountryDetail() {
 
   return (
     <>
+      <Breadcrumbs items={[
+        { label: 'Ana Sayfa', to: '/' },
+        { label: 'Ülkeler', to: '/hizmetler' },
+        { label: `${country.title} Vizesi` },
+      ]}
+      />
       <section className="page-header has-photo" style={{ '--page-photo': `url(${photos.passportBoardingPass})` }}>
         <span className="kicker">Ülkeler</span>
         <h1><CountryFlag country={country} className="country-detail-flag" />{country.title} Vizesi</h1>

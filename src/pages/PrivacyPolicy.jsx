@@ -2,6 +2,7 @@ import useDocumentMeta from '../hooks/useDocumentMeta.js';
 import { useSiteData } from '../context/SiteDataContext.jsx';
 import { photos } from '../data/photos.js';
 import Reveal from '../components/Reveal.jsx';
+import Breadcrumbs from '../components/Breadcrumbs.jsx';
 
 export default function PrivacyPolicy() {
   const { settings } = useSiteData();
@@ -15,6 +16,7 @@ export default function PrivacyPolicy() {
 
   return (
     <>
+      <Breadcrumbs items={[{ label: 'Ana Sayfa', to: '/' }, { label: 'Gizlilik Politikası' }]} />
       <section className="page-header has-photo" style={{ '--page-photo': `url(${photos.planningNotebook})` }}>
         <span className="kicker">Yasal</span>
         <h1>Gizlilik Politikası ve KVKK Aydınlatma Metni</h1>

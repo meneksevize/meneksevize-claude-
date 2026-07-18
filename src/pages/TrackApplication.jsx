@@ -6,6 +6,7 @@ import { STAGES, getStageIndex } from '../data/stages.js';
 import { photos } from '../data/photos.js';
 import { CheckIcon } from '../components/icons.jsx';
 import CountryFlag from '../components/CountryFlag.jsx';
+import Breadcrumbs from '../components/Breadcrumbs.jsx';
 
 export default function TrackApplication() {
   const { countries } = useSiteData();
@@ -48,6 +49,7 @@ export default function TrackApplication() {
 
   return (
     <>
+      <Breadcrumbs items={[{ label: 'Ana Sayfa', to: '/' }, { label: 'Başvuru Takip' }]} />
       <section className="page-header has-photo" style={{ '--page-photo': `url(${photos.cameraPassportFlatlay})` }}>
         <span className="kicker">Kişiye Özel Araç</span>
         <h1>Başvuru Takip</h1>

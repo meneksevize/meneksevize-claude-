@@ -4,6 +4,7 @@ import useDocumentMeta from '../hooks/useDocumentMeta.js';
 import { useSiteData, getDocsKey } from '../context/SiteDataContext.jsx';
 import { photos } from '../data/photos.js';
 import { CheckIcon } from '../components/icons.jsx';
+import Breadcrumbs from '../components/Breadcrumbs.jsx';
 
 export default function DocumentGuide() {
   const {
@@ -28,6 +29,7 @@ export default function DocumentGuide() {
 
   return (
     <>
+      <Breadcrumbs items={[{ label: 'Ana Sayfa', to: '/' }, { label: 'Evrak Rehberi' }]} />
       <section className="page-header has-photo" style={{ '--page-photo': `url(${photos.cameraPassportFlatlay})` }}>
         <span className="kicker">Kişiye Özel Araç</span>
         <h1>Evrak Rehberi</h1>

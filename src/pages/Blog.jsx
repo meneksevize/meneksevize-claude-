@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import useDocumentMeta from '../hooks/useDocumentMeta.js';
 import Reveal from '../components/Reveal.jsx';
+import Breadcrumbs from '../components/Breadcrumbs.jsx';
 import { photos } from '../data/photos.js';
 
 export default function Blog() {
@@ -23,6 +24,7 @@ export default function Blog() {
 
   return (
     <>
+      <Breadcrumbs items={[{ label: 'Ana Sayfa', to: '/' }, { label: 'Blog' }]} />
       <section className="page-header has-photo" style={{ '--page-photo': `url(${photos.planningNotebook})` }}>
         <span className="kicker">Blog</span>
         <h1>Vize Süreçleri Üzerine Yazılarımız</h1>

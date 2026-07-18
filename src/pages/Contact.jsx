@@ -5,6 +5,7 @@ import { useSiteData } from '../context/SiteDataContext.jsx';
 import { photos } from '../data/photos.js';
 import Reveal from '../components/Reveal.jsx';
 import { PhoneIcon, MailIcon, WhatsappIcon } from '../components/icons.jsx';
+import Breadcrumbs from '../components/Breadcrumbs.jsx';
 
 const countryOptions = [
   'Schengen Bölgesi', 'Amerika Birleşik Devletleri', 'İngiltere', 'Kanada', 'Dubai / BAE', 'Rusya', 'Avustralya', 'Diğer',
@@ -57,6 +58,7 @@ export default function Contact() {
 
   return (
     <>
+      <Breadcrumbs items={[{ label: 'Ana Sayfa', to: '/' }, { label: 'İletişim' }]} />
       <section className="page-header has-photo" style={{ '--page-photo': `url(${photos.mapWithPins})` }}>
         <span className="kicker">İletişim</span>
         <h1>Ücretsiz Ön Görüşme İçin Bize Ulaşın</h1>

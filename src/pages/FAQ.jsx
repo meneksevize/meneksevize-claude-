@@ -2,6 +2,7 @@ import { useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import useDocumentMeta from '../hooks/useDocumentMeta.js';
 import { useSiteData } from '../context/SiteDataContext.jsx';
+import Breadcrumbs from '../components/Breadcrumbs.jsx';
 
 function stripHtml(html) {
   return html.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
@@ -57,6 +58,7 @@ export default function FAQ() {
 
   return (
     <>
+      <Breadcrumbs items={[{ label: 'Ana Sayfa', to: '/' }, { label: 'Sıkça Sorulan Sorular' }]} />
       <section className="page-header">
         <span className="kicker">Merak Edilenler</span>
         <h1>Sıkça Sorulan Sorular</h1>

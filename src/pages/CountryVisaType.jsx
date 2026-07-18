@@ -4,6 +4,7 @@ import { useSiteData, getDocsKey } from '../context/SiteDataContext.jsx';
 import { photos } from '../data/photos.js';
 import Reveal from '../components/Reveal.jsx';
 import CountryFlag from '../components/CountryFlag.jsx';
+import Breadcrumbs from '../components/Breadcrumbs.jsx';
 import { CheckIcon } from '../components/icons.jsx';
 
 const typeIntros = {
@@ -43,6 +44,13 @@ export default function CountryVisaType() {
 
   return (
     <>
+      <Breadcrumbs items={[
+        { label: 'Ana Sayfa', to: '/' },
+        { label: 'Ülkeler', to: '/hizmetler' },
+        { label: `${country.title} Vizesi`, to: `/ulkeler/${country.id}` },
+        { label: `${typeLabel} Vizesi` },
+      ]}
+      />
       <section className="page-header has-photo" style={{ '--page-photo': `url(${photos.passportBoardingPass})` }}>
         <span className="kicker">Ülkeler</span>
         <h1><CountryFlag country={country} className="country-detail-flag" />{country.title} {typeLabel} Vizesi</h1>

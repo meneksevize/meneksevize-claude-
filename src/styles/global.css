@@ -581,6 +581,51 @@ img, svg {
   flex-wrap: wrap;
 }
 
+/* Gezinme yolu (breadcrumb) */
+.breadcrumbs {
+  padding: 0.9rem 2rem;
+  border-bottom: 1px solid var(--border-color);
+  background-color: var(--bg-color);
+}
+
+.breadcrumbs-list {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  list-style: none;
+  padding: 0;
+}
+
+.breadcrumbs-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.breadcrumbs-list a {
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.breadcrumbs-list a:hover {
+  color: var(--accent-color);
+}
+
+.breadcrumbs-current {
+  color: var(--text-color);
+  font-weight: 600;
+}
+
+.breadcrumbs-sep {
+  color: var(--border-color);
+}
+
 /* Küçük sayfa başlığı (alt sayfalar için mini hero) */
 .page-header {
   padding: 4rem 2rem 3rem;

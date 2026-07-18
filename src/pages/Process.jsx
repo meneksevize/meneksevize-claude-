@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import useDocumentMeta from '../hooks/useDocumentMeta.js';
 import { photos } from '../data/photos.js';
 import { ChevronDownIcon } from '../components/icons.jsx';
+import Breadcrumbs from '../components/Breadcrumbs.jsx';
 
 const steps = [
   {
@@ -48,6 +49,7 @@ export default function Process() {
 
   return (
     <>
+      <Breadcrumbs items={[{ label: 'Ana Sayfa', to: '/' }, { label: 'Süreç' }]} />
       <section className="page-header has-photo" style={{ '--page-photo': `url(${photos.planningNotebook})` }}>
         <span className="kicker">Nasıl Çalışır</span>
         <h1>Vize Başvuru Süreciniz Adım Adım</h1>
