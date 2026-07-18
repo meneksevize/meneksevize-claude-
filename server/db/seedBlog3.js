@@ -3,7 +3,7 @@ import { photos } from '../../src/data/photos.js';
 
 const cover = Object.values(photos);
 
-const posts = [
+export const posts = [
   {
     slug: 'almanya-vizesi-nasil-alinir-adim-adim-rehber',
     title: 'Almanya Vizesi Nasıl Alınır? Adım Adım Başvuru Rehberi',
@@ -33,7 +33,7 @@ En sık karşılaşılan sorunlardan biri, davet mektubu ile seyahat planının 
 
 ## Bizim Yaklaşımımız
 
-[Almanya vizesi sayfamızda](/ulkeler/almanya) bu ülkeye özel güncel bilgi kutularını ve gerekli evrak listesini detaylı olarak bulabilirsiniz. Ön görüşmede seyahat amacınızı dinleyip size özel bir evrak checklist'i hazırlıyoruz.`,
+[Almanya vizesi sayfamızda](/ulkeler/almanya) bu ülkeye özel güncel bilgi kutularını ve gerekli evrak listesini detaylı olarak bulabilirsiniz; [turistik](/ulkeler/almanya/turistik) ve [ticari](/ulkeler/almanya/ticari) vize türleri için ayrı evrak listelerimiz de mevcut. Ön görüşmede seyahat amacınızı dinleyip size özel bir evrak checklist'i hazırlıyoruz.`,
   },
   {
     slug: 'fransa-vizesi-paris-gezisi-icin-bilinmesi-gerekenler',
@@ -60,7 +60,7 @@ Yaz ayları ve okul tatilleri döneminde konsolosluk randevu yoğunluğu belirgi
 
 ## Bizim Yaklaşımımız
 
-[Fransa vizesi sayfamızda](/ulkeler/fransa) ülkeye özel bilgi kutularını ve güncel evrak listesini bulabilirsiniz. Süreci ön görüşmeden sonuç takibine kadar birlikte yönetiyoruz.`,
+[Fransa vizesi sayfamızda](/ulkeler/fransa) ülkeye özel bilgi kutularını bulabilirsiniz; [turistik](/ulkeler/fransa/turistik) ve [ticari](/ulkeler/fransa/ticari) vize türleri için evrak listelerimiz ayrı ayrı hazır. Süreci ön görüşmeden sonuç takibine kadar birlikte yönetiyoruz.`,
   },
   {
     slug: 'yunanistan-vizesi-yaz-sezonunda-erken-basvuru',
@@ -87,7 +87,7 @@ Birden fazla adayı kapsayan bir güzergah planlıyorsanız, feribot/uçak rezer
 
 ## Bizim Yaklaşımımız
 
-[Yunanistan vizesi sayfamızda](/ulkeler/yunanistan) ülkeye özel bilgileri bulabilirsiniz. Yaz sezonu yoğunluğunu yakından takip ediyor, başvurunuzu zamanında ve eksiksiz hazırlamanıza yardımcı oluyoruz.`,
+[Yunanistan vizesi sayfamızda](/ulkeler/yunanistan) ülkeye özel bilgileri, [turistik vize evrak listesini](/ulkeler/yunanistan/turistik) ise ayrı sayfamızda bulabilirsiniz. Yaz sezonu yoğunluğunu yakından takip ediyor, başvurunuzu zamanında ve eksiksiz hazırlamanıza yardımcı oluyoruz.`,
   },
   {
     slug: 'italya-vizesi-basvurusunda-dikkat-edilmesi-gerekenler',
@@ -110,7 +110,7 @@ Milano merkezli moda haftaları ve fuarlar, ticari vize başvurularında sık ka
 
 ## Bizim Yaklaşımımız
 
-[İtalya vizesi sayfamızda](/ulkeler/italya) ülkeye özel bilgileri bulabilirsiniz. Çok şehirli seyahat planlarında evrak tutarlılığını birlikte kontrol ediyor, başvurunuzu güçlü bir şekilde hazırlıyoruz.`,
+[İtalya vizesi sayfamızda](/ulkeler/italya) ülkeye özel bilgileri bulabilirsiniz; [turistik](/ulkeler/italya/turistik) ve [ticari](/ulkeler/italya/ticari) vize türleri için ayrı evrak listelerimiz mevcut. Çok şehirli seyahat planlarında evrak tutarlılığını birlikte kontrol ediyor, başvurunuzu güçlü bir şekilde hazırlıyoruz.`,
   },
   {
     slug: 'dubai-bae-e-vizesi-en-hizli-vize-sureci',
@@ -138,7 +138,7 @@ Uzun bir aktarma söz konusuysa, 48 veya 96 saatlik transit vize seçenekleri de
 
 ## Bizim Yaklaşımımız
 
-[Dubai/BAE vizesi sayfamızda](/ulkeler/dubai) güncel bilgileri bulabilirsiniz. E-vize başvurunuzun eksiksiz ve doğru şekilde hazırlanmasına yardımcı oluyoruz.`,
+[Dubai/BAE vizesi sayfamızda](/ulkeler/dubai) güncel bilgileri, [e-vize evrak listesini](/ulkeler/dubai/e-vize) ise ayrı sayfamızda bulabilirsiniz. E-vize başvurunuzun eksiksiz ve doğru şekilde hazırlanmasına yardımcı oluyoruz.`,
   },
   {
     slug: 'avustralya-vizesi-subclass-600-turk-vatandaslari',
@@ -164,7 +164,7 @@ Subclass 600 başvurularında, vize başvuru merkezinde biyometrik kayıt (parma
 
 ## Bizim Yaklaşımımız
 
-[Avustralya vizesi sayfamızda](/ulkeler/avustralya) güncel bilgileri bulabilirsiniz. Biyometrik randevudan sonuca kadar süreci sizinle birlikte yönetiyoruz.`,
+[Avustralya vizesi sayfamızda](/ulkeler/avustralya) güncel bilgileri, [turistik vize evrak listesini](/ulkeler/avustralya/turistik) ise ayrı sayfamızda bulabilirsiniz. Biyometrik randevudan sonuca kadar süreci sizinle birlikte yönetiyoruz.`,
   },
   {
     slug: 'schengen-ulkelerinden-hangisine-basvurmaliyim',
@@ -213,7 +213,7 @@ Moskova ve Saint Petersburg başta olmak üzere hem turistik hem ticari ziyaretl
 
 ## Bizim Yaklaşımımız
 
-[Rusya vizesi sayfamızda](/ulkeler/rusya) güncel bilgileri bulabilirsiniz. E-vize başvurunuzun hızlı ve sorunsuz ilerlemesi için yanınızdayız.`,
+[Rusya vizesi sayfamızda](/ulkeler/rusya) güncel bilgileri, [e-vize evrak listesini](/ulkeler/rusya/e-vize) ise ayrı sayfamızda bulabilirsiniz. E-vize başvurunuzun hızlı ve sorunsuz ilerlemesi için yanınızdayız.`,
   },
   {
     slug: 'vize-basvurusunda-seyahat-sigortasi-konaklama-tutarliligi',
