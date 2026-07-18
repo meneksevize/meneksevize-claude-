@@ -97,3 +97,23 @@ CREATE TABLE IF NOT EXISTS application_updates (
   note TEXT,
   created_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
+
+CREATE TABLE IF NOT EXISTS payment_requests (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  code TEXT UNIQUE NOT NULL,
+  client_name TEXT NOT NULL,
+  email TEXT,
+  phone TEXT,
+  description TEXT NOT NULL,
+  amount REAL NOT NULL,
+  currency TEXT NOT NULL DEFAULT 'TRY',
+  status TEXT NOT NULL DEFAULT 'pending',
+  buyer_identity_number TEXT,
+  buyer_address TEXT,
+  buyer_city TEXT,
+  iyzico_token TEXT,
+  iyzico_payment_id TEXT,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  updated_at TEXT NOT NULL DEFAULT (datetime('now')),
+  paid_at TEXT
+);

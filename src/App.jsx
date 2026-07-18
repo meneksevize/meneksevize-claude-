@@ -29,6 +29,8 @@ const CountryVisaType = lazy(() => import('./pages/CountryVisaType.jsx'));
 const Blog = lazy(() => import('./pages/Blog.jsx'));
 const BlogPost = lazy(() => import('./pages/BlogPost.jsx'));
 const TrackApplication = lazy(() => import('./pages/TrackApplication.jsx'));
+const Payment = lazy(() => import('./pages/Payment.jsx'));
+const PaymentResult = lazy(() => import('./pages/PaymentResult.jsx'));
 const AdminLogin = lazy(() => import('./admin/pages/Login.jsx'));
 const AdminDashboard = lazy(() => import('./admin/pages/Dashboard.jsx'));
 const AdminContacts = lazy(() => import('./admin/pages/ContactsAdmin.jsx'));
@@ -38,6 +40,7 @@ const AdminTestimonials = lazy(() => import('./admin/pages/TestimonialsAdmin.jsx
 const AdminFaqs = lazy(() => import('./admin/pages/FaqsAdmin.jsx'));
 const AdminBlog = lazy(() => import('./admin/pages/BlogAdmin.jsx'));
 const AdminApplications = lazy(() => import('./admin/pages/ApplicationsAdmin.jsx'));
+const AdminPayments = lazy(() => import('./admin/pages/PaymentsAdmin.jsx'));
 
 function PublicLayoutInner() {
   const location = useLocation();
@@ -112,6 +115,8 @@ export default function App() {
         <Route path="/blog" element={<Blog />} />
         <Route path="/blog/:slug" element={<BlogPost />} />
         <Route path="/takip" element={<TrackApplication />} />
+        <Route path="/odeme/:code" element={<Payment />} />
+        <Route path="/odeme/:code/sonuc" element={<PaymentResult />} />
         <Route path="/gizlilik-politikasi" element={<PrivacyPolicy />} />
       </Route>
 
@@ -121,6 +126,7 @@ export default function App() {
           <Route index element={<AdminDashboard />} />
           <Route path="contacts" element={<AdminContacts />} />
           <Route path="applications" element={<AdminApplications />} />
+          <Route path="payments" element={<AdminPayments />} />
           <Route path="countries" element={<AdminCountries />} />
           <Route path="blog" element={<AdminBlog />} />
           <Route path="faqs" element={<AdminFaqs />} />

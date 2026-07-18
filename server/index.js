@@ -18,6 +18,8 @@ import blogRoutes from './routes/blog.routes.js';
 import adminBlogRoutes from './routes/admin-blog.routes.js';
 import trackRoutes from './routes/track.routes.js';
 import adminApplicationsRoutes from './routes/admin-applications.routes.js';
+import paymentsRoutes from './routes/payments.routes.js';
+import adminPaymentsRoutes from './routes/admin-payments.routes.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -50,6 +52,8 @@ app.use('/api/admin/testimonials', adminTestimonialsRoutes);
 app.use('/api/admin/faqs', adminFaqsRoutes);
 app.use('/api/admin/blog', adminBlogRoutes);
 app.use('/api/admin/applications', adminApplicationsRoutes);
+app.use('/api/payments', paymentsRoutes);
+app.use('/api/admin/payments', adminPaymentsRoutes);
 
 const distPath = path.join(__dirname, '..', 'dist');
 if (fs.existsSync(distPath)) {

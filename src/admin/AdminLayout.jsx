@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { NavLink, Outlet, Link } from 'react-router-dom';
 import { useAdminAuth } from './AdminAuthContext.jsx';
 import {
-  HomeIcon, InboxIcon, SearchIcon, GlobeIcon, BookIcon, HelpIcon, StarIcon, GearIcon,
+  HomeIcon, InboxIcon, SearchIcon, GlobeIcon, BookIcon, HelpIcon, StarIcon, GearIcon, CreditCardIcon,
 } from '../components/icons.jsx';
 
 const navGroups = [
@@ -19,6 +19,7 @@ const navGroups = [
         to: '/admin/contacts', label: 'Gelen Başvurular', Icon: InboxIcon, showBadge: true,
       },
       { to: '/admin/applications', label: 'Başvuru Takip', Icon: SearchIcon },
+      { to: '/admin/payments', label: 'Ödeme Talepleri', Icon: CreditCardIcon },
     ],
   },
   {
