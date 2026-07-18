@@ -18,6 +18,28 @@ const typeIntros = {
   dogum: "Kanada'da doğum yapmak isteyenler için özel hazırlık gerektiren",
 };
 
+// Vize türüne özel pratik rehberlik. Her ülkede birebir aynı metin
+// tekrarlanmasın diye, o ülke için zaten özgün yazılmış servicesDescription
+// alanıyla harmanlanır — böylece 35 ülkenin her sayfası gerçekten farklı
+// bir paragraf üretir, sadece ülke adı değişen bir şablon olmaz.
+const typeGuideBase = {
+  turistik: 'turistik vize başvurularında en çok dikkat edilmesi gereken nokta, seyahat planınızın (uçak bileti, konaklama, seyahat sigortası) tarih ve içerik olarak birbiriyle tutarlı olmasıdır. Türkiye\'ye dönüş bağlarınızı (iş, aile, mülkiyet) gösteren belgeler, başvurunuzun güçlü değerlendirilmesine katkı sağlar.',
+  ticari: 'ticari vize başvurularında davet mektubunun ziyaret amacını (fuar, toplantı, iş ortaklığı) ve tarihleri net şekilde belirtmesi, şirketinizin faaliyet belgesiyle tutarlı olması beklenir. Seyahat programınızı (toplantı/fuar günleri) başvurunuza eklemeniz değerlendirme sürecini hızlandırır.',
+  ogrenci: 'öğrenci vizesi başvurularında kabul mektubu, okul kayıt belgesi ve mali yeterlilik kanıtı sürecin temelini oluşturur. Eğitim süresine ve okulun bulunduğu şehre göre değişen mali yeterlilik eşiklerini ön görüşmede birlikte netleştiriyoruz.',
+  calisma: 'çalışma vizesi/izni başvurularında genellikle bir işveren teklifi veya sponsorluk belgesi gereklidir. Diploma ve iş deneyimi belgelerinizin güncel, onaylı ve iş teklifiyle tutarlı olması değerlendirme sürecini kolaylaştırır.',
+  'aile-birlesimi': 'aile birleşimi başvurularında davet eden kişinin ikamet/oturum belgesi ile aranızdaki akrabalık bağını gösteren resmi belgeler (nüfus kayıt örneği, evlilik cüzdanı vb.) birlikte sunulmalıdır. Mali yeterlilik genellikle davet eden kişinin durumuyla birlikte değerlendirilir.',
+  transit: 'transit vize başvurularında devam uçuşunuzun bileti ve varsa hedef ülke vizeniz en önemli belgelerdir. Aktarma süreniz uzunsa (genellikle 24 saati aşan durumlarda) konaklama kanıtı da istenebilir.',
+  'e-vize': 'e-vize başvuruları tamamen online yürütülür ve genellikle birkaç iş günü içinde sonuçlanır. Pasaport taramanızın ve dijital fotoğrafınızın net ve okunaklı olması, başvurunun sorunsuz ilerlemesi için önemlidir.',
+  dogum: 'doğum amaçlı ziyaretlerde gebelik durumunuzu ve niyetinizi başvuruda doğru şekilde beyan etmeniz yasal bir zorunluluktur; özel sağlık sigortası ve hastane kabul belgenizin eksiksiz olması sürecin sorunsuz ilerlemesi için kritik önem taşır.',
+};
+
+function buildTypeGuide(country, visaType, typeLabel) {
+  const base = typeGuideBase[visaType];
+  if (!base) return null;
+  const countryContext = country.servicesDescription || country.homeDescription || '';
+  return `${country.title} için ${base} ${countryContext}`.trim();
+}
+
 export default function CountryVisaType() {
   const { countryId, visaType } = useParams();
   const { countries, visaTypeLabels, visaDocuments } = useSiteData();
@@ -27,6 +49,7 @@ export default function CountryVisaType() {
   const typeLabel = visaTypeLabels[visaType] || visaType;
   const entry = docsByType?.[visaType] ?? { items: [], note: null };
   const intro = typeIntros[visaType] || 'bu vize türü için';
+  const typeGuide = country ? buildTypeGuide(country, visaType, typeLabel) : null;
 
   useDocumentMeta(
     country ? `${country.title} ${typeLabel} Vizesi Başvurusu ve Gerekli Evraklar | Menekşe Vize` : 'Ülke Bulunamadı | Menekşe Vize',
@@ -77,7 +100,14 @@ export default function CountryVisaType() {
             </Reveal>
           )}
 
-          <div className="section-head">
+          {typeGuide && (
+            <Reveal as="div" className="card" style={{ marginTop: '1.5rem' }}>
+              <span className="kicker">{typeLabel} Vizesi Hakkında</span>
+              <p>{typeGuide}</p>
+            </Reveal>
+          )}
+
+          <div className="section-head" style={{ marginTop: '3rem' }}>
             <span className="kicker">Gerekli Evraklar</span>
             <h2>{country.title} {typeLabel} Vizesi İçin Evrak Listesi</h2>
           </div>
