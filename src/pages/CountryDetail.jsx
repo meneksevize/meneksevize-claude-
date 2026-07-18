@@ -59,10 +59,12 @@ export default function CountryDetail() {
           </div>
 
           {country.overview && (
-            <Reveal as="div" className="card country-overview">
-              <span className="kicker">{country.title} Hakkında</span>
-              <p>{country.overview}</p>
-            </Reveal>
+            <div className="faq-group" style={{ marginBottom: '2rem' }}>
+              <details className="faq-item">
+                <summary>{country.title} Hakkında</summary>
+                <div className="faq-answer">{country.overview}</div>
+              </details>
+            </div>
           )}
 
           <div className="section-head">

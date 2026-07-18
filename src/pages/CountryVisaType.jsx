@@ -93,21 +93,24 @@ export default function CountryVisaType() {
             ))}
           </div>
 
-          {country.overview && (
-            <Reveal as="div" className="card country-overview">
-              <span className="kicker">{country.title} Hakkında</span>
-              <p>{country.overview}</p>
-            </Reveal>
+          {(country.overview || typeGuide) && (
+            <div className="faq-group" style={{ marginBottom: '2rem' }}>
+              {country.overview && (
+                <details className="faq-item">
+                  <summary>{country.title} Hakkında</summary>
+                  <div className="faq-answer">{country.overview}</div>
+                </details>
+              )}
+              {typeGuide && (
+                <details className="faq-item">
+                  <summary>{typeLabel} Vizesi Hakkında</summary>
+                  <div className="faq-answer">{typeGuide}</div>
+                </details>
+              )}
+            </div>
           )}
 
-          {typeGuide && (
-            <Reveal as="div" className="card" style={{ marginTop: '1.5rem' }}>
-              <span className="kicker">{typeLabel} Vizesi Hakkında</span>
-              <p>{typeGuide}</p>
-            </Reveal>
-          )}
-
-          <div className="section-head" style={{ marginTop: '3rem' }}>
+          <div className="section-head" style={{ marginTop: '2rem' }}>
             <span className="kicker">Gerekli Evraklar</span>
             <h2>{country.title} {typeLabel} Vizesi İçin Evrak Listesi</h2>
           </div>
