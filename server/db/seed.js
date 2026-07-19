@@ -11,6 +11,8 @@ const defaultSettings = {
   footer_note: 'Schengen ve dünya genelinde vize başvurularınızda şeffaf süreç takibi ve kişiye özel evrak rehberliği sunan danışmanlık hizmeti.',
   whatsapp_button_enabled: 'true',
   email_notifications_enabled: 'false',
+  livechat_enabled: 'false',
+  livechat_embed_src: '',
 };
 
 const defaultFaqs = [

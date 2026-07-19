@@ -9,6 +9,11 @@ const FIELDS = [
   {
     key: 'footer_note', label: 'Footer Açıklama Metni', placeholder: '', textarea: true,
   },
+  {
+    key: 'livechat_embed_src',
+    label: 'Canlı Destek Widget Kodu (Tawk.to Property/Widget ID)',
+    placeholder: 'örn: 60f1a2b3c4d5e6f7g8h9i0j1/default',
+  },
 ];
 
 const TOGGLES = [
@@ -21,6 +26,11 @@ const TOGGLES = [
     key: 'email_notifications_enabled',
     label: 'Yeni başvuru geldiğinde e-posta ile bildir',
     hint: 'Sunucudaki .env dosyasına RESEND_API_KEY girilmiş olmalıdır.',
+  },
+  {
+    key: 'livechat_enabled',
+    label: 'Sitede canlı destek widget\'ını göster',
+    hint: 'Yukarıdaki Tawk.to widget kodu dolu olmalıdır. Kapalıyken site hiç etkilenmez, açtığınızda anında görünür.',
   },
 ];
 

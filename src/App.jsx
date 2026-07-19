@@ -8,6 +8,7 @@ import BackToTop from './components/BackToTop.jsx';
 import ScrollToTop from './components/ScrollToTop.jsx';
 import MobileTabBar from './components/MobileTabBar.jsx';
 import WhatsappFloatButton from './components/WhatsappFloatButton.jsx';
+import LiveChatWidget from './components/LiveChatWidget.jsx';
 import { SiteDataProvider, useSiteData } from './context/SiteDataContext.jsx';
 import { AdminAuthProvider } from './admin/AdminAuthContext.jsx';
 import RequireAdminAuth from './admin/RequireAdminAuth.jsx';
@@ -69,6 +70,7 @@ function PublicLayoutInner() {
       <BackToTop />
       <MobileTabBar />
       <WhatsappFloatButton />
+      <LiveChatWidget />
     </>
   );
 }
