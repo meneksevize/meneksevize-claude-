@@ -12,6 +12,7 @@ function parseListRow(row) {
     excerpt: row.excerpt,
     coverImageUrl: row.cover_image_url,
     publishedAt: row.published_at,
+    category: row.category,
   };
 }
 

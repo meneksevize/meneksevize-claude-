@@ -66,7 +66,10 @@ export default function Services() {
           <div className="section-head">
             <span className="kicker">Ülkeler</span>
             <h2>Hizmet Verdiğimiz Ülkeler</h2>
-            <p>Bölge ya da vize tipine göre filtreleyerek size uygun seçeneği bulun.</p>
+            <p>
+              Bölge ya da vize tipine göre filtreleyerek size uygun seçeneği bulun. Randevu beklemeden online
+              başvurulan ülkeler için <Link to="/e-vize" style={{ color: 'var(--accent-color)' }}>E-Vize Ülkeleri sayfamıza</Link> göz atabilirsiniz.
+            </p>
           </div>
 
           <div className="filter-bar">

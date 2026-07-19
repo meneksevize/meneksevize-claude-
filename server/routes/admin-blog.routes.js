@@ -28,6 +28,7 @@ function parseRow(row) {
     publishedAt: row.published_at,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
+    category: row.category,
   };
 }
 
@@ -63,8 +64,8 @@ router.post('/', (req, res) => {
   const publishedAt = isPublished ? (body.publishedAt || new Date().toISOString()) : null;
 
   const result = db.prepare(`
-    INSERT INTO posts (slug, title, excerpt, content, cover_image_url, is_published, published_at, updated_at)
-    VALUES (@slug, @title, @excerpt, @content, @coverImageUrl, @isPublished, @publishedAt, datetime('now'))
+    INSERT INTO posts (slug, title, excerpt, content, cover_image_url, is_published, published_at, category, updated_at)
+    VALUES (@slug, @title, @excerpt, @content, @coverImageUrl, @isPublished, @publishedAt, @category, datetime('now'))
   `).run({
     slug,
     title: body.title.trim(),
@@ -73,6 +74,7 @@ router.post('/', (req, res) => {
     coverImageUrl: body.coverImageUrl?.trim() || null,
     isPublished,
     publishedAt,
+    category: body.category?.trim() || 'genel',
   });
 
   res.status(201).json({ ok: true, id: result.lastInsertRowid });
@@ -99,7 +101,7 @@ router.put('/:id', (req, res) => {
   db.prepare(`
     UPDATE posts SET slug = @slug, title = @title, excerpt = @excerpt, content = @content,
       cover_image_url = @coverImageUrl, is_published = @isPublished, published_at = @publishedAt,
-      updated_at = datetime('now')
+      category = @category, updated_at = datetime('now')
     WHERE id = @id
   `).run({
     id: req.params.id,
@@ -110,6 +112,7 @@ router.put('/:id', (req, res) => {
     coverImageUrl: body.coverImageUrl?.trim() || null,
     isPublished,
     publishedAt,
+    category: body.category?.trim() || current.category || 'genel',
   });
 
   res.json({ ok: true });

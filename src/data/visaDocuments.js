@@ -103,6 +103,138 @@ export const visaData = {
       },
     },
   },
+  japonya: {
+    label: 'Japonya',
+    types: {
+      turistik: {
+        items: ['Pasaport (en az 6 ay geçerli, en az 2 boş sayfa)', 'Vesikalık fotoğraf (son 6 ay)', 'Doldurulmuş vize başvuru formu', 'Günlük bazda hazırlanmış detaylı seyahat planı', 'Uçak bileti rezervasyonu', 'Otel/konaklama rezervasyonu (her gecelemenin ayrı belirtilmesi gerekir)', 'Banka hesap özeti (son 3 ay)', 'Çalışma/maaş belgesi'],
+        note: 'Japonya konsolosluğu, her günün nerede geçirileceğini gösteren detaylı bir seyahat planı talep eder; bu belgenin konaklama rezervasyonlarıyla birebir tutarlı olması değerlendirmeyi hızlandırır.',
+      },
+      ticari: {
+        items: ['Pasaport', 'Vesikalık fotoğraf', 'Davet mektubu (iş ortağı/fuar organizatörü)', 'Şirket faaliyet belgesi', 'Detaylı seyahat planı', 'Uçak-otel rezervasyonu', 'Banka hesap özeti'],
+        note: 'Davet mektubunun ziyaret amacını, tarihleri ve ev sahibi firma bilgilerini net şekilde belirtmesi önemlidir.',
+      },
+    },
+  },
+  'guney-kore': {
+    label: 'Güney Kore',
+    types: {
+      turistik: {
+        items: ['Pasaport (en az 6 ay geçerli)', 'Vesikalık fotoğraf', 'Doldurulmuş vize başvuru formu', 'Detaylı seyahat planı', 'Uçak bileti rezervasyonu', 'Otel/konaklama rezervasyonu', 'Banka hesap özeti (son 3 ay)', 'Çalışma/maaş belgesi'],
+        note: 'Güney Kore vize değerlendirmesinde seyahat planının tutarlılığı ve mali yeterlilik belgelerinin güncelliği önemli rol oynar.',
+      },
+      ticari: {
+        items: ['Pasaport', 'Vesikalık fotoğraf', 'Davet mektubu (iş ortağı/fuar)', 'Şirket faaliyet belgesi', 'Seyahat planı', 'Uçak-otel rezervasyonu', 'Banka hesap özeti'],
+        note: 'Fuar katılımlarında fuar organizatöründen alınan katılımcı belgesi süreci hızlandırır.',
+      },
+    },
+  },
+  cin: {
+    label: 'Çin',
+    types: {
+      turistik: {
+        items: ['Pasaport (en az 6 ay geçerli, en az 2 boş sayfa)', 'Vesikalık fotoğraf', 'Doldurulmuş vize başvuru formu', 'Seyahat planı / otel rezervasyonu', 'Uçak bileti rezervasyonu', 'Banka hesap özeti'],
+        note: 'Turistik vize başvurularında güzergahın (ziyaret edilecek şehirler) net olması değerlendirmeyi kolaylaştırır.',
+      },
+      ticari: {
+        items: ['Pasaport', 'Vesikalık fotoğraf', 'Çinli iş ortağından davet mektubu', 'Şirket faaliyet belgesi', 'Seyahat planı', 'Uçak-otel rezervasyonu'],
+        note: 'Davet mektubunun genellikle fuar organizatörü veya iş ortağı firma tarafından düzenlenmiş olması ve başvuru bilgileriyle tutarlı olması gerekir.',
+      },
+    },
+  },
+  hindistan: {
+    label: 'Hindistan',
+    types: {
+      turistik: {
+        items: ['Pasaport (en az 6 ay geçerli)', 'Dijital vesikalık fotoğraf', 'Online e-Vize başvuru formu', 'Uçak bileti rezervasyonu', 'Otel/konaklama rezervasyonu'],
+        note: 'Hindistan e-Vize başvurusu online yapılır ve genellikle birkaç iş günü içinde sonuçlanır; pasaport taramasının net ve okunaklı olması önemlidir.',
+      },
+      ticari: {
+        items: ['Pasaport', 'Dijital vesikalık fotoğraf', 'Online e-Vize başvuru formu', 'Davet mektubu (iş ortağı)', 'Şirket faaliyet belgesi'],
+        note: 'Ticari e-Vize başvurularında davet mektubunun ziyaret amacını net belirtmesi süreci hızlandırır.',
+      },
+    },
+  },
+  meksika: {
+    label: 'Meksika',
+    types: {
+      turistik: {
+        items: ['Pasaport (en az 6 ay geçerli)', 'Geçerli ABD/Kanada/İngiltere/Schengen vizesi veya oturum izni (muafiyet için)', 'Uçak bileti rezervasyonu', 'Otel/konaklama rezervasyonu', 'Bu şartları taşımıyorsanız: standart vize başvuru formu ve banka hesap özeti'],
+        note: 'Geçerli bir ABD, Kanada, İngiltere veya Schengen vizesi/oturumu olan başvuru sahipleri online "yetkilendirme" ile vize muafiyetinden yararlanabilir; bu şartları taşımayanlar standart turistik vize başvurusu yapar.',
+      },
+    },
+  },
+  'yeni-zelanda': {
+    label: 'Yeni Zelanda',
+    types: {
+      turistik: {
+        items: ['Pasaport (en az 3 ay geçerli)', 'Vesikalık fotoğraf (dijital)', 'Online ziyaretçi vizesi başvuru formu', 'Banka hesap özeti / mali yeterlilik belgesi', 'Seyahat planı özeti', 'Dönüş bileti'],
+        note: 'Başvuru tamamen online (Immigration New Zealand üzerinden) yapılır; coğrafi uzaklık nedeniyle işlem süresi diğer destinasyonlara göre daha uzun olabilir.',
+      },
+    },
+  },
+  singapur: {
+    label: 'Singapur',
+    types: {
+      turistik: {
+        items: ['Pasaport (en az 6 ay geçerli)', 'Vesikalık fotoğraf', 'Yetkili ajans üzerinden başvuru formu', 'Uçak bileti rezervasyonu', 'Otel/konaklama rezervasyonu', 'Banka hesap özeti'],
+        note: 'Singapur vize başvuruları doğrudan büyükelçilik yerine yetkilendirilmiş yerel ajanslar üzerinden yürütülür; doğru ajans ve güncel evrak seti süreci hızlandırır.',
+      },
+      ticari: {
+        items: ['Pasaport', 'Vesikalık fotoğraf', 'Davet mektubu (iş ortağı)', 'Şirket faaliyet belgesi', 'Yetkili ajans üzerinden başvuru formu'],
+        note: 'Ticari başvurularda davet mektubunun ziyaret amacını ve tarihleri net belirtmesi gerekir.',
+      },
+    },
+  },
+  misir: {
+    label: 'Mısır',
+    types: {
+      turistik: {
+        items: ['Pasaport (en az 6 ay geçerli)', 'Dijital vesikalık fotoğraf', 'Online e-Vize başvuru formu', 'Uçak bileti rezervasyonu', 'Otel/konaklama rezervasyonu'],
+        note: 'Mısır e-Vize başvurusu online yapılır ve genellikle birkaç iş günü içinde sonuçlanır; bazı tatil beldelerinde varışta vize alma seçeneği de mevcuttur.',
+      },
+    },
+  },
+  'guney-afrika': {
+    label: 'Güney Afrika',
+    types: {
+      turistik: {
+        items: ['Pasaport (en az 6 ay geçerli, en az 2 boş sayfa)', 'Vesikalık fotoğraf', 'Doldurulmuş vize başvuru formu', 'Banka hesap özeti', 'Seyahat planı / otel rezervasyonu', 'Uçak bileti rezervasyonu', 'Güzergaha göre sarı humma aşı sertifikası (gerekiyorsa)', 'Çocuklu seyahatlerde doğum belgesi ve velayet belgesi'],
+        note: 'Bazı güzergahlarda (sarı humma riski taşıyan ülkelerden transit gibi) aşı sertifikası istenebilir; çocuklu seyahatlerde doğum belgesi sunulması yasal bir zorunluluktur.',
+      },
+      ticari: {
+        items: ['Pasaport', 'Vesikalık fotoğraf', 'Davet mektubu (iş ortağı)', 'Şirket faaliyet belgesi', 'Seyahat planı', 'Banka hesap özeti'],
+        note: 'Madencilik ve enerji sektörü fuarlarına katılımda fuar organizatöründen alınan belge süreci hızlandırır.',
+      },
+    },
+  },
+  tayland: {
+    label: 'Tayland',
+    types: {
+      turistik: {
+        items: ['Pasaport (en az 6 ay geçerli)', 'Dijital vesikalık fotoğraf', 'Online e-Vize başvuru formu', 'Dönüş uçak bileti', 'Otel/konaklama rezervasyonu'],
+        note: 'Tayland e-Vize başvurusu online yapılır; dönüş bileti ve konaklama rezervasyonunun net olması onay sürecini kolaylaştırır.',
+      },
+    },
+  },
+  vietnam: {
+    label: 'Vietnam',
+    types: {
+      turistik: {
+        items: ['Pasaport (en az 6 ay geçerli)', 'Dijital vesikalık fotoğraf', 'Online e-Vize başvuru formu', 'Uçak bileti rezervasyonu', 'Otel/konaklama rezervasyonu'],
+        note: 'Vietnam e-Vize, havalimanı, kara ve deniz sınırları dahil tüm giriş kapılarında geçerlidir; başvuru genellikle 3 iş günü içinde sonuçlanır.',
+      },
+    },
+  },
+  'sri-lanka': {
+    label: 'Sri Lanka',
+    types: {
+      turistik: {
+        items: ['Pasaport (en az 6 ay geçerli)', 'Dijital vesikalık fotoğraf', 'Online ETA başvuru formu', 'Dönüş uçak bileti'],
+        note: 'Sri Lanka Elektronik Seyahat İzni (ETA) başvurusu online yapılır ve genellikle birkaç dakika-birkaç saat içinde onaylanır; çıktısının seyahatte yanınızda bulunması önerilir.',
+      },
+    },
+  },
 };
 
 export function normalizeVisaEntry(entry) {

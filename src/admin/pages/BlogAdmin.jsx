@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
+import { BLOG_CATEGORIES } from '../../data/blogCategories.js';
 
 const emptyForm = {
-  title: '', slug: '', excerpt: '', content: '', coverImageUrl: '', isPublished: false,
+  title: '', slug: '', excerpt: '', content: '', coverImageUrl: '', isPublished: false, category: 'genel',
 };
 
 export default function BlogAdmin() {
@@ -43,6 +44,7 @@ export default function BlogAdmin() {
       content: data.content,
       coverImageUrl: data.coverImageUrl || '',
       isPublished: data.isPublished,
+      category: data.category || 'genel',
     });
     setEditingId(id);
     setMode('form');
@@ -113,6 +115,7 @@ export default function BlogAdmin() {
                 <tr>
                   <th>Başlık</th>
                   <th>Slug</th>
+                  <th>Kategori</th>
                   <th>Durum</th>
                   <th></th>
                 </tr>
@@ -122,6 +125,7 @@ export default function BlogAdmin() {
                   <tr key={item.id} onClick={() => openEdit(item.id)}>
                     <td>{item.title}</td>
                     <td>/blog/{item.slug}</td>
+                    <td>{BLOG_CATEGORIES.find((c) => c.key === item.category)?.label || item.category}</td>
                     <td>
                       <span className={`admin-pill ${item.isPublished ? 'read' : 'unread'}`}>
                         {item.isPublished ? 'Yayında' : 'Taslak'}
@@ -167,6 +171,12 @@ export default function BlogAdmin() {
         <div className="admin-form-field">
           <label htmlFor="coverImageUrl">Kapak Görseli (URL)</label>
           <input id="coverImageUrl" value={form.coverImageUrl} onChange={(e) => setForm((p) => ({ ...p, coverImageUrl: e.target.value }))} placeholder="https://..." />
+        </div>
+        <div className="admin-form-field">
+          <label htmlFor="category">Kategori</label>
+          <select id="category" value={form.category} onChange={(e) => setForm((p) => ({ ...p, category: e.target.value }))}>
+            {BLOG_CATEGORIES.map((c) => <option value={c.key} key={c.key}>{c.label}</option>)}
+          </select>
         </div>
         <div className="admin-form-field">
           <label htmlFor="excerpt">Kısa Özet</label>

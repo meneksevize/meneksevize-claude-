@@ -19,6 +19,7 @@ import AdminLayout from './admin/AdminLayout.jsx';
 // süresini kısaltır.
 const Home = lazy(() => import('./pages/Home.jsx'));
 const Services = lazy(() => import('./pages/Services.jsx'));
+const EVisa = lazy(() => import('./pages/EVisa.jsx'));
 const Process = lazy(() => import('./pages/Process.jsx'));
 const DocumentGuide = lazy(() => import('./pages/DocumentGuide.jsx'));
 const FAQ = lazy(() => import('./pages/FAQ.jsx'));
@@ -108,6 +109,7 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route path="/hakkimizda" element={<About />} />
         <Route path="/hizmetler" element={<Services />} />
+        <Route path="/e-vize" element={<EVisa />} />
         <Route path="/ulkeler/:countryId" element={<CountryDetail />} />
         <Route path="/ulkeler/:countryId/:visaType" element={<CountryVisaType />} />
         <Route path="/surec" element={<Process />} />

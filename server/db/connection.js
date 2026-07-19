@@ -24,3 +24,8 @@ const countryColumns = db.prepare('PRAGMA table_info(countries)').all().map((c) 
 if (!countryColumns.includes('overview')) {
   db.exec('ALTER TABLE countries ADD COLUMN overview TEXT');
 }
+
+const postColumns = db.prepare('PRAGMA table_info(posts)').all().map((c) => c.name);
+if (!postColumns.includes('category')) {
+  db.exec("ALTER TABLE posts ADD COLUMN category TEXT NOT NULL DEFAULT 'genel'");
+}

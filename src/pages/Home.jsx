@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import useDocumentMeta from '../hooks/useDocumentMeta.js';
 import { useSiteData } from '../context/SiteDataContext.jsx';
@@ -47,6 +48,42 @@ export default function Home() {
     'Menekşe Vize; Schengen, ABD, İngiltere, Kanada ve daha fazlası için şeffaf süreç takibi ve kişiye özel evrak rehberliğiyle vize danışmanlığı sunar.',
     { image: photos.heroPlaneWindow, path: '/' },
   );
+
+  // Bu sayfada aşağıda görünen gerçek müşteri yorumlarının ortalama puanını
+  // yansıtır — sayı/puan uydurulmaz, doğrudan testimonials tablosundan hesaplanır.
+  useEffect(() => {
+    if (testimonials.length === 0) return undefined;
+
+    const average = testimonials.reduce((sum, t) => sum + t.rating, 0) / testimonials.length;
+
+    const schema = {
+      '@context': 'https://schema.org',
+      '@type': 'TravelAgency',
+      name: 'Menekşe Vize',
+      url: 'https://meneksevize.com/',
+      aggregateRating: {
+        '@type': 'AggregateRating',
+        ratingValue: average.toFixed(1),
+        reviewCount: testimonials.length,
+      },
+      review: testimonials.map((t) => ({
+        '@type': 'Review',
+        author: { '@type': 'Person', name: t.name },
+        reviewRating: { '@type': 'Rating', ratingValue: t.rating },
+        reviewBody: t.quote,
+      })),
+    };
+
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.id = 'aggregate-rating-jsonld';
+    script.textContent = JSON.stringify(schema);
+    document.head.appendChild(script);
+
+    return () => {
+      document.getElementById('aggregate-rating-jsonld')?.remove();
+    };
+  }, [testimonials]);
 
   return (
     <>
