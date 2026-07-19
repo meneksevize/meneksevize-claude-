@@ -22,6 +22,8 @@ export default function Footer() {
               <li><Link to="/hizmetler">Hizmetler</Link></li>
               <li><Link to="/e-vize">E-Vize Ülkeleri</Link></li>
               <li><Link to="/surec">Süreç</Link></li>
+              <li><Link to="/vize-reddi">Vize Reddi</Link></li>
+              <li><Link to="/on-degerlendirme">Ücretsiz Ön Değerlendirme</Link></li>
               <li><Link to="/evrak-rehberi">Evrak Rehberi</Link></li>
               <li><Link to="/blog">Blog</Link></li>
               <li><Link to="/sss">SSS</Link></li>

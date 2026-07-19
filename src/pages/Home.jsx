@@ -1,10 +1,11 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import useDocumentMeta from '../hooks/useDocumentMeta.js';
 import { useSiteData } from '../context/SiteDataContext.jsx';
 import { photos } from '../data/photos.js';
 import Reveal from '../components/Reveal.jsx';
 import CountryFlag from '../components/CountryFlag.jsx';
+import { getCategoryLabel } from '../data/blogCategories.js';
 import {
   ClockIcon, ChecklistIcon, RefreshIcon, ShieldIcon, StarIcon,
 } from '../components/icons.jsx';
@@ -42,6 +43,21 @@ const processSteps = [
 export default function Home() {
   const { countries, testimonials, faqs } = useSiteData();
   const faqTeasers = faqs.slice(0, 3);
+  const [latestPosts, setLatestPosts] = useState([]);
+
+  useEffect(() => {
+    fetch('/api/blog')
+      .then((res) => res.json())
+      .then((posts) => setLatestPosts(posts.slice(0, 3)))
+      .catch(() => {});
+  }, []);
+
+  // İstatistik bandındaki tüm değerler gerçek site verisinden türetilir —
+  // uydurma başarı oranı/başvuru sayısı kullanılmaz.
+  const eVisaCount = countries.filter((c) => c.tags?.includes('E-Vize')).length;
+  const averageRating = testimonials.length > 0
+    ? (testimonials.reduce((sum, t) => sum + t.rating, 0) / testimonials.length).toFixed(1)
+    : null;
 
   useDocumentMeta(
     'Menekşe Vize | Şeffaf ve Kişiye Özel Vize Danışmanlığı',
@@ -94,9 +110,34 @@ export default function Home() {
           <h1>Vize Sürecinizi <span className="highlight">Şeffaf</span> ve Öngörülebilir Hale Getiriyoruz</h1>
           <p>Schengen, ABD, İngiltere, Kanada ve daha birçok ülke için başvurunuzu adım adım, kişiye özel evrak rehberliğiyle yönetiyoruz. Her aşamada nerede olduğunuzu bilirsiniz.</p>
           <div className="hero-buttons">
-            <Link to="/iletisim" className="btn btn-gold">Ücretsiz Ön Görüşme</Link>
+            <Link to="/on-degerlendirme" className="btn btn-gold">Ücretsiz Ön Değerlendirme</Link>
             <Link to="/hizmetler" className="btn btn-secondary">Hizmetlerimizi İnceleyin</Link>
           </div>
+        </div>
+      </section>
+
+      <section className="section" style={{ paddingTop: '2rem', paddingBottom: '2rem' }}>
+        <div className="container">
+          <Reveal as="div" className="stats-band">
+            <div className="stats-band-item">
+              <span className="stats-band-value">{countries.length}</span>
+              <span className="stats-band-label">Ülke İçin Vize Rehberliği</span>
+            </div>
+            <div className="stats-band-item">
+              <span className="stats-band-value">{eVisaCount}</span>
+              <span className="stats-band-label">Ülkeye E-Vize Desteği</span>
+            </div>
+            {averageRating && (
+              <div className="stats-band-item">
+                <span className="stats-band-value">{averageRating}/5</span>
+                <span className="stats-band-label">Müşteri Değerlendirmesi</span>
+              </div>
+            )}
+            <div className="stats-band-item">
+              <span className="stats-band-value">6</span>
+              <span className="stats-band-label">Aşamalı Şeffaf Süreç Takibi</span>
+            </div>
+          </Reveal>
         </div>
       </section>
 
@@ -219,8 +260,32 @@ export default function Home() {
         </div>
       </section>
 
-      {faqTeasers.length > 0 && (
+      {latestPosts.length > 0 && (
         <section className="section">
+          <div className="container">
+            <div className="section-head">
+              <span className="kicker">Güncel</span>
+              <h2>Blog&apos;dan Son Yazılar</h2>
+              <p>Vize süreçleri, evrak ipuçları ve güncel gelişmeler üzerine rehberlerimiz.</p>
+            </div>
+            <div className="grid grid-3">
+              {latestPosts.map((post, i) => (
+                <Reveal as={Link} to={`/blog/${post.slug}`} className="card blog-card" delay={i * 60} key={post.id}>
+                  {post.category && <span className="kicker" style={{ display: 'block', marginBottom: '0.5rem' }}>{getCategoryLabel(post.category)}</span>}
+                  <h3>{post.title}</h3>
+                  {post.excerpt && <p>{post.excerpt}</p>}
+                </Reveal>
+              ))}
+            </div>
+            <div style={{ textAlign: 'center', marginTop: '2rem' }}>
+              <Link to="/blog" className="btn btn-secondary">Tüm Yazıları Okuyun</Link>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {faqTeasers.length > 0 && (
+        <section className="section section-alt">
           <div className="container">
             <div className="section-head">
               <span className="kicker">Merak Edilenler</span>
@@ -242,7 +307,7 @@ export default function Home() {
         </section>
       )}
 
-      <section className="section section-alt">
+      <section className="section">
         <div className="container" style={{ textAlign: 'center' }}>
           <span className="kicker">Hazır mısınız?</span>
           <h2 style={{ fontSize: 'clamp(1.8rem, 4vw, 2.4rem)', marginBottom: '1rem' }}>Vize Sürecinizi Bugün Başlatın</h2>

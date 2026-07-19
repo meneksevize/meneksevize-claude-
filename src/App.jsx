@@ -31,6 +31,9 @@ const CountryVisaType = lazy(() => import('./pages/CountryVisaType.jsx'));
 const Blog = lazy(() => import('./pages/Blog.jsx'));
 const BlogPost = lazy(() => import('./pages/BlogPost.jsx'));
 const TrackApplication = lazy(() => import('./pages/TrackApplication.jsx'));
+const PreAssessment = lazy(() => import('./pages/PreAssessment.jsx'));
+const VisaRejection = lazy(() => import('./pages/VisaRejection.jsx'));
+const NotFound = lazy(() => import('./pages/NotFound.jsx'));
 const Payment = lazy(() => import('./pages/Payment.jsx'));
 const PaymentResult = lazy(() => import('./pages/PaymentResult.jsx'));
 const AdminLogin = lazy(() => import('./admin/pages/Login.jsx'));
@@ -122,6 +125,9 @@ export default function App() {
         <Route path="/odeme/:code" element={<Payment />} />
         <Route path="/odeme/:code/sonuc" element={<PaymentResult />} />
         <Route path="/gizlilik-politikasi" element={<PrivacyPolicy />} />
+        <Route path="/on-degerlendirme" element={<PreAssessment />} />
+        <Route path="/vize-reddi" element={<VisaRejection />} />
+        <Route path="*" element={<NotFound />} />
       </Route>
 
       <Route path="/admin" element={<AdminRoot />}>

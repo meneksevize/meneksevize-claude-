@@ -16,18 +16,21 @@ const FLAG_COMPONENTS = {
   gb: GB, ca: CA, ae: AE, ru: RU, au: AU,
 };
 
+// Bayrak her zaman ülke adının hemen yanında görünür, bu yüzden dekoratiftir:
+// erişilebilirlik ağacından gizlenir ki başlıklar "Almanya bayrağıAlmanya Vizesi"
+// gibi okunmasın.
 export default function CountryFlag({ country, className = '' }) {
   if (!country) return null;
   const iso = COUNTRY_ISO_CODES[country.id];
   const Flag = iso && FLAG_COMPONENTS[iso];
 
   if (!Flag) {
-    return <span className={className}>{country.flag}</span>;
+    return <span className={className} aria-hidden="true">{country.flag}</span>;
   }
 
   return (
     <Flag
-      title={`${country.title} bayrağı`}
+      aria-hidden="true"
       className={`country-flag-icon${className ? ` ${className}` : ''}`}
     />
   );

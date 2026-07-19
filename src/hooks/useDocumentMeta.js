@@ -1,7 +1,14 @@
 import { useEffect } from 'react';
 
 const SITE_URL = 'https://meneksevize.com';
-const DEFAULT_IMAGE = 'https://images.unsplash.com/photo-1527605158555-853f200063e9?auto=format&fit=crop&w=1200&q=70';
+const DEFAULT_IMAGE = `${SITE_URL}/og-image.png`;
+
+// og:image mutlak URL olmak zorundadır; yerel yollar ("/photos/x.webp") site
+// adresiyle tamamlanır.
+function absoluteImage(image) {
+  if (!image) return DEFAULT_IMAGE;
+  return image.startsWith('/') ? `${SITE_URL}${image}` : image;
+}
 
 function setMetaByName(name, content) {
   if (!content) return;
@@ -52,14 +59,14 @@ export default function useDocumentMeta(title, description, options = {}) {
     setMetaByProperty('og:title', title);
     setMetaByProperty('og:description', description);
     setMetaByProperty('og:url', url);
-    setMetaByProperty('og:image', image || DEFAULT_IMAGE);
+    setMetaByProperty('og:image', absoluteImage(image));
     setMetaByProperty('og:type', 'website');
     setMetaByProperty('og:locale', 'tr_TR');
 
     setMetaByName('twitter:card', 'summary_large_image');
     setMetaByName('twitter:title', title);
     setMetaByName('twitter:description', description);
-    setMetaByName('twitter:image', image || DEFAULT_IMAGE);
+    setMetaByName('twitter:image', absoluteImage(image));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [title, description, options.image, options.path]);
 }

@@ -12,6 +12,8 @@ const staticPages = [
   { loc: '/hakkimizda', priority: '0.6' },
   { loc: '/hizmetler', priority: '0.8' },
   { loc: '/e-vize', priority: '0.7' },
+  { loc: '/vize-reddi', priority: '0.7' },
+  { loc: '/on-degerlendirme', priority: '0.6' },
   { loc: '/surec', priority: '0.5' },
   { loc: '/evrak-rehberi', priority: '0.6' },
   { loc: '/sss', priority: '0.5' },
