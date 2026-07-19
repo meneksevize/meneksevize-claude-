@@ -4,6 +4,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import express from 'express';
 import session from 'express-session';
+import compression from 'compression';
 
 import { db } from './db/connection.js';
 import { SQLiteSessionStore } from './db/sessionStore.js';
@@ -26,6 +27,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
 
 app.set('trust proxy', 1);
+app.use(compression());
 app.use(express.json());
 
 app.use(session({
@@ -57,13 +59,30 @@ app.use('/api/admin/payments', adminPaymentsRoutes);
 
 const distPath = path.join(__dirname, '..', 'dist');
 if (fs.existsSync(distPath)) {
-  app.use(express.static(distPath));
+  // Vite, /assets altındaki dosya adlarına içerik hash'i ekler (örn. index-Ab12Cd.js);
+  // içerik değişmeden o dosya adı asla değişmez, bu yüzden sonsuza kadar önbelleklenebilir.
+  // Diğer statik dosyalar (index.html, favicon, sitemap.xml vb.) hash içermez ve her
+  // deploy'da içerik değişebileceğinden agresif önbelleklenmemelidir.
+  app.use('/assets', express.static(path.join(distPath, 'assets'), {
+    maxAge: '1y',
+    immutable: true,
+  }));
+  app.use(express.static(distPath, {
+    maxAge: '1h',
+    setHeaders: (res, filePath) => {
+      if (filePath.endsWith('index.html')) {
+        res.setHeader('Cache-Control', 'public, max-age=0');
+      }
+    },
+  }));
   app.get('*', (req, res, next) => {
     if (req.path.startsWith('/api')) {
       next();
       return;
     }
-    res.sendFile(path.join(distPath, 'index.html'));
+    res.sendFile(path.join(distPath, 'index.html'), {
+      headers: { 'Cache-Control': 'public, max-age=0' },
+    });
   });
 }
 
