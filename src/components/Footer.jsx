@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useSiteData } from '../context/SiteDataContext.jsx';
+import { InstagramIcon } from './icons.jsx';
 
 export default function Footer() {
   const { settings } = useSiteData();
@@ -33,6 +34,17 @@ export default function Footer() {
               {phone && <li><a href={phoneHref}>{phone}</a></li>}
               {settings.email && <li><a href={`mailto:${settings.email}`}>{settings.email}</a></li>}
               <li><Link to="/iletisim">İletişim Formu</Link></li>
+              <li>
+                <a
+                  href="https://www.instagram.com/meneksevize"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}
+                >
+                  <InstagramIcon width={16} height={16} />
+                  Instagram
+                </a>
+              </li>
             </ul>
           </div>
         </div>
