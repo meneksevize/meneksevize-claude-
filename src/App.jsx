@@ -26,6 +26,8 @@ const FAQ = lazy(() => import('./pages/FAQ.jsx'));
 const Contact = lazy(() => import('./pages/Contact.jsx'));
 const About = lazy(() => import('./pages/About.jsx'));
 const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy.jsx'));
+const TermsOfService = lazy(() => import('./pages/TermsOfService.jsx'));
+const RefundPolicy = lazy(() => import('./pages/RefundPolicy.jsx'));
 const CountryDetail = lazy(() => import('./pages/CountryDetail.jsx'));
 const CountryVisaType = lazy(() => import('./pages/CountryVisaType.jsx'));
 const Blog = lazy(() => import('./pages/Blog.jsx'));
@@ -127,6 +129,8 @@ export default function App() {
         <Route path="/gizlilik-politikasi" element={<PrivacyPolicy />} />
         <Route path="/on-degerlendirme" element={<PreAssessment />} />
         <Route path="/vize-reddi" element={<VisaRejection />} />
+        <Route path="/kullanim-kosullari" element={<TermsOfService />} />
+        <Route path="/iptal-iade-politikasi" element={<RefundPolicy />} />
         <Route path="*" element={<NotFound />} />
       </Route>
 

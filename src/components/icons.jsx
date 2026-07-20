@@ -222,6 +222,15 @@ export function InstagramIcon(props) {
   );
 }
 
+export function MapPinIcon(props) {
+  return (
+    <svg {...base} width={20} height={20} {...props}>
+      <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z" />
+      <circle cx="12" cy="10" r="2.5" />
+    </svg>
+  );
+}
+
 export function CreditCardIcon(props) {
   return (
     <svg {...base} {...props}>

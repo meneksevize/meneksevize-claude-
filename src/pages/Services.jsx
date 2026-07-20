@@ -131,6 +131,29 @@ export default function Services() {
           </div>
         </div>
       </section>
+
+      <section className="section section-alt">
+        <div className="container" style={{ maxWidth: 820 }}>
+          <div className="section-head">
+            <span className="kicker">Ücretlendirme</span>
+            <h2>Danışmanlık Ücreti ve Resmi Ücretler Ayrıdır</h2>
+          </div>
+          <Reveal as="div" className="card">
+            <p>
+              Menekşe Vize&apos;ye ödediğiniz danışmanlık hizmet bedeli ile ilgili ülkenin konsolosluğuna, büyükelçiliğine
+              veya resmi vize başvuru merkezine ödenen vize harcı, hizmet/randevu bedeli gibi resmi ücretler
+              <strong> birbirinden tamamen bağımsızdır</strong>. Resmi ücretler doğrudan ilgili kuruma ödenir ve
+              danışmanlık bedelimize dahil değildir.
+            </p>
+            <p style={{ marginTop: '1rem' }}>
+              Danışmanlık ücretimiz; hedef ülke, vize tipi ve başvurunuzun kapsamına göre değişir ve size özel olarak
+              ücretsiz ön görüşmede netleştirilir. Ödeme ve iptal/iade koşulları hakkında detaylı bilgi için{' '}
+              <Link to="/iptal-iade-politikasi" style={{ color: 'var(--accent-color)' }}>İptal ve İade Politikamıza</Link>{' '}
+              göz atabilirsiniz.
+            </p>
+          </Reveal>
+        </div>
+      </section>
     </>
   );
 }

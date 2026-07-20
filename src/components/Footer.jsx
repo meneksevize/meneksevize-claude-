@@ -50,9 +50,15 @@ export default function Footer() {
             </ul>
           </div>
         </div>
+        <div className="footer-disclaimer">
+          Menekşe Vize özel bir vize danışmanlık firmasıdır. Resmi konsolosluk, büyükelçilik veya başvuru merkezi değildir. Sunulan hizmetler isteğe bağlı danışmanlık kapsamındadır.
+        </div>
+
         <div className="footer-bottom">
           <span>&copy; 2026 Menekşe Vize. Tüm hakları saklıdır.</span>
           <Link to="/gizlilik-politikasi">Gizlilik Politikası (KVKK)</Link>
+          <Link to="/kullanim-kosullari">Kullanım Koşulları</Link>
+          <Link to="/iptal-iade-politikasi">İptal ve İade Politikası</Link>
           <span>Nihai vize kararı ilgili konsolosluğa aittir.</span>
         </div>
       </div>

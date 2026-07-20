@@ -42,6 +42,9 @@ export default function Navbar() {
 
   return (
     <header className="navbar">
+      <div className="disclaimer-bar">
+        Menekşe Vize özel bir vize danışmanlık hizmetidir; resmi konsolosluk, büyükelçilik veya başvuru merkezi değildir. Sunulan hizmetler isteğe bağlı danışmanlık kapsamındadır.
+      </div>
       <div className="nav-container">
         <NavLink to="/" className="logo" onClick={closeAll}>
           Menekşe<span>Vize</span>

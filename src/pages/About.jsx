@@ -83,6 +83,17 @@ export default function About() {
             </p>
           </Reveal>
 
+          <Reveal as="div" className="card country-overview" style={{ marginTop: '1.5rem' }}>
+            <span className="kicker">Kurumsal Statümüz</span>
+            <p>
+              Menekşe Vize, &ldquo;Menekşe Vize&rdquo; markası altında faaliyet gösteren bağımsız bir danışmanlık
+              hizmetidir; hiçbir ülkenin konsolosluğu, büyükelçiliği veya resmi vize başvuru merkezi değildir ve
+              onlarla resmi bir bağlantımız bulunmamaktadır. Sunduğumuz danışmanlık, evrak hazırlığı ve süreç
+              rehberliği isteğe bağlı bir hizmettir; resmi başvurunuzu her zaman ilgili konsolosluk veya yetkili
+              başvuru merkezi üzerinden bizzat siz gerçekleştirirsiniz.
+            </p>
+          </Reveal>
+
           <div className="section-head" style={{ marginTop: '4rem' }}>
             <span className="kicker">Kapsam</span>
             <h2 style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', justifyContent: 'center' }}>

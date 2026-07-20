@@ -21,6 +21,8 @@ const staticPages = [
   { loc: '/blog', priority: '0.6' },
   { loc: '/takip', priority: '0.3' },
   { loc: '/gizlilik-politikasi', priority: '0.3' },
+  { loc: '/kullanim-kosullari', priority: '0.3' },
+  { loc: '/iptal-iade-politikasi', priority: '0.3' },
 ];
 
 function urlEntry(loc, priority) {

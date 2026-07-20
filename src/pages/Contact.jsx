@@ -4,7 +4,9 @@ import useDocumentMeta from '../hooks/useDocumentMeta.js';
 import { useSiteData } from '../context/SiteDataContext.jsx';
 import { photos } from '../data/photos.js';
 import Reveal from '../components/Reveal.jsx';
-import { PhoneIcon, MailIcon, WhatsappIcon } from '../components/icons.jsx';
+import {
+  PhoneIcon, MailIcon, WhatsappIcon, MapPinIcon, ClockIcon,
+} from '../components/icons.jsx';
 import Breadcrumbs from '../components/Breadcrumbs.jsx';
 
 const countryOptions = [
@@ -99,7 +101,27 @@ export default function Contact() {
                 </div>
               )}
 
-              <p className="form-note">Ücretsiz ön görüşme talebiniz için telefon, e-posta veya WhatsApp üzerinden bize ulaşabilirsiniz.</p>
+              {settings.working_hours && (
+                <div className="contact-info-item">
+                  <div className="card-icon"><ClockIcon /></div>
+                  <div>
+                    <h3>Çalışma Saatleri</h3>
+                    <p style={{ color: 'var(--text-color)' }}>{settings.working_hours}</p>
+                  </div>
+                </div>
+              )}
+
+              {settings.address && (
+                <div className="contact-info-item">
+                  <div className="card-icon"><MapPinIcon /></div>
+                  <div>
+                    <h3>Adres</h3>
+                    <p style={{ color: 'var(--text-color)' }}>{settings.address}</p>
+                  </div>
+                </div>
+              )}
+
+              <p className="form-note">Ücretsiz ön görüşme talebiniz için telefon, e-posta veya WhatsApp üzerinden bize ulaşabilirsiniz. Danışmanlık hizmetimiz uzaktan/online olarak da tam kapsamlı yürütülebilir; ofise gelmeniz gerekmez.</p>
             </Reveal>
 
             <Reveal as="div" className="card" delay={100}>
@@ -176,6 +198,17 @@ export default function Contact() {
               )}
             </Reveal>
           </div>
+
+          {settings.address && (
+            <Reveal as="div" className="contact-map" style={{ marginTop: '2.5rem' }}>
+              <iframe
+                title="Konum"
+                src={`https://www.google.com/maps?q=${encodeURIComponent(settings.address)}&output=embed`}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+            </Reveal>
+          )}
         </div>
       </section>
     </>
