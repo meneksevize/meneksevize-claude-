@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import useDocumentMeta from '../hooks/useDocumentMeta.js';
 import { useSiteData } from '../context/SiteDataContext.jsx';
+import { regionLabels } from '../data/countries.js';
 import { photos } from '../data/photos.js';
 import Reveal from '../components/Reveal.jsx';
 import CountryFlag from '../components/CountryFlag.jsx';
@@ -34,6 +35,8 @@ const whyUs = [
   },
 ];
 
+const REGION_ORDER = ['avrupa', 'amerika', 'orta-dogu', 'diger'];
+
 const processSteps = [
   { title: 'Ön Görüşme', text: 'Ücretsiz görüşmede ihtiyacınızı ve uygun vize tipini belirliyoruz.' },
   { title: 'Evrak Toplama', text: 'Size özel checklist ile gerekli belgeleri adım adım hazırlıyoruz.' },
@@ -56,6 +59,9 @@ export default function Home() {
   // İstatistik bandındaki tüm değerler gerçek site verisinden türetilir —
   // uydurma başarı oranı/başvuru sayısı kullanılmaz.
   const eVisaCount = countries.filter((c) => c.tags?.includes('E-Vize')).length;
+  const countriesByRegion = REGION_ORDER
+    .map((region) => ({ region, label: regionLabels[region], items: countries.filter((c) => c.region === region) }))
+    .filter((group) => group.items.length > 0);
   const averageRating = testimonials.length > 0
     ? (testimonials.reduce((sum, t) => sum + t.rating, 0) / testimonials.length).toFixed(1)
     : null;
@@ -184,8 +190,9 @@ export default function Home() {
       <section className="section">
         <div className="container">
           <Reveal className="photo-feature">
-            <div className="photo-feature-media">
-              <img src={photos.passportBoardingPass} alt="Pasaport ve uçuş bileti" loading="lazy" />
+            <div className="photo-feature-media photo-feature-media-glow">
+              <div className="photo-feature-duotone" aria-hidden="true"></div>
+              <img src={photos.passportBoardingPass} alt="Pasaport ve uçuş bileti" loading="lazy" className="photo-feature-img" />
             </div>
             <div className="photo-feature-text">
               <span className="kicker">Evraktan Uçuşa</span>
@@ -197,44 +204,51 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="section section-alt">
+      <section className="section section-alt country-shelves-section">
         <div className="container">
           <div className="section-head">
             <span className="kicker">Ülkeler</span>
-            <h2>Ülke Seçin, Evrak Listenizi Görün</h2>
-            <p>Bir ülkenin bayrağına tıklayarak o ülkeye özel vize türlerini, gerekli evrakları ve süreç bilgisini inceleyebilirsiniz.</p>
+            <h2>47 Ülke, Tek Bir Yerden</h2>
+            <p>Bölgesine göre kayan listeden ülkenizi bulun, dokunun, evrak listenizi görün.</p>
           </div>
-          <div className="country-tile-grid">
-            {countries.map((country, i) => (
-              <Reveal
-                as={Link}
-                to={`/ulkeler/${country.id}`}
-                className="country-tile"
-                delay={Math.min(i * 15, 300)}
-                key={country.id}
-              >
-                <CountryFlag country={country} className="country-tile-flag" />
-                <span className="country-tile-name">{country.title}</span>
-              </Reveal>
-            ))}
-          </div>
-          <p className="form-note" style={{ textAlign: 'center', marginTop: '1.5rem' }}>
-            Listede aradığınız ülkeyi bulamadıysanız <Link to="/iletisim" style={{ color: 'var(--accent-color)' }}>bize ulaşın</Link>, birlikte değerlendirelim.
-          </p>
         </div>
+        {countriesByRegion.map((group) => (
+          <div className="country-shelf" key={group.region}>
+            <div className="container country-shelf-head">
+              <h3>{group.label}</h3>
+              <span className="country-shelf-count">{group.items.length} ülke</span>
+            </div>
+            <div className="country-shelf-row">
+              <div className="country-shelf-track">
+                {group.items.map((country) => (
+                  <Link to={`/ulkeler/${country.id}`} className="country-shelf-card" key={country.id}>
+                    <CountryFlag country={country} className="country-shelf-flag" />
+                    <span>{country.title}</span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+        ))}
+        <p className="form-note" style={{ textAlign: 'center', marginTop: '2rem' }}>
+          Listede aradığınız ülkeyi bulamadıysanız <Link to="/iletisim" style={{ color: 'var(--accent-color)' }}>bize ulaşın</Link>, birlikte değerlendirelim.
+        </p>
       </section>
 
       {testimonials.length > 0 && (
-        <section className="section">
+        <section className="section testimonial-wall-section">
           <div className="container">
             <div className="section-head">
               <span className="kicker">Referanslar</span>
               <h2>Müşterilerimiz Ne Diyor</h2>
               <p>Süreci birlikte yürüttüğümüz müşterilerimizin deneyimleri.</p>
             </div>
-            <div className="grid grid-3">
-              {testimonials.map((t, i) => (
-                <Reveal as="div" className="card testimonial-card" delay={i * 70} key={t.id}>
+          </div>
+          <div className="testimonial-marquee">
+            <div className="testimonial-track">
+              {[...testimonials, ...testimonials, ...testimonials].map((t, i) => (
+                <div className="testimonial-wall-card" key={`${t.id}-${i}`}>
+                  <span className="testimonial-quote-mark">&ldquo;</span>
                   <div className="testimonial-stars">
                     {Array.from({ length: 5 }).map((_, starIndex) => (
                       <StarIcon
@@ -243,12 +257,12 @@ export default function Home() {
                       />
                     ))}
                   </div>
-                  <p className="testimonial-quote">&ldquo;{t.quote}&rdquo;</p>
+                  <p className="testimonial-quote">{t.quote}</p>
                   <div className="testimonial-author">
                     <span className="testimonial-name">{t.name}</span>
                     {t.location && <span className="testimonial-location">{t.location}</span>}
                   </div>
-                </Reveal>
+                </div>
               ))}
             </div>
           </div>
@@ -262,15 +276,20 @@ export default function Home() {
             <h2>4 Adımda Vize Sürecinizi Yönetiyoruz</h2>
             <p>Tam interaktif zaman çizelgesini süreç sayfasında inceleyebilirsiniz.</p>
           </div>
-          <div className="grid grid-4">
-            {processSteps.map((step, i) => (
-              <Reveal as="div" className="card" delay={i * 70} key={step.title}>
-                <div className="card-icon">{i + 1}</div>
-                <h3>{step.title}</h3>
-                <p>{step.text}</p>
-              </Reveal>
-            ))}
-          </div>
+          <Reveal as="div" className="process-rail">
+            <div className="process-rail-line">
+              <div className="process-rail-fill"></div>
+            </div>
+            <div className="process-rail-steps">
+              {processSteps.map((step, i) => (
+                <div className="process-rail-step" style={{ '--i': i }} key={step.title}>
+                  <span className="process-rail-dot">{i + 1}</span>
+                  <h3>{step.title}</h3>
+                  <p>{step.text}</p>
+                </div>
+              ))}
+            </div>
+          </Reveal>
           <div style={{
             textAlign: 'center', marginTop: '2.5rem', display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap',
           }}
@@ -328,12 +347,16 @@ export default function Home() {
         </section>
       )}
 
-      <section className="section">
-        <div className="container" style={{ textAlign: 'center' }}>
+      <section className="section final-cta-aurora">
+        <div className="final-cta-aurora-bg" aria-hidden="true">
+          <span className="aurora aurora-cta-1"></span>
+          <span className="aurora aurora-cta-2"></span>
+        </div>
+        <div className="container final-cta-content" style={{ textAlign: 'center' }}>
           <span className="kicker">Hazır mısınız?</span>
-          <h2 style={{ fontSize: 'clamp(1.8rem, 4vw, 2.4rem)', marginBottom: '1rem' }}>Vize Sürecinizi Bugün Başlatın</h2>
+          <h2 style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', marginBottom: '1rem' }}>Vize Sürecinizi Bugün Başlatın</h2>
           <p style={{ color: 'var(--text-muted)', maxWidth: 560, margin: '0 auto 2rem' }}>Ücretsiz ön görüşme ile size en uygun vize tipini ve süreç planını birlikte belirleyelim.</p>
-          <Link to="/iletisim" className="btn btn-gold">Hemen İletişime Geçin</Link>
+          <Link to="/iletisim" className="btn btn-gold btn-pulse">Hemen İletişime Geçin</Link>
         </div>
       </section>
     </>
