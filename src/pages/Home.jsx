@@ -5,6 +5,7 @@ import { useSiteData } from '../context/SiteDataContext.jsx';
 import { photos } from '../data/photos.js';
 import Reveal from '../components/Reveal.jsx';
 import CountryFlag from '../components/CountryFlag.jsx';
+import CountUp from '../components/CountUp.jsx';
 import { getCategoryLabel } from '../data/blogCategories.js';
 import {
   ClockIcon, ChecklistIcon, RefreshIcon, ShieldIcon, StarIcon,
@@ -120,21 +121,21 @@ export default function Home() {
         <div className="container">
           <Reveal as="div" className="stats-band">
             <div className="stats-band-item">
-              <span className="stats-band-value">{countries.length}</span>
+              <span className="stats-band-value"><CountUp value={countries.length} /></span>
               <span className="stats-band-label">Ülke İçin Vize Rehberliği</span>
             </div>
             <div className="stats-band-item">
-              <span className="stats-band-value">{eVisaCount}</span>
+              <span className="stats-band-value"><CountUp value={eVisaCount} /></span>
               <span className="stats-band-label">Ülkeye E-Vize Desteği</span>
             </div>
             {averageRating && (
               <div className="stats-band-item">
-                <span className="stats-band-value">{averageRating}/5</span>
+                <span className="stats-band-value"><CountUp value={averageRating} suffix="/5" decimals={1} /></span>
                 <span className="stats-band-label">Müşteri Değerlendirmesi</span>
               </div>
             )}
             <div className="stats-band-item">
-              <span className="stats-band-value">6</span>
+              <span className="stats-band-value"><CountUp value={6} /></span>
               <span className="stats-band-label">Aşamalı Şeffaf Süreç Takibi</span>
             </div>
           </Reveal>

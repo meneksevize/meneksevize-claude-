@@ -39,6 +39,35 @@ html, body {
   overflow-x: clip;
 }
 
+::selection {
+  background-color: var(--accent-color);
+  color: #fff;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-color);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--surface-hover);
+  border-radius: 8px;
+  border: 2px solid var(--bg-color);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--border-color);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 2px;
+}
+
 body {
   font-family: var(--font-sans);
   background-color: var(--bg-color);
@@ -704,6 +733,22 @@ img, svg {
   transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
+.card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent-color) 50%, transparent);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.card:hover::after {
+  opacity: 0.7;
+}
+
 .card::before {
   content: "";
   position: absolute;
@@ -734,12 +779,19 @@ img, svg {
   width: 44px;
   height: 44px;
   border-radius: 10px;
-  background-color: var(--accent-soft);
+  background: linear-gradient(150deg, var(--accent-soft) 0%, rgba(124, 92, 255, 0.06) 100%);
+  border: 1px solid rgba(124, 92, 255, 0.25);
   color: var(--accent-color);
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 1.25rem;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;
+}
+
+.card:hover .card-icon {
+  transform: scale(1.08) rotate(-4deg);
+  border-color: var(--accent-color);
 }
 
 .card h3 {
