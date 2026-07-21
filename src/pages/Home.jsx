@@ -8,7 +8,7 @@ import CountryFlag from '../components/CountryFlag.jsx';
 import CountUp from '../components/CountUp.jsx';
 import { getCategoryLabel } from '../data/blogCategories.js';
 import {
-  ClockIcon, ChecklistIcon, RefreshIcon, ShieldIcon, StarIcon, CheckIcon, WhatsappIcon,
+  ClockIcon, ChecklistIcon, RefreshIcon, ShieldIcon, StarIcon,
 } from '../components/icons.jsx';
 
 const whyUs = [
@@ -104,60 +104,35 @@ export default function Home() {
 
   return (
     <>
-      <section className="hero hero-split has-photo" style={{ '--hero-photo': `url(${photos.heroPlaneWindow})` }}>
-        <div className="hero-glow-rose"></div>
-        <div className="hero-split-inner">
-          <div className="hero-content">
-            <span className="kicker">Menekşe Vize</span>
-            <h1>Vize Sürecinizi <span className="highlight">Şeffaf</span> ve Öngörülebilir Hale Getiriyoruz</h1>
-            <p>Schengen, ABD, İngiltere, Kanada ve daha birçok ülke için başvurunuzu adım adım, kişiye özel evrak rehberliğiyle yönetiyoruz. Her aşamada nerede olduğunuzu bilirsiniz.</p>
-            <div className="hero-buttons">
-              <Link to="/on-degerlendirme" className="btn btn-gold">Ücretsiz Ön Değerlendirme</Link>
-              <Link to="/hizmetler" className="btn btn-secondary">Hizmetlerimizi İnceleyin</Link>
-            </div>
-            {averageRating && (
-              <p className="hero-trust-row">
-                <StarIcon style={{ color: 'var(--gold)' }} /> {averageRating}/5 müşteri değerlendirmesi
-                <span className="hero-trust-sep">·</span> {countries.length} ülke için rehberlik
-              </p>
-            )}
+      <section className="hero hero-aurora has-photo" style={{ '--hero-photo': `url(${photos.heroPlaneWindow})` }}>
+        <div className="hero-aurora-bg" aria-hidden="true">
+          <span className="aurora aurora-1"></span>
+          <span className="aurora aurora-2"></span>
+          <span className="aurora aurora-3"></span>
+          <div className="hero-grid-overlay"></div>
+        </div>
+        <div className="hero-content hero-aurora-content">
+          <span className="hero-badge">
+            <StarIcon style={{ color: 'var(--gold)' }} />
+            {averageRating ? `${averageRating}/5 değerlendirme · ` : ''}{countries.length} ülke için vize danışmanlığı
+          </span>
+          <h1>Vize Sürecinizi <span className="highlight">Şeffaf</span> ve Öngörülebilir Hale Getiriyoruz</h1>
+          <p>Schengen, ABD, İngiltere, Kanada ve daha birçok ülke için başvurunuzu adım adım, kişiye özel evrak rehberliğiyle yönetiyoruz. Her aşamada nerede olduğunuzu bilirsiniz.</p>
+          <div className="hero-buttons">
+            <Link to="/on-degerlendirme" className="btn btn-gold">Ücretsiz Ön Değerlendirme</Link>
+            <Link to="/hizmetler" className="btn btn-secondary">Hizmetlerimizi İnceleyin</Link>
           </div>
+        </div>
 
-          {/* Danışmanlık deneyimini temsil eden örnek WhatsApp yazışması — dekoratif mockup */}
-          <div className="hero-visual" aria-hidden="true">
-            <div className="hero-chat-card">
-              <div className="hero-chat-head">
-                <span className="hero-chat-avatar">M</span>
-                <div className="hero-chat-identity">
-                  <strong>Menekşe Vize</strong>
-                  <span className="hero-chat-status">çevrimiçi</span>
-                </div>
-                <WhatsappIcon className="hero-chat-wa-icon" />
-              </div>
-              <div className="hero-chat-body">
-                <div className="hero-chat-msg out">
-                  Merhaba! Almanya turistik vizesi için hangi evraklar gerekiyor?
-                  <span className="hero-chat-time">09:41</span>
-                </div>
-                <div className="hero-chat-msg in">
-                  Merhaba, hoş geldiniz! Size özel evrak listenizi hazırladık:
-                  <ul className="hero-chat-list">
-                    <li><CheckIcon /> Pasaport (en az 6 ay geçerli)</li>
-                    <li><CheckIcon /> Biyometrik fotoğraf</li>
-                    <li><CheckIcon /> Seyahat sağlık sigortası</li>
-                    <li><CheckIcon /> Konaklama rezervasyonu</li>
-                  </ul>
-                  <span className="hero-chat-time">09:42</span>
-                </div>
-                <div className="hero-chat-msg in">
-                  Uygun randevu tarihlerini de birlikte planlayacağız. Süreç boyunca her aşamada sizi bilgilendireceğiz.
-                  <span className="hero-chat-time">09:42</span>
-                </div>
-                <div className="hero-chat-msg in hero-chat-typing">
-                  <span></span><span></span><span></span>
-                </div>
-              </div>
-            </div>
+        {/* Hizmet verilen ülkelerin bayraklarından oluşan, yavaşça kayan şerit */}
+        <div className="hero-flag-marquee" aria-hidden="true">
+          <div className="hero-flag-track">
+            {[...countries, ...countries].map((country, i) => (
+              <span className="hero-flag-item" key={`${country.id}-${i}`}>
+                <CountryFlag country={country} className="hero-flag-icon" />
+                <span>{country.title}</span>
+              </span>
+            ))}
           </div>
         </div>
       </section>
