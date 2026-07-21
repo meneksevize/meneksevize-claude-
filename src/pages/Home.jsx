@@ -7,8 +7,13 @@ import Reveal from '../components/Reveal.jsx';
 import CountryFlag from '../components/CountryFlag.jsx';
 import CountUp from '../components/CountUp.jsx';
 import { getCategoryLabel } from '../data/blogCategories.js';
+import { STAGES } from '../data/stages.js';
+
+// Hero'daki takip kartı mockup'ında gösterilen örnek süreç durumu:
+// ilk iki aşama tamamlanmış, üçüncüsü devam ediyor.
+const MOCK_ACTIVE_STAGE = 2;
 import {
-  ClockIcon, ChecklistIcon, RefreshIcon, ShieldIcon, StarIcon,
+  ClockIcon, ChecklistIcon, RefreshIcon, ShieldIcon, StarIcon, CheckIcon,
 } from '../components/icons.jsx';
 
 const whyUs = [
@@ -104,15 +109,58 @@ export default function Home() {
 
   return (
     <>
-      <section className="hero has-photo" style={{ '--hero-photo': `url(${photos.heroPlaneWindow})` }}>
+      <section className="hero hero-split has-photo" style={{ '--hero-photo': `url(${photos.heroPlaneWindow})` }}>
         <div className="hero-glow-rose"></div>
-        <div className="hero-content">
-          <span className="kicker">Menekşe Vize</span>
-          <h1>Vize Sürecinizi <span className="highlight">Şeffaf</span> ve Öngörülebilir Hale Getiriyoruz</h1>
-          <p>Schengen, ABD, İngiltere, Kanada ve daha birçok ülke için başvurunuzu adım adım, kişiye özel evrak rehberliğiyle yönetiyoruz. Her aşamada nerede olduğunuzu bilirsiniz.</p>
-          <div className="hero-buttons">
-            <Link to="/on-degerlendirme" className="btn btn-gold">Ücretsiz Ön Değerlendirme</Link>
-            <Link to="/hizmetler" className="btn btn-secondary">Hizmetlerimizi İnceleyin</Link>
+        <div className="hero-split-inner">
+          <div className="hero-content">
+            <span className="kicker">Menekşe Vize</span>
+            <h1>Vize Sürecinizi <span className="highlight">Şeffaf</span> ve Öngörülebilir Hale Getiriyoruz</h1>
+            <p>Schengen, ABD, İngiltere, Kanada ve daha birçok ülke için başvurunuzu adım adım, kişiye özel evrak rehberliğiyle yönetiyoruz. Her aşamada nerede olduğunuzu bilirsiniz.</p>
+            <div className="hero-buttons">
+              <Link to="/on-degerlendirme" className="btn btn-gold">Ücretsiz Ön Değerlendirme</Link>
+              <Link to="/hizmetler" className="btn btn-secondary">Hizmetlerimizi İnceleyin</Link>
+            </div>
+            {averageRating && (
+              <p className="hero-trust-row">
+                <StarIcon style={{ color: 'var(--gold)' }} /> {averageRating}/5 müşteri değerlendirmesi
+                <span className="hero-trust-sep">·</span> {countries.length} ülke için rehberlik
+              </p>
+            )}
+          </div>
+
+          {/* Başvuru Takip portalının (/takip) hero'daki temsili — örnek veridir */}
+          <div className="hero-visual" aria-hidden="true">
+            <div className="hero-mock-card">
+              <div className="hero-mock-head">
+                <span className="hero-mock-title">Başvuru Takibi</span>
+                <span className="hero-mock-code">MV-4K7A2C</span>
+              </div>
+              <div className="hero-mock-country">
+                <CountryFlag country={countries.find((c) => c.id === 'almanya')} className="hero-mock-flag" />
+                <div>
+                  <strong>Almanya</strong>
+                  <span>Turistik Vize Başvurusu</span>
+                </div>
+              </div>
+              <ul className="hero-mock-stages">
+                {STAGES.map((stage, i) => {
+                  let state = 'upcoming';
+                  if (i < MOCK_ACTIVE_STAGE) state = 'done';
+                  else if (i === MOCK_ACTIVE_STAGE) state = 'active';
+                  return (
+                    <li className={`hero-mock-stage ${state}`} key={stage.key}>
+                      <span className="hero-mock-dot">{state === 'done' ? <CheckIcon /> : null}</span>
+                      {stage.label}
+                    </li>
+                  );
+                })}
+              </ul>
+              <div className="hero-mock-note">Evrak listeniz güncellendi — randevu planlaması başladı</div>
+            </div>
+            <div className="hero-mock-chip">
+              <span className="hero-mock-chip-check"><CheckIcon /></span>
+              Kişiye özel evrak listesi hazır
+            </div>
           </div>
         </div>
       </section>

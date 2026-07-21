@@ -636,6 +636,299 @@ img, svg {
   flex-wrap: wrap;
 }
 
+/* ---------- Split Hero (metin + takip kartı mockup'ı) ---------- */
+.hero-split {
+  text-align: left;
+}
+
+.hero-split-inner {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 3.5rem;
+  align-items: center;
+}
+
+.hero-split .hero-content {
+  max-width: none;
+}
+
+.hero-split .hero-content h1 {
+  font-size: clamp(2.2rem, 4.2vw, 3.3rem);
+}
+
+.hero-split .hero-buttons {
+  justify-content: flex-start;
+}
+
+.hero-trust-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+}
+
+.hero-trust-row svg {
+  flex-shrink: 0;
+}
+
+.hero-trust-sep {
+  color: var(--border-color);
+}
+
+.hero-visual {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  animation: heroVisualIn 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.35s both;
+}
+
+@keyframes heroVisualIn {
+  from {
+    opacity: 0;
+    transform: translateY(28px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.hero-mock-card {
+  width: 100%;
+  max-width: 420px;
+  background: linear-gradient(160deg, rgba(35, 36, 56, 0.92) 0%, rgba(26, 27, 41, 0.88) 100%);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(124, 92, 255, 0.28);
+  border-radius: 20px;
+  padding: 1.75rem;
+  box-shadow:
+    0 30px 70px rgba(0, 0, 0, 0.55),
+    0 0 0 1px rgba(255, 255, 255, 0.03) inset,
+    0 0 80px rgba(124, 92, 255, 0.12);
+  animation: heroCardFloat 7s ease-in-out infinite;
+}
+
+@keyframes heroCardFloat {
+  0%, 100% { transform: translateY(0) rotate(0.4deg); }
+  50% { transform: translateY(-12px) rotate(-0.4deg); }
+}
+
+.hero-mock-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+}
+
+.hero-mock-title {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: 1.05rem;
+}
+
+.hero-mock-code {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--gold);
+  background-color: var(--gold-soft);
+  border: 1px solid rgba(232, 182, 84, 0.35);
+  border-radius: 999px;
+  padding: 0.3rem 0.75rem;
+}
+
+.hero-mock-country {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.9rem 1rem;
+  background-color: rgba(14, 15, 26, 0.55);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  margin-bottom: 1.25rem;
+}
+
+.hero-mock-flag {
+  width: 34px;
+  border-radius: 4px;
+}
+
+.hero-mock-country div {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.35;
+}
+
+.hero-mock-country strong {
+  font-size: 0.95rem;
+}
+
+.hero-mock-country span {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.hero-mock-stages {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  margin-bottom: 1.1rem;
+}
+
+.hero-mock-stage {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.42rem 0;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+}
+
+/* Aşamalar arasındaki dikey bağlantı çizgisi */
+.hero-mock-stage:not(:last-child)::before {
+  content: "";
+  position: absolute;
+  left: 10px;
+  top: calc(50% + 11px);
+  bottom: calc(-50% + 11px);
+  width: 2px;
+  background-color: var(--border-color);
+}
+
+.hero-mock-stage.done:not(:last-child)::before {
+  background-color: var(--emerald);
+  opacity: 0.45;
+}
+
+.hero-mock-dot {
+  width: 21px;
+  height: 21px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 2px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--surface-color);
+}
+
+.hero-mock-stage.done {
+  color: var(--text-color);
+}
+
+.hero-mock-stage.done .hero-mock-dot {
+  background-color: rgba(43, 217, 168, 0.16);
+  border-color: var(--emerald);
+  color: var(--emerald);
+}
+
+.hero-mock-stage.active {
+  color: var(--text-color);
+  font-weight: 600;
+}
+
+.hero-mock-stage.active .hero-mock-dot {
+  border-color: var(--gold);
+  background-color: var(--gold-soft);
+}
+
+.hero-mock-stage.active .hero-mock-dot::after {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: var(--gold);
+  animation: mockPulse 1.6s ease-in-out infinite;
+}
+
+@keyframes mockPulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.5); opacity: 0.55; }
+}
+
+.hero-mock-note {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  background-color: rgba(124, 92, 255, 0.08);
+  border: 1px solid rgba(124, 92, 255, 0.2);
+  border-radius: 10px;
+  padding: 0.65rem 0.9rem;
+  line-height: 1.5;
+}
+
+.hero-mock-chip {
+  position: absolute;
+  bottom: -4.5%;
+  left: -6%;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  background: linear-gradient(150deg, rgba(35, 36, 56, 0.97), rgba(26, 27, 41, 0.95));
+  border: 1px solid rgba(43, 217, 168, 0.35);
+  border-radius: 999px;
+  padding: 0.6rem 1.1rem;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+  animation: heroChipFloat 6s ease-in-out 0.8s infinite;
+}
+
+.hero-mock-chip-check {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: rgba(43, 217, 168, 0.16);
+  border: 1.5px solid var(--emerald);
+  color: var(--emerald);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+@keyframes heroChipFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-9px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-mock-card,
+  .hero-mock-chip,
+  .hero-mock-stage.active .hero-mock-dot::after {
+    animation: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .hero-split {
+    text-align: center;
+  }
+
+  .hero-split-inner {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .hero-split .hero-buttons {
+    justify-content: center;
+  }
+
+  .hero-trust-row {
+    justify-content: center;
+  }
+
+  .hero-mock-chip {
+    left: 0;
+  }
+}
+
 /* Gezinme yolu (breadcrumb) */
 .breadcrumbs {
   padding: 0.9rem 2rem;
