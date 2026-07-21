@@ -50,6 +50,7 @@ export default function Contact() {
       if (!res.ok) {
         throw new Error(json.error || 'Gönderilemedi, lütfen tekrar deneyin.');
       }
+      window.gtag?.('event', 'conversion', { send_to: 'AW-18327360593/zUw7CJzvhdQcENGolaNE' });
       setStatus('success');
       setForm(emptyForm);
     } catch (err) {
