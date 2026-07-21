@@ -7,13 +7,8 @@ import Reveal from '../components/Reveal.jsx';
 import CountryFlag from '../components/CountryFlag.jsx';
 import CountUp from '../components/CountUp.jsx';
 import { getCategoryLabel } from '../data/blogCategories.js';
-import { STAGES } from '../data/stages.js';
-
-// Hero'daki takip kartı mockup'ında gösterilen örnek süreç durumu:
-// ilk iki aşama tamamlanmış, üçüncüsü devam ediyor.
-const MOCK_ACTIVE_STAGE = 2;
 import {
-  ClockIcon, ChecklistIcon, RefreshIcon, ShieldIcon, StarIcon, CheckIcon,
+  ClockIcon, ChecklistIcon, RefreshIcon, ShieldIcon, StarIcon, CheckIcon, WhatsappIcon,
 } from '../components/icons.jsx';
 
 const whyUs = [
@@ -128,38 +123,40 @@ export default function Home() {
             )}
           </div>
 
-          {/* Başvuru Takip portalının (/takip) hero'daki temsili — örnek veridir */}
+          {/* Danışmanlık deneyimini temsil eden örnek WhatsApp yazışması — dekoratif mockup */}
           <div className="hero-visual" aria-hidden="true">
-            <div className="hero-mock-card">
-              <div className="hero-mock-head">
-                <span className="hero-mock-title">Başvuru Takibi</span>
-                <span className="hero-mock-code">MV-4K7A2C</span>
+            <div className="hero-chat-card">
+              <div className="hero-chat-head">
+                <span className="hero-chat-avatar">M</span>
+                <div className="hero-chat-identity">
+                  <strong>Menekşe Vize</strong>
+                  <span className="hero-chat-status">çevrimiçi</span>
+                </div>
+                <WhatsappIcon className="hero-chat-wa-icon" />
               </div>
-              <div className="hero-mock-country">
-                <CountryFlag country={countries.find((c) => c.id === 'almanya')} className="hero-mock-flag" />
-                <div>
-                  <strong>Almanya</strong>
-                  <span>Turistik Vize Başvurusu</span>
+              <div className="hero-chat-body">
+                <div className="hero-chat-msg out">
+                  Merhaba! Almanya turistik vizesi için hangi evraklar gerekiyor?
+                  <span className="hero-chat-time">09:41</span>
+                </div>
+                <div className="hero-chat-msg in">
+                  Merhaba, hoş geldiniz! Size özel evrak listenizi hazırladık:
+                  <ul className="hero-chat-list">
+                    <li><CheckIcon /> Pasaport (en az 6 ay geçerli)</li>
+                    <li><CheckIcon /> Biyometrik fotoğraf</li>
+                    <li><CheckIcon /> Seyahat sağlık sigortası</li>
+                    <li><CheckIcon /> Konaklama rezervasyonu</li>
+                  </ul>
+                  <span className="hero-chat-time">09:42</span>
+                </div>
+                <div className="hero-chat-msg in">
+                  Uygun randevu tarihlerini de birlikte planlayacağız. Süreç boyunca her aşamada sizi bilgilendireceğiz.
+                  <span className="hero-chat-time">09:42</span>
+                </div>
+                <div className="hero-chat-msg in hero-chat-typing">
+                  <span></span><span></span><span></span>
                 </div>
               </div>
-              <ul className="hero-mock-stages">
-                {STAGES.map((stage, i) => {
-                  let state = 'upcoming';
-                  if (i < MOCK_ACTIVE_STAGE) state = 'done';
-                  else if (i === MOCK_ACTIVE_STAGE) state = 'active';
-                  return (
-                    <li className={`hero-mock-stage ${state}`} key={stage.key}>
-                      <span className="hero-mock-dot">{state === 'done' ? <CheckIcon /> : null}</span>
-                      {stage.label}
-                    </li>
-                  );
-                })}
-              </ul>
-              <div className="hero-mock-note">Evrak listeniz güncellendi — randevu planlaması başladı</div>
-            </div>
-            <div className="hero-mock-chip">
-              <span className="hero-mock-chip-check"><CheckIcon /></span>
-              Kişiye özel evrak listesi hazır
             </div>
           </div>
         </div>
