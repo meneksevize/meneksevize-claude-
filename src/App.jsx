@@ -1,6 +1,6 @@
 import { lazy, Suspense } from 'react';
 import {
-  Routes, Route, Outlet, useLocation,
+  Routes, Route, Outlet, useLocation, useParams, Navigate,
 } from 'react-router-dom';
 import Navbar from './components/Navbar.jsx';
 import Footer from './components/Footer.jsx';
@@ -107,6 +107,19 @@ function AdminProtectedLayout() {
   );
 }
 
+// Google Ads'te bazı reklamların Final URL'i yanlışlıkla tekil "/ulke/..."
+// olarak girilmiş (doğrusu "/ulkeler/..."); bu, gerçek reklam tıklamalarının
+// 404 sayfasına düşmesine yol açıyordu. Sorgu parametrelerini (gclid vb.)
+// koruyarak doğru sayfaya yönlendiriyoruz.
+function LegacyCountryRedirect() {
+  const { countryId, visaType } = useParams();
+  const location = useLocation();
+  const target = visaType
+    ? `/ulkeler/${countryId}/${visaType}${location.search}`
+    : `/ulkeler/${countryId}${location.search}`;
+  return <Navigate to={target} replace />;
+}
+
 export default function App() {
   return (
     <Routes>
@@ -117,6 +130,8 @@ export default function App() {
         <Route path="/e-vize" element={<EVisa />} />
         <Route path="/ulkeler/:countryId" element={<CountryDetail />} />
         <Route path="/ulkeler/:countryId/:visaType" element={<CountryVisaType />} />
+        <Route path="/ulke/:countryId" element={<LegacyCountryRedirect />} />
+        <Route path="/ulke/:countryId/:visaType" element={<LegacyCountryRedirect />} />
         <Route path="/surec" element={<Process />} />
         <Route path="/evrak-rehberi" element={<DocumentGuide />} />
         <Route path="/sss" element={<FAQ />} />
