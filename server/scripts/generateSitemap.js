@@ -25,6 +25,11 @@ const staticPages = [
   { loc: '/iptal-iade-politikasi', priority: '0.3' },
 ];
 
+// Anasayfada "Öne Çıkan Destinasyonlar" olarak vurgulanan, en yoğun başvuru
+// alınan ülkeler — sitemap önceliği de bu gerçek iş odağını yansıtsın diye
+// diğer ülkelerden daha yüksek tutulur.
+const FEATURED_COUNTRY_IDS = ['abd', 'ingiltere', 'kanada', 'dubai'];
+
 function urlEntry(loc, priority) {
   return `  <url>\n    <loc>${SITE_URL}${loc}</loc>\n    <lastmod>${today}</lastmod>\n    <priority>${priority}</priority>\n  </url>`;
 }
@@ -33,9 +38,10 @@ async function main() {
   const entries = staticPages.map((p) => urlEntry(p.loc, p.priority));
 
   countries.forEach((country) => {
-    entries.push(urlEntry(`/ulkeler/${country.id}`, '0.8'));
+    const isFeatured = FEATURED_COUNTRY_IDS.includes(country.id);
+    entries.push(urlEntry(`/ulkeler/${country.id}`, isFeatured ? '0.9' : '0.7'));
     country.types.forEach((type) => {
-      entries.push(urlEntry(`/ulkeler/${country.id}/${type}`, '0.65'));
+      entries.push(urlEntry(`/ulkeler/${country.id}/${type}`, isFeatured ? '0.75' : '0.6'));
     });
   });
 
