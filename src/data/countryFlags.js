@@ -38,4 +38,5 @@ export const COUNTRY_ISO_CODES = {
   dubai: 'ae',
   rusya: 'ru',
   avustralya: 'au',
+  schengen: 'eu',
 };

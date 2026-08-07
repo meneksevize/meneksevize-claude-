@@ -522,6 +522,17 @@ img, svg {
   transform: translateY(-2px);
 }
 
+.btn-accent {
+  background-color: var(--accent-color);
+  color: #fff;
+}
+
+.btn-accent:hover {
+  background-color: var(--accent-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(124, 92, 255, 0.35);
+}
+
 /* ---------- Hero / Karşılama Alanı ---------- */
 .hero {
   min-height: calc(100vh - 73px);
@@ -764,68 +775,75 @@ img, svg {
   letter-spacing: -0.01em;
 }
 
-/* Kayan ülke bayrağı şeridi */
-.hero-flag-marquee {
-  position: absolute;
-  bottom: 1.75rem;
-  left: 0;
-  right: 0;
+/* Öne çıkan destinasyonlar — statik, premium bayrak kartları */
+.hero-destinations {
+  position: relative;
   z-index: 2;
-  overflow: hidden;
-  mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+  margin-top: 3rem;
+  text-align: center;
 }
 
-.hero-flag-track {
+.hero-destinations-label {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+}
+
+.hero-destinations-row {
   display: flex;
-  gap: 2.5rem;
-  width: max-content;
-  animation: flagScroll 55s linear infinite;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.9rem;
 }
 
-.hero-flag-item {
+.hero-destination-card {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
-  font-size: 0.85rem;
-  font-weight: 500;
-  color: var(--text-muted);
-  white-space: nowrap;
+  gap: 0.65rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-color);
+  backdrop-filter: blur(8px);
+  border-radius: 999px;
+  padding: 0.7rem 1.4rem;
+  text-decoration: none;
+  color: var(--text-color);
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease, background-color 0.25s ease;
 }
 
-.hero-flag-icon {
-  width: 26px;
-  border-radius: 3px;
+.hero-destination-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent-color);
+  background: rgba(255, 255, 255, 0.09);
+}
+
+.hero-destination-flag {
+  width: 30px;
+  border-radius: 4px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-}
-
-@keyframes flagScroll {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
-
-.hero-flag-marquee:hover .hero-flag-track {
-  animation-play-state: paused;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .aurora,
-  .hero-flag-track {
-    animation: none;
-  }
 }
 
 @media (max-width: 768px) {
   .hero-aurora {
-    padding-bottom: 5rem;
+    padding-bottom: 4rem;
   }
 
-  .hero-flag-marquee {
-    bottom: 1.25rem;
+  .hero-destinations {
+    margin-top: 2.25rem;
   }
 
-  .hero-flag-item {
-    font-size: 0.8rem;
+  .hero-destination-card {
+    padding: 0.6rem 1.1rem;
+    font-size: 0.85rem;
+  }
+
+  .hero-destination-flag {
+    width: 26px;
   }
 }
 
@@ -1397,6 +1415,115 @@ img, svg {
   margin: 1.5rem 0;
 }
 
+/* ---------- Öne Çıkan Destinasyon Kartları (anasayfa) ---------- */
+.destination-feature-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1.25rem;
+}
+
+.destination-feature-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 240px;
+  padding: 1.5rem 1.25rem;
+  background-color: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: 18px;
+  text-decoration: none;
+  color: var(--text-color);
+  overflow: hidden;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.destination-feature-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 30% 0%, var(--accent-soft) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.destination-feature-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--accent-color);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.4);
+}
+
+.destination-feature-card:hover::before {
+  opacity: 1;
+}
+
+.destination-feature-art {
+  position: absolute;
+  right: -20px;
+  bottom: -20px;
+  width: 165px;
+  height: 165px;
+  color: var(--gold);
+  opacity: 0.14;
+  transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+.destination-feature-card:hover .destination-feature-art {
+  opacity: 0.22;
+  transform: scale(1.08);
+}
+
+.destination-feature-flag {
+  position: relative;
+  z-index: 1;
+  width: 34px;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  margin-bottom: 0.9rem;
+}
+
+.destination-feature-name {
+  position: relative;
+  z-index: 1;
+  display: block;
+  font-family: 'Fraunces', serif;
+  font-size: 1.35rem;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+}
+
+.destination-feature-tag {
+  position: relative;
+  z-index: 1;
+  display: block;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+@media (max-width: 1024px) {
+  .destination-feature-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .destination-feature-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .destination-feature-card {
+    min-height: 200px;
+    padding: 1.25rem 1rem;
+  }
+
+  .destination-feature-art {
+    width: 130px;
+    height: 130px;
+  }
+}
+
 /* ---------- Kompakt Ülke Bayrağı Kutucukları ---------- */
 .country-tile-grid {
   display: grid;
@@ -1700,6 +1827,7 @@ img, svg {
 .hero-content h1 { animation-delay: 0.16s; }
 .hero-content p { animation-delay: 0.32s; }
 .hero-content .hero-buttons { animation-delay: 0.46s; }
+.hero-content .hero-destinations { animation-delay: 0.58s; }
 
 @keyframes heroRise {
   from { opacity: 0; transform: translateY(20px); }

@@ -5,7 +5,7 @@
 // tabanlı çözüm kullanılıyor.
 import {
   DE, FR, IT, ES, NL, AT, BE, BG, HR, CZ, DK, EE, FI, GR, HU, IS, LV, LI, LT, LU,
-  MT, NO, PL, PT, RO, SK, SI, SE, CH, US, GB, CA, AE, RU, AU,
+  MT, NO, PL, PT, RO, SK, SI, SE, CH, US, GB, CA, AE, RU, AU, EU,
 } from 'country-flag-icons/react/3x2';
 import { COUNTRY_ISO_CODES } from '../data/countryFlags.js';
 
@@ -13,7 +13,7 @@ const FLAG_COMPONENTS = {
   de: DE, fr: FR, it: IT, es: ES, nl: NL, at: AT, be: BE, bg: BG, hr: HR, cz: CZ,
   dk: DK, ee: EE, fi: FI, gr: GR, hu: HU, is: IS, lv: LV, li: LI, lt: LT, lu: LU,
   mt: MT, no: NO, pl: PL, pt: PT, ro: RO, sk: SK, si: SI, se: SE, ch: CH, us: US,
-  gb: GB, ca: CA, ae: AE, ru: RU, au: AU,
+  gb: GB, ca: CA, ae: AE, ru: RU, au: AU, eu: EU,
 };
 
 // Bayrak her zaman ülke adının hemen yanında görünür, bu yüzden dekoratiftir:

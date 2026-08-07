@@ -5,11 +5,20 @@ import { useSiteData } from '../context/SiteDataContext.jsx';
 import { photos } from '../data/photos.js';
 import Reveal from '../components/Reveal.jsx';
 import CountryFlag from '../components/CountryFlag.jsx';
+import DestinationArt from '../components/DestinationArt.jsx';
 import CountUp from '../components/CountUp.jsx';
 import { getCategoryLabel } from '../data/blogCategories.js';
 import {
   ClockIcon, ChecklistIcon, RefreshIcon, ShieldIcon, StarIcon,
 } from '../components/icons.jsx';
+
+const FEATURED_DESTINATIONS = [
+  { id: 'abd', title: 'ABD', tag: 'Turistik, İş ve Öğrenci Vizesi', to: '/ulkeler/abd' },
+  { id: 'ingiltere', title: 'İngiltere', tag: 'Turistik ve İş Vizesi', to: '/ulkeler/ingiltere' },
+  { id: 'kanada', title: 'Kanada', tag: 'Ziyaretçi ve Öğrenci Vizesi', to: '/ulkeler/kanada' },
+  { id: 'dubai', title: 'Dubai', tag: 'Hızlı E-Vize Süreci', to: '/ulkeler/dubai' },
+  { id: 'schengen', title: 'Schengen', tag: '26 Ülke, Tek Vize', flag: '🇪🇺', to: '/blog/schengen-ulkelerinden-hangisine-basvurmaliyim' },
+];
 
 const whyUs = [
   {
@@ -120,19 +129,19 @@ export default function Home() {
           <p>Schengen, ABD, İngiltere, Kanada ve daha birçok ülke için başvurunuzu adım adım, kişiye özel evrak rehberliğiyle yönetiyoruz. Her aşamada nerede olduğunuzu bilirsiniz.</p>
           <div className="hero-buttons">
             <Link to="/on-degerlendirme" className="btn btn-gold">Ücretsiz Ön Değerlendirme</Link>
-            <Link to="/hizmetler" className="btn btn-secondary">Hizmetlerimizi İnceleyin</Link>
+            <Link to="/hizmetler" className="btn btn-accent">Hizmetlerimizi İnceleyin</Link>
           </div>
-        </div>
 
-        {/* Hizmet verilen ülkelerin bayraklarından oluşan, yavaşça kayan şerit */}
-        <div className="hero-flag-marquee" aria-hidden="true">
-          <div className="hero-flag-track">
-            {[...countries, ...countries].map((country, i) => (
-              <span className="hero-flag-item" key={`${country.id}-${i}`}>
-                <CountryFlag country={country} className="hero-flag-icon" />
-                <span>{country.title}</span>
-              </span>
-            ))}
+          <div className="hero-destinations">
+            <span className="hero-destinations-label">Öne Çıkan Destinasyonlar</span>
+            <div className="hero-destinations-row">
+              {FEATURED_DESTINATIONS.map((dest) => (
+                <Link to={dest.to} className="hero-destination-card" key={dest.id}>
+                  <CountryFlag country={dest} className="hero-destination-flag" />
+                  <span>{dest.title}</span>
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -200,26 +209,28 @@ export default function Home() {
       <section className="section section-alt">
         <div className="container">
           <div className="section-head">
-            <span className="kicker">Ülkeler</span>
-            <h2>Ülke Seçin, Evrak Listenizi Görün</h2>
-            <p>Bir ülkenin bayrağına tıklayarak o ülkeye özel vize türlerini, gerekli evrakları ve süreç bilgisini inceleyebilirsiniz.</p>
+            <span className="kicker">Öne Çıkan Destinasyonlar</span>
+            <h2>En Çok Başvuru Aldığımız 5 Ülke</h2>
+            <p>En yoğun başvuru aldığımız bu beş ülkede uzmanlaştık; evrak rehberliğimiz burada en kapsamlı ve güncel içeriğe sahip. Diğer {countries.length - FEATURED_DESTINATIONS.length}+ ülke için üstteki "Ülkeler" menüsünü kullanabilirsiniz.</p>
           </div>
-          <div className="country-tile-grid">
-            {countries.map((country, i) => (
+          <div className="destination-feature-grid">
+            {FEATURED_DESTINATIONS.map((dest, i) => (
               <Reveal
                 as={Link}
-                to={`/ulkeler/${country.id}`}
-                className="country-tile"
-                delay={Math.min(i * 15, 300)}
-                key={country.id}
+                to={dest.to}
+                className="destination-feature-card"
+                delay={i * 70}
+                key={dest.id}
               >
-                <CountryFlag country={country} className="country-tile-flag" />
-                <span className="country-tile-name">{country.title}</span>
+                <DestinationArt id={dest.id} className="destination-feature-art" />
+                <CountryFlag country={dest} className="destination-feature-flag" />
+                <span className="destination-feature-name">{dest.title}</span>
+                <span className="destination-feature-tag">{dest.tag}</span>
               </Reveal>
             ))}
           </div>
           <p className="form-note" style={{ textAlign: 'center', marginTop: '1.5rem' }}>
-            Listede aradığınız ülkeyi bulamadıysanız <Link to="/iletisim" style={{ color: 'var(--accent-color)' }}>bize ulaşın</Link>, birlikte değerlendirelim.
+            Aradığınız ülke burada yoksa <Link to="/hizmetler" style={{ color: 'var(--accent-color)' }}>tüm ülkeler listemize</Link> göz atabilir veya <Link to="/iletisim" style={{ color: 'var(--accent-color)' }}>bize ulaşabilirsiniz</Link>.
           </p>
         </div>
       </section>
