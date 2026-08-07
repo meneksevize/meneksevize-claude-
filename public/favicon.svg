@@ -1,9 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
   <defs>
-    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+    <radialGradient id="bg" cx="35%" cy="30%" r="75%">
       <stop offset="0%" stop-color="#9678ff"/>
       <stop offset="55%" stop-color="#6a48f0"/>
-      <stop offset="100%" stop-color="#4c2fc4"/>
+      <stop offset="100%" stop-color="#3f27a8"/>
+    </radialGradient>
+    <linearGradient id="ring" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fbe2a5"/>
+      <stop offset="100%" stop-color="#c8963a"/>
     </linearGradient>
     <radialGradient id="petalGold" cx="35%" cy="30%" r="80%">
       <stop offset="0%" stop-color="#fbe2a5"/>
@@ -16,8 +20,9 @@
     </radialGradient>
   </defs>
 
-  <rect x="4" y="4" width="192" height="192" rx="46" fill="url(#bg)"/>
-  <rect x="4" y="4" width="192" height="192" rx="46" fill="none" stroke="rgba(255,255,255,0.14)" stroke-width="1.5"/>
+  <circle cx="100" cy="100" r="96.7" fill="url(#bg)"/>
+  <circle cx="100" cy="100" r="96.7" fill="none" stroke="url(#ring)" stroke-width="1.7"/>
+  <circle cx="100" cy="100" r="90" fill="none" stroke="rgba(255,255,255,0.14)" stroke-width="0.35"/>
 
   <g transform="translate(100 100)">
     <path d="M0,-4 C-16,-10 -22,-30 -10,-46 C0,-56 0,-56 10,-46 C22,-30 16,-10 0,-4 Z" fill="url(#petalGold)" transform="rotate(0)"/>
