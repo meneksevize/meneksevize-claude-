@@ -1,59 +1,51 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '../components/LocaleLink.jsx';
 import useDocumentMeta from '../hooks/useDocumentMeta.js';
+import { useLocale } from '../context/LocaleContext.jsx';
 import { photos } from '../data/photos.js';
 import { ChevronDownIcon } from '../components/icons.jsx';
 import Breadcrumbs from '../components/Breadcrumbs.jsx';
 
-const steps = [
-  {
-    title: 'Ön Görüşme',
-    body: 'Ücretsiz bir görüşmede seyahat amacınızı, hedef ülkenizi ve zaman planınızı dinliyor, size en uygun vize tipini birlikte belirliyoruz.',
-  },
-  {
-    title: 'Evrak Toplama & Kişisel Checklist',
-    body: (
-      <>
-        Ülke ve vize tipinize özel bir evrak listesi hazırlıyoruz.{' '}
-        <Link to="/evrak-rehberi" style={{ color: 'var(--accent-color)' }}>Evrak Rehberi</Link> aracımızla kendi checklist&apos;inizi anında oluşturabilirsiniz.
-      </>
-    ),
-  },
-  {
-    title: 'Randevu & Başvuru',
-    body: 'Konsolosluk veya vize başvuru merkezinden randevunuzu planlıyor, başvurunuzu evraklarınızla birlikte eksiksiz şekilde teslim ediyoruz.',
-  },
-  {
-    title: (
-      <>Mülakat Hazırlığı <span style={{ color: 'var(--text-muted)', fontWeight: 400, fontSize: '0.85rem' }}>(gerekiyorsa)</span></>
-    ),
-    body: 'Vize tipine bağlı olarak mülakat gerekiyorsa, olası sorular ve doğru yanıt yaklaşımı üzerine sizi hazırlıyoruz.',
-  },
-  {
-    title: 'Takip',
-    body: 'Başvurunuzun durumunu düzenli olarak kontrol ediyor, gelişmeleri sizinle paylaşıyoruz — sürecin neresinde olduğunuzu her zaman bilirsiniz.',
-  },
-  {
-    title: 'Sonuç & Teslim',
-    body: 'Vize sonucunuz çıktığında pasaportunuzu teslim alıyor, sonraki adımlar (seyahat, vb.) için size bilgi veriyoruz. Nihai karar ilgili konsolosluğa aittir.',
-  },
-];
-
 export default function Process() {
+  const { t } = useLocale();
+
+  const steps = [
+    { title: t('process.step1Title'), body: t('process.step1Body') },
+    {
+      title: t('process.step2Title'),
+      body: (
+        <>
+          {t('process.step2BodyPre')}
+          <Link to="/evrak-rehberi" style={{ color: 'var(--accent-color)' }}>{t('process.step2BodyLink')}</Link>
+          {t('process.step2BodyPost')}
+        </>
+      ),
+    },
+    { title: t('process.step3Title'), body: t('process.step3Body') },
+    {
+      title: (
+        <>{t('process.step4Title')} <span style={{ color: 'var(--text-muted)', fontWeight: 400, fontSize: '0.85rem' }}>{t('process.step4TitleSuffix')}</span></>
+      ),
+      body: t('process.step4Body'),
+    },
+    { title: t('process.step5Title'), body: t('process.step5Body') },
+    { title: t('process.step6Title'), body: t('process.step6Body') },
+  ];
+
   useDocumentMeta(
-    'Süreç | Menekşe Vize',
-    'Menekşe Vize ile vize başvuru sürecinizin adım adım nasıl ilerlediğini keşfedin: ön görüşme, evrak toplama, randevu, mülakat hazırlığı, takip ve sonuç.',
+    t('process.metaTitle'),
+    t('process.metaDescription'),
   );
 
   const [openIndex, setOpenIndex] = useState(0);
 
   return (
     <>
-      <Breadcrumbs items={[{ label: 'Ana Sayfa', to: '/' }, { label: 'Süreç' }]} />
+      <Breadcrumbs items={[{ label: t('common.breadcrumbHome'), to: '/' }, { label: t('process.breadcrumb') }]} />
       <section className="page-header has-photo" style={{ '--page-photo': `url(${photos.planningNotebook})` }}>
-        <span className="kicker">Nasıl Çalışır</span>
-        <h1>Vize Başvuru Süreciniz Adım Adım</h1>
-        <p>Her adımı açarak neler olduğunu ve sizden ne beklendiğini detaylıca görebilirsiniz.</p>
+        <span className="kicker">{t('process.pageKicker')}</span>
+        <h1>{t('process.pageTitle')}</h1>
+        <p>{t('process.pageSubtitle')}</p>
       </section>
 
       <section className="section" style={{ paddingTop: '1rem' }}>
@@ -89,7 +81,7 @@ export default function Process() {
           </div>
 
           <div style={{ textAlign: 'center', marginTop: '3rem' }}>
-            <Link to="/iletisim" className="btn btn-gold">Ücretsiz Ön Görüşme Alın</Link>
+            <Link to="/iletisim" className="btn btn-gold">{t('process.ctaConsult')}</Link>
           </div>
         </div>
       </section>

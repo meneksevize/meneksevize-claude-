@@ -1,7 +1,8 @@
 import { useEffect, useMemo } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '../components/LocaleLink.jsx';
 import useDocumentMeta from '../hooks/useDocumentMeta.js';
 import { useSiteData } from '../context/SiteDataContext.jsx';
+import { useLocale } from '../context/LocaleContext.jsx';
 import Breadcrumbs from '../components/Breadcrumbs.jsx';
 
 function stripHtml(html) {
@@ -10,10 +11,11 @@ function stripHtml(html) {
 
 export default function FAQ() {
   const { faqs } = useSiteData();
+  const { t } = useLocale();
 
   useDocumentMeta(
-    'Sıkça Sorulan Sorular | Menekşe Vize',
-    'Menekşe Vize danışmanlık süreci, ücretlendirme, evrak ve randevu/mülakat hakkında sıkça sorulan sorular ve yanıtları.',
+    t('faqPage.metaTitle'),
+    t('faqPage.metaDescription'),
     { path: '/sss' },
   );
 
@@ -58,11 +60,11 @@ export default function FAQ() {
 
   return (
     <>
-      <Breadcrumbs items={[{ label: 'Ana Sayfa', to: '/' }, { label: 'Sıkça Sorulan Sorular' }]} />
+      <Breadcrumbs items={[{ label: t('common.breadcrumbHome'), to: '/' }, { label: t('faqPage.breadcrumb') }]} />
       <section className="page-header">
-        <span className="kicker">Merak Edilenler</span>
-        <h1>Sıkça Sorulan Sorular</h1>
-        <p>Aradığınız cevabı bulamazsanız <Link to="/iletisim" style={{ color: 'var(--accent-color)' }}>bize doğrudan ulaşabilirsiniz</Link>.</p>
+        <span className="kicker">{t('faqPage.pageKicker')}</span>
+        <h1>{t('faqPage.pageTitle')}</h1>
+        <p>{t('faqPage.pageSubtitlePre')}<Link to="/iletisim" style={{ color: 'var(--accent-color)' }}>{t('faqPage.pageSubtitleLink')}</Link>{t('faqPage.pageSubtitlePost')}</p>
       </section>
 
       <section className="section" style={{ paddingTop: '1rem' }}>
