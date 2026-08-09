@@ -206,6 +206,11 @@ img, svg {
   font-weight: 700;
   color: var(--text-color);
   text-decoration: none;
+  /* justify-content: space-between (.nav-container) bazı ekran genişliklerinde
+     logo ile ilk nav öğesini ("Ülkeler"/"Countries") birbirine yapıştırıyordu;
+     margin-inline-end ile her zaman minimum bir boşluk garanti ediyoruz —
+     mantıksal özellik olduğu için dir="rtl"de otomatik olarak sağdan uygulanır. */
+  margin-inline-end: 1.5rem;
 }
 
 .logo span {
