@@ -1,24 +1,27 @@
-import { Link } from 'react-router-dom';
+import { Link } from '../components/LocaleLink.jsx';
 import useDocumentMeta from '../hooks/useDocumentMeta.js';
+import { useLocale } from '../context/LocaleContext.jsx';
 
 export default function NotFound() {
+  const { t } = useLocale();
+
   useDocumentMeta(
-    'Sayfa Bulunamadı | Menekşe Vize',
-    'Aradığınız sayfa taşınmış veya kaldırılmış olabilir.',
+    t('notFound.metaTitle'),
+    t('notFound.metaDescription'),
   );
 
   return (
     <section className="section" style={{ minHeight: '55vh', display: 'flex', alignItems: 'center' }}>
       <div className="container" style={{ textAlign: 'center' }}>
-        <span className="kicker">404</span>
-        <h1 style={{ fontSize: 'clamp(1.8rem, 4vw, 2.6rem)', marginBottom: '1rem' }}>Aradığınız Sayfayı Bulamadık</h1>
+        <span className="kicker">{t('notFound.kicker')}</span>
+        <h1 style={{ fontSize: 'clamp(1.8rem, 4vw, 2.6rem)', marginBottom: '1rem' }}>{t('notFound.title')}</h1>
         <p style={{ color: 'var(--text-muted)', maxWidth: 520, margin: '0 auto 2rem' }}>
-          Bu sayfa taşınmış, adı değişmiş veya hiç var olmamış olabilir. Aşağıdaki bağlantılardan devam edebilirsiniz.
+          {t('notFound.text')}
         </p>
         <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-          <Link to="/" className="btn btn-gold">Ana Sayfaya Dön</Link>
-          <Link to="/hizmetler" className="btn btn-secondary">Ülkeleri İncele</Link>
-          <Link to="/iletisim" className="btn btn-secondary">Bize Ulaşın</Link>
+          <Link to="/" className="btn btn-gold">{t('notFound.ctaHome')}</Link>
+          <Link to="/hizmetler" className="btn btn-secondary">{t('notFound.ctaCountries')}</Link>
+          <Link to="/iletisim" className="btn btn-secondary">{t('notFound.ctaContact')}</Link>
         </div>
       </div>
     </section>

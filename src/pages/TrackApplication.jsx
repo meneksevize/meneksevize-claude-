@@ -1,15 +1,27 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '../components/LocaleLink.jsx';
 import useDocumentMeta from '../hooks/useDocumentMeta.js';
 import { useSiteData } from '../context/SiteDataContext.jsx';
+import { useLocale } from '../context/LocaleContext.jsx';
 import { STAGES, getStageIndex } from '../data/stages.js';
 import { photos } from '../data/photos.js';
 import { CheckIcon } from '../components/icons.jsx';
 import CountryFlag from '../components/CountryFlag.jsx';
 import Breadcrumbs from '../components/Breadcrumbs.jsx';
 
+const STAGE_LABEL_KEYS = {
+  'on-gorusme': 'process.step1Title',
+  'evrak-toplama': 'process.step2Title',
+  'randevu-basvuru': 'process.step3Title',
+  mulakat: 'process.step4Title',
+  takip: 'process.step5Title',
+  'sonuc-teslim': 'process.step6Title',
+};
+const DATE_LOCALES = { tr: 'tr-TR', en: 'en-US', ar: 'ar' };
+
 export default function TrackApplication() {
   const { countries } = useSiteData();
+  const { t, locale } = useLocale();
   const [trackingCode, setTrackingCode] = useState('');
   const [surname, setSurname] = useState('');
   const [status, setStatus] = useState('idle');
@@ -17,8 +29,8 @@ export default function TrackApplication() {
   const [result, setResult] = useState(null);
 
   useDocumentMeta(
-    'Başvuru Takip | Menekşe Vize',
-    'Vize başvurunuzun hangi aşamada olduğunu takip kodunuzla anında görüntüleyin.',
+    t('trackApplication.metaTitle'),
+    t('trackApplication.metaDescription'),
   );
 
   const currentStageIndex = result ? getStageIndex(result.currentStage) : -1;
@@ -37,7 +49,7 @@ export default function TrackApplication() {
       });
       const json = await res.json();
       if (!res.ok) {
-        throw new Error(json.error || 'Başvuru bulunamadı.');
+        throw new Error(json.error || t('trackApplication.notFoundError'));
       }
       setResult(json);
       setStatus('success');
@@ -49,11 +61,11 @@ export default function TrackApplication() {
 
   return (
     <>
-      <Breadcrumbs items={[{ label: 'Ana Sayfa', to: '/' }, { label: 'Başvuru Takip' }]} />
+      <Breadcrumbs items={[{ label: t('common.breadcrumbHome'), to: '/' }, { label: t('trackApplication.breadcrumb') }]} />
       <section className="page-header has-photo" style={{ '--page-photo': `url(${photos.cameraPassportFlatlay})` }}>
-        <span className="kicker">Kişiye Özel Araç</span>
-        <h1>Başvuru Takip</h1>
-        <p>Size verdiğimiz takip kodu ve soyisminizle başvurunuzun hangi aşamada olduğunu anında görün.</p>
+        <span className="kicker">{t('trackApplication.pageKicker')}</span>
+        <h1>{t('trackApplication.pageTitle')}</h1>
+        <p>{t('trackApplication.pageSubtitle')}</p>
       </section>
 
       <section className="section" style={{ paddingTop: '1rem' }}>
@@ -63,7 +75,7 @@ export default function TrackApplication() {
               {error && <div className="admin-login-error">{error}</div>}
               <div className="select-row">
                 <div className="select-group">
-                  <label htmlFor="trackingCode">Takip Kodu</label>
+                  <label htmlFor="trackingCode">{t('trackApplication.trackingCodeLabel')}</label>
                   <input
                     id="trackingCode"
                     value={trackingCode}
@@ -73,7 +85,7 @@ export default function TrackApplication() {
                   />
                 </div>
                 <div className="select-group">
-                  <label htmlFor="surname">Soyisim</label>
+                  <label htmlFor="surname">{t('trackApplication.surnameLabel')}</label>
                   <input
                     id="surname"
                     value={surname}
@@ -83,7 +95,7 @@ export default function TrackApplication() {
                 </div>
               </div>
               <button type="submit" className="btn btn-gold" style={{ width: '100%' }} disabled={status === 'submitting'}>
-                {status === 'submitting' ? 'Sorgulanıyor…' : 'Sorgula'}
+                {status === 'submitting' ? t('trackApplication.querying') : t('trackApplication.query')}
               </button>
             </form>
           </div>
@@ -94,9 +106,9 @@ export default function TrackApplication() {
                 <span className="kicker">{result.clientName}</span>
                 <h2>
                   {country && <CountryFlag country={country} className="country-detail-flag" />}
-                  {country ? country.title : 'Başvuru'} {result.visaType ? `— ${result.visaType}` : ''}
+                  {country ? country.title : t('trackApplication.applicationFallback')} {result.visaType ? `— ${result.visaType}` : ''}
                 </h2>
-                <p>Son güncelleme: {new Date(result.updatedAt).toLocaleString('tr-TR')}</p>
+                <p>{t('trackApplication.lastUpdate')} {new Date(result.updatedAt).toLocaleString(DATE_LOCALES[locale])}</p>
               </div>
 
               <div className="timeline">
@@ -110,7 +122,7 @@ export default function TrackApplication() {
                         {isDone ? <CheckIcon /> : i + 1}
                       </div>
                       <div className="timeline-header" style={{ cursor: 'default' }}>
-                        <h3 style={{ color: isCurrent ? 'var(--gold)' : undefined }}>{stage.label}</h3>
+                        <h3 style={{ color: isCurrent ? 'var(--gold)' : undefined }}>{t(STAGE_LABEL_KEYS[stage.key])}</h3>
                       </div>
                       {update?.note && (
                         <div className="timeline-body" style={{ maxHeight: 300 }}>
@@ -123,7 +135,7 @@ export default function TrackApplication() {
               </div>
 
               <p className="form-note" style={{ textAlign: 'center', maxWidth: 600, margin: '2rem auto 0' }}>
-                Sorularınız için <Link to="/iletisim" style={{ color: 'var(--accent-color)' }}>bize ulaşabilirsiniz</Link>.
+                {t('trackApplication.contactPre')}<Link to="/iletisim" style={{ color: 'var(--accent-color)' }}>{t('trackApplication.contactLink')}</Link>{t('trackApplication.contactPost')}
               </p>
             </>
           )}
