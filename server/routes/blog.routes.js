@@ -13,6 +13,14 @@ function pick(row, field, lang) {
   return row[field];
 }
 
+// Blog içeriğindeki markdown linkleri ("/ulkeler/almanya" gibi) her zaman
+// Türkçe (önek yok) yola işaret eder. EN/AR içerikte bu linkler render
+// edilirken doğru dil önekini almazsa kullanıcı dil değiştirmiş olur.
+function localizeContentLinks(html, lang) {
+  if (!SUPPORTED_LANGS.has(lang)) return html;
+  return html.replace(/href="\/(?!\/)/g, `href="/${lang}/`);
+}
+
 function parseListRow(row, lang) {
   return {
     id: row.id,
@@ -40,7 +48,7 @@ router.get('/blog/:slug', (req, res) => {
   }
   res.json({
     ...parseListRow(row, lang),
-    contentHtml: marked.parse(pick(row, 'content', lang)),
+    contentHtml: localizeContentLinks(marked.parse(pick(row, 'content', lang)), lang),
   });
 });
 
