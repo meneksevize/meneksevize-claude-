@@ -1,27 +1,37 @@
-import { Link, useParams, Navigate } from 'react-router-dom';
+import { useParams, Navigate } from 'react-router-dom';
+import { Link } from '../components/LocaleLink.jsx';
 import useDocumentMeta from '../hooks/useDocumentMeta.js';
 import { useSiteData, getDocsKey } from '../context/SiteDataContext.jsx';
+import { useLocale } from '../context/LocaleContext.jsx';
 import { photos } from '../data/photos.js';
 import Reveal from '../components/Reveal.jsx';
 import { CheckIcon } from '../components/icons.jsx';
 import CountryFlag from '../components/CountryFlag.jsx';
 import Breadcrumbs from '../components/Breadcrumbs.jsx';
 
-function visaTypeHeading(label, typeKey) {
+// TR verisi Faz 3'e kadar her dilde aynı kalıyor (bkz. plan); bu yüzden "vize"
+// kelimesi tekrarını önleyen kontrol Türkçe'ye özel kalıyor. Arapça'da "vize"
+// tipi soyadları henüz çevrilmediği için doğal sıralama önek (تأشيرة X) yerine
+// aynı sonek deseni kullanılır — Faz 3'te visa_type_labels çevrilince bu
+// mantık gözden geçirilebilir.
+function visaTypeHeading(label, typeKey, locale, t) {
   const text = label || typeKey;
-  return text.toLowerCase().includes('vize') ? text : `${text} Vizesi`;
+  if (text.toLowerCase().includes('vize')) return text;
+  if (locale === 'ar') return `${t('countryDetail.visaTypePrefixAr')}${text}`;
+  return `${text}${t('countryDetail.visaTypeSuffix')}`;
 }
 
 export default function CountryDetail() {
   const { countryId } = useParams();
   const { countries, visaTypeLabels, visaDocuments } = useSiteData();
+  const { t, locale } = useLocale();
 
   const country = countries.find((c) => c.id === countryId);
   const docsByType = country ? visaDocuments[getDocsKey(country)] : null;
 
   useDocumentMeta(
-    country ? `${country.title} Vizesi | Menekşe Vize` : 'Ülke Bulunamadı | Menekşe Vize',
-    country ? (country.overview || country.intro || `${country.title} için gerekli vize türleri, evraklar ve süreç bilgisi.`) : undefined,
+    country ? t('countryDetail.metaTitleTemplate', { country: country.title }) : t('countryDetail.metaNotFoundTitle'),
+    country ? (country.overview || country.intro || t('countryDetail.metaDescriptionTemplate', { country: country.title })) : undefined,
     { image: photos.passportBoardingPass, path: country ? `/ulkeler/${country.id}` : undefined },
   );
 
@@ -36,14 +46,14 @@ export default function CountryDetail() {
   return (
     <>
       <Breadcrumbs items={[
-        { label: 'Ana Sayfa', to: '/' },
-        { label: 'Ülkeler', to: '/hizmetler' },
-        { label: `${country.title} Vizesi` },
+        { label: t('common.breadcrumbHome'), to: '/' },
+        { label: t('countryDetail.breadcrumbCountries'), to: '/hizmetler' },
+        { label: t('countryDetail.visaPageTitle', { country: country.title }) },
       ]}
       />
       <section className="page-header has-photo" style={{ '--page-photo': `url(${photos.passportBoardingPass})` }}>
-        <span className="kicker">Ülkeler</span>
-        <h1><CountryFlag country={country} className="country-detail-flag" />{country.title} Vizesi</h1>
+        <span className="kicker">{t('countryDetail.pageKicker')}</span>
+        <h1><CountryFlag country={country} className="country-detail-flag" />{t('countryDetail.visaPageTitle', { country: country.title })}</h1>
         <p>{country.intro}</p>
       </section>
 
@@ -61,16 +71,16 @@ export default function CountryDetail() {
           {country.overview && (
             <div className="faq-group" style={{ marginBottom: '2rem' }}>
               <details className="faq-item">
-                <summary>{country.title} Hakkında</summary>
+                <summary>{t('countryDetail.aboutTemplate', { country: country.title })}</summary>
                 <div className="faq-answer">{country.overview}</div>
               </details>
             </div>
           )}
 
           <div className="section-head">
-            <span className="kicker">Vize Türleri &amp; Evraklar</span>
-            <h2>{country.title} İçin Gerekli Evraklar</h2>
-            <p>Başvurmak istediğiniz vize türünü açarak gerekli evrak listesini görüntüleyin.</p>
+            <span className="kicker">{t('countryDetail.sectionKicker')}</span>
+            <h2>{t('countryDetail.docsTitleTemplate', { country: country.title })}</h2>
+            <p>{t('countryDetail.docsSubtitle')}</p>
           </div>
 
           <div className="faq-group" style={{ marginBottom: 0 }}>
@@ -78,7 +88,7 @@ export default function CountryDetail() {
               const entry = docsByType?.[typeKey] ?? { items: [], note: null };
               return (
                 <details className="faq-item" open={i === 0} key={typeKey}>
-                  <summary>{visaTypeHeading(visaTypeLabels[typeKey], typeKey)}</summary>
+                  <summary>{visaTypeHeading(visaTypeLabels[typeKey], typeKey, locale, t)}</summary>
                   <div className="faq-answer checklist-output" style={{ border: 'none', paddingTop: 0 }}>
                     {entry.items.length > 0 ? (
                       <ul>
@@ -90,16 +100,16 @@ export default function CountryDetail() {
                         ))}
                       </ul>
                     ) : (
-                      <p>Bu vize türü için evrak listesi ön görüşmede birlikte netleştirilir.</p>
+                      <p>{t('countryDetail.noDocsYet')}</p>
                     )}
                     {entry.note && (
                       <div className="doc-note">
-                        <span><strong>Önemli:</strong> {entry.note}</span>
+                        <span><strong>{t('countryDetail.noteLabel')}</strong> {entry.note}</span>
                       </div>
                     )}
                     <p style={{ marginTop: '1rem' }}>
                       <Link to={`/ulkeler/${country.id}/${typeKey}`} style={{ color: 'var(--accent-color)' }}>
-                        {country.title} {visaTypeLabels[typeKey]} vizesi hakkında detaylı sayfa →
+                        {t('countryDetail.detailLinkTemplate', { country: country.title, visaType: visaTypeLabels[typeKey] })}
                       </Link>
                     </p>
                   </div>
@@ -109,12 +119,12 @@ export default function CountryDetail() {
           </div>
 
           <p className="form-note" style={{ textAlign: 'center', maxWidth: 600, margin: '2rem auto 0' }}>
-            Bu liste genel bir rehber niteliğindedir; başvurunuza özel ek belge gerekip gerekmediğini ön görüşmemizde birlikte netleştiririz. Nihai vize kararı ilgili konsolosluğa aittir.
+            {t('countryDetail.disclaimer')}
           </p>
 
           <div style={{ textAlign: 'center', marginTop: '2.5rem', display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <Link to="/surec" className="btn btn-secondary">Başvuru Sürecini İncele</Link>
-            <Link to="/iletisim" className="btn btn-gold">Ücretsiz Ön Görüşme Alın</Link>
+            <Link to="/surec" className="btn btn-secondary">{t('countryDetail.ctaProcess')}</Link>
+            <Link to="/iletisim" className="btn btn-gold">{t('countryDetail.ctaConsult')}</Link>
           </div>
         </div>
       </section>

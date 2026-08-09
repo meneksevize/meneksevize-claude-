@@ -1,59 +1,38 @@
-import { Link, useParams, Navigate } from 'react-router-dom';
+import { useParams, Navigate } from 'react-router-dom';
+import { Link } from '../components/LocaleLink.jsx';
 import useDocumentMeta from '../hooks/useDocumentMeta.js';
 import { useSiteData, getDocsKey } from '../context/SiteDataContext.jsx';
+import { useLocale } from '../context/LocaleContext.jsx';
 import { photos } from '../data/photos.js';
 import Reveal from '../components/Reveal.jsx';
 import CountryFlag from '../components/CountryFlag.jsx';
 import Breadcrumbs from '../components/Breadcrumbs.jsx';
 import { CheckIcon } from '../components/icons.jsx';
 
-const typeIntros = {
-  turistik: 'tatil, ziyaret veya kısa süreli seyahat amaçlı başvurular için',
-  ticari: 'fuar, toplantı ve iş görüşmesi gibi ticari faaliyetler için',
-  ogrenci: 'yurt dışında eğitim almak isteyenler için',
-  calisma: 'yurt dışında bir işte çalışmak için gereken çalışma izni/vizesi için',
-  'aile-birlesimi': 'yurt dışında yaşayan bir aile üyesinin yanına gitmek için',
-  transit: 'üçüncü bir ülkeye geçiş için havalimanında kısa süreli transit amaçlı',
-  'e-vize': 'elektronik ortamda başvurulan, hızlı sonuçlanan vize süreci için',
-  dogum: "Kanada'da doğum yapmak isteyenler için özel hazırlık gerektiren",
-};
-
-// Vize türüne özel pratik rehberlik. Her ülkede birebir aynı metin
-// tekrarlanmasın diye, o ülke için zaten özgün yazılmış servicesDescription
-// alanıyla harmanlanır — böylece 35 ülkenin her sayfası gerçekten farklı
-// bir paragraf üretir, sadece ülke adı değişen bir şablon olmaz.
-const typeGuideBase = {
-  turistik: 'turistik vize başvurularında en çok dikkat edilmesi gereken nokta, seyahat planınızın (uçak bileti, konaklama, seyahat sigortası) tarih ve içerik olarak birbiriyle tutarlı olmasıdır. Türkiye\'ye dönüş bağlarınızı (iş, aile, mülkiyet) gösteren belgeler, başvurunuzun güçlü değerlendirilmesine katkı sağlar.',
-  ticari: 'ticari vize başvurularında davet mektubunun ziyaret amacını (fuar, toplantı, iş ortaklığı) ve tarihleri net şekilde belirtmesi, şirketinizin faaliyet belgesiyle tutarlı olması beklenir. Seyahat programınızı (toplantı/fuar günleri) başvurunuza eklemeniz değerlendirme sürecini hızlandırır.',
-  ogrenci: 'öğrenci vizesi başvurularında kabul mektubu, okul kayıt belgesi ve mali yeterlilik kanıtı sürecin temelini oluşturur. Eğitim süresine ve okulun bulunduğu şehre göre değişen mali yeterlilik eşiklerini ön görüşmede birlikte netleştiriyoruz.',
-  calisma: 'çalışma vizesi/izni başvurularında genellikle bir işveren teklifi veya sponsorluk belgesi gereklidir. Diploma ve iş deneyimi belgelerinizin güncel, onaylı ve iş teklifiyle tutarlı olması değerlendirme sürecini kolaylaştırır.',
-  'aile-birlesimi': 'aile birleşimi başvurularında davet eden kişinin ikamet/oturum belgesi ile aranızdaki akrabalık bağını gösteren resmi belgeler (nüfus kayıt örneği, evlilik cüzdanı vb.) birlikte sunulmalıdır. Mali yeterlilik genellikle davet eden kişinin durumuyla birlikte değerlendirilir.',
-  transit: 'transit vize başvurularında devam uçuşunuzun bileti ve varsa hedef ülke vizeniz en önemli belgelerdir. Aktarma süreniz uzunsa (genellikle 24 saati aşan durumlarda) konaklama kanıtı da istenebilir.',
-  'e-vize': 'e-vize başvuruları tamamen online yürütülür ve genellikle birkaç iş günü içinde sonuçlanır. Pasaport taramanızın ve dijital fotoğrafınızın net ve okunaklı olması, başvurunun sorunsuz ilerlemesi için önemlidir.',
-  dogum: 'doğum amaçlı ziyaretlerde gebelik durumunuzu ve niyetinizi başvuruda doğru şekilde beyan etmeniz yasal bir zorunluluktur; özel sağlık sigortası ve hastane kabul belgenizin eksiksiz olması sürecin sorunsuz ilerlemesi için kritik önem taşır.',
-};
-
-function buildTypeGuide(country, visaType, typeLabel) {
-  const base = typeGuideBase[visaType];
-  if (!base) return null;
+function buildTypeGuide(country, visaType, t) {
+  const base = t(`countryVisaType.guideBase.${visaType}`);
+  if (base === `countryVisaType.guideBase.${visaType}`) return null;
   const countryContext = country.servicesDescription || country.homeDescription || '';
-  return `${country.title} için ${base} ${countryContext}`.trim();
+  return t('countryVisaType.guideWrapperTemplate', { country: country.title, base, context: countryContext }).trim();
 }
 
 export default function CountryVisaType() {
   const { countryId, visaType } = useParams();
   const { countries, visaTypeLabels, visaDocuments } = useSiteData();
+  const { t } = useLocale();
 
   const country = countries.find((c) => c.id === countryId);
   const docsByType = country ? visaDocuments[getDocsKey(country)] : null;
   const typeLabel = visaTypeLabels[visaType] || visaType;
   const entry = docsByType?.[visaType] ?? { items: [], note: null };
-  const intro = typeIntros[visaType] || 'bu vize türü için';
-  const typeGuide = country ? buildTypeGuide(country, visaType, typeLabel) : null;
+  const introKey = `countryVisaType.intro.${visaType}`;
+  const introResolved = t(introKey);
+  const intro = introResolved === introKey ? t('countryVisaType.introFallback') : introResolved;
+  const typeGuide = country ? buildTypeGuide(country, visaType, t) : null;
 
   useDocumentMeta(
-    country ? `${country.title} ${typeLabel} Vizesi Başvurusu ve Gerekli Evraklar | Menekşe Vize` : 'Ülke Bulunamadı | Menekşe Vize',
-    country ? `${country.title} ${typeLabel.toLowerCase()} vizesi için gerekli evraklar, başvuru süreci ve dikkat edilmesi gerekenler.` : undefined,
+    country ? t('countryVisaType.metaTitleTemplate', { country: country.title, type: typeLabel }) : t('countryVisaType.metaNotFoundTitle'),
+    country ? t('countryVisaType.metaDescriptionTemplate', { country: country.title, typeLower: typeLabel.toLowerCase() }) : undefined,
     { image: photos.passportBoardingPass, path: country ? `/ulkeler/${country.id}/${visaType}` : undefined },
   );
 
@@ -68,17 +47,17 @@ export default function CountryVisaType() {
   return (
     <>
       <Breadcrumbs items={[
-        { label: 'Ana Sayfa', to: '/' },
-        { label: 'Ülkeler', to: '/hizmetler' },
-        { label: `${country.title} Vizesi`, to: `/ulkeler/${country.id}` },
-        { label: `${typeLabel} Vizesi` },
+        { label: t('common.breadcrumbHome'), to: '/' },
+        { label: t('countryVisaType.breadcrumbCountries'), to: '/hizmetler' },
+        { label: t('countryVisaType.breadcrumbCountryVisaTemplate', { country: country.title }), to: `/ulkeler/${country.id}` },
+        { label: t('countryVisaType.breadcrumbTypeVisaTemplate', { type: typeLabel }) },
       ]}
       />
       <section className="page-header has-photo" style={{ '--page-photo': `url(${photos.passportBoardingPass})` }}>
-        <span className="kicker">Ülkeler</span>
-        <h1><CountryFlag country={country} className="country-detail-flag" />{country.title} {typeLabel} Vizesi</h1>
+        <span className="kicker">{t('countryVisaType.pageKicker')}</span>
+        <h1><CountryFlag country={country} className="country-detail-flag" />{t('countryVisaType.titleTemplate', { country: country.title, type: typeLabel })}</h1>
         <p>
-          {country.title} için {intro} vize başvurunuzda gerekli evrakları ve süreç bilgisini bu sayfada bulabilirsiniz.
+          {t('countryVisaType.introWrapperTemplate', { country: country.title, intro })}
         </p>
       </section>
 
@@ -97,13 +76,13 @@ export default function CountryVisaType() {
             <div className="faq-group" style={{ marginBottom: '2rem' }}>
               {country.overview && (
                 <details className="faq-item">
-                  <summary>{country.title} Hakkında</summary>
+                  <summary>{t('countryVisaType.aboutCountryTemplate', { country: country.title })}</summary>
                   <div className="faq-answer">{country.overview}</div>
                 </details>
               )}
               {typeGuide && (
                 <details className="faq-item">
-                  <summary>{typeLabel} Vizesi Hakkında</summary>
+                  <summary>{t('countryVisaType.aboutTypeTemplate', { type: typeLabel })}</summary>
                   <div className="faq-answer">{typeGuide}</div>
                 </details>
               )}
@@ -111,8 +90,8 @@ export default function CountryVisaType() {
           )}
 
           <div className="section-head" style={{ marginTop: '2rem' }}>
-            <span className="kicker">Gerekli Evraklar</span>
-            <h2>{country.title} {typeLabel} Vizesi İçin Evrak Listesi</h2>
+            <span className="kicker">{t('countryVisaType.docsKicker')}</span>
+            <h2>{t('countryVisaType.docsTitleTemplate', { country: country.title, type: typeLabel })}</h2>
           </div>
 
           <Reveal as="div" className="card faq-answer checklist-output" style={{ border: '1px solid var(--border-color)' }}>
@@ -126,25 +105,25 @@ export default function CountryVisaType() {
                 ))}
               </ul>
             ) : (
-              <p>Bu vize türü için evrak listesi ön görüşmede birlikte netleştirilir.</p>
+              <p>{t('countryVisaType.noDocsYet')}</p>
             )}
             {entry.note && (
               <div className="doc-note">
-                <span><strong>Önemli:</strong> {entry.note}</span>
+                <span><strong>{t('countryVisaType.noteLabel')}</strong> {entry.note}</span>
               </div>
             )}
           </Reveal>
 
           <p className="form-note" style={{ textAlign: 'center', maxWidth: 600, margin: '2rem auto 0' }}>
-            Bu liste genel bir rehber niteliğindedir; başvurunuza özel ek belge gerekip gerekmediğini ön görüşmemizde birlikte netleştiririz. Nihai vize kararı ilgili konsolosluğa aittir.
+            {t('countryVisaType.disclaimer')}
           </p>
 
           <div style={{
             textAlign: 'center', marginTop: '2.5rem', display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap',
           }}
           >
-            <Link to={`/ulkeler/${country.id}`} className="btn btn-secondary">{country.title} İçin Diğer Vize Türleri</Link>
-            <Link to="/iletisim" className="btn btn-gold">Ücretsiz Ön Görüşme Alın</Link>
+            <Link to={`/ulkeler/${country.id}`} className="btn btn-secondary">{t('countryVisaType.ctaOtherTypesTemplate', { country: country.title })}</Link>
+            <Link to="/iletisim" className="btn btn-gold">{t('countryVisaType.ctaConsult')}</Link>
           </div>
         </div>
       </section>
