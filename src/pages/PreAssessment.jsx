@@ -1,34 +1,26 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '../components/LocaleLink.jsx';
 import useDocumentMeta from '../hooks/useDocumentMeta.js';
 import { useSiteData } from '../context/SiteDataContext.jsx';
+import { useLocale } from '../context/LocaleContext.jsx';
 import Reveal from '../components/Reveal.jsx';
 import Breadcrumbs from '../components/Breadcrumbs.jsx';
 
-const PURPOSES = [
-  { key: 'turistik', label: 'Turistik Gezi' },
-  { key: 'ticari', label: 'Ticari / İş Görüşmesi' },
-  { key: 'ziyaret', label: 'Aile / Arkadaş Ziyareti' },
-  { key: 'egitim', label: 'Eğitim / Öğrenci' },
-  { key: 'diger', label: 'Diğer' },
-];
-
-const TIMINGS = [
-  { key: '1ay', label: '1 ay içinde' },
-  { key: '1-3ay', label: '1-3 ay içinde' },
-  { key: '3ay+', label: '3 aydan sonra' },
-  { key: 'belirsiz', label: 'Henüz belirsiz' },
-];
-
-const REFUSAL = [
-  { key: 'hayir', label: 'Hayır, ilk başvurum' },
-  { key: 'evet', label: 'Evet, daha önce red aldım' },
-];
+// Admin panele giden özet mesaj her zaman Türkçe kalır (işletme sahibi
+// Türkçe okuyor) — ziyaretçinin arayüz dili ne olursa olsun bu eşleme sabittir.
+const PURPOSE_TR_LABELS = {
+  turistik: 'Turistik Gezi', ticari: 'Ticari / İş Görüşmesi', ziyaret: 'Aile / Arkadaş Ziyareti', egitim: 'Eğitim / Öğrenci', diger: 'Diğer',
+};
+const TIMING_TR_LABELS = {
+  '1ay': '1 ay içinde', '1-3ay': '1-3 ay içinde', '3ay+': '3 aydan sonra', belirsiz: 'Henüz belirsiz',
+};
+const REFUSAL_TR_LABELS = { hayir: 'Hayır, ilk başvurum', evet: 'Evet, daha önce red aldım' };
 
 const TOTAL_STEPS = 4;
 
 export default function PreAssessment() {
   const { countries } = useSiteData();
+  const { t } = useLocale();
   const [step, setStep] = useState(1);
   const [form, setForm] = useState({
     country: '', purpose: '', refusal: '', timing: '', name: '', email: '', phone: '',
@@ -36,17 +28,31 @@ export default function PreAssessment() {
   const [status, setStatus] = useState('idle');
   const [error, setError] = useState('');
 
+  const PURPOSES = [
+    { key: 'turistik', label: t('preAssessment.purposeTouristic') },
+    { key: 'ticari', label: t('preAssessment.purposeBusiness') },
+    { key: 'ziyaret', label: t('preAssessment.purposeVisit') },
+    { key: 'egitim', label: t('preAssessment.purposeEducation') },
+    { key: 'diger', label: t('preAssessment.purposeOther') },
+  ];
+  const TIMINGS = [
+    { key: '1ay', label: t('preAssessment.timing1Month') },
+    { key: '1-3ay', label: t('preAssessment.timing1to3Months') },
+    { key: '3ay+', label: t('preAssessment.timing3PlusMonths') },
+    { key: 'belirsiz', label: t('preAssessment.timingUnsure') },
+  ];
+  const REFUSAL = [
+    { key: 'hayir', label: t('preAssessment.refusalNo') },
+    { key: 'evet', label: t('preAssessment.refusalYes') },
+  ];
+
   useDocumentMeta(
-    'Ücretsiz Vize Ön Değerlendirme | Menekşe Vize',
-    'Hedef ülkenizi ve seyahat amacınızı seçin, başvurunuz için ücretsiz ön değerlendirme alın. Size özel vize planınızı birlikte oluşturalım.',
+    t('preAssessment.metaTitle'),
+    t('preAssessment.metaDescription'),
     { path: '/on-degerlendirme' },
   );
 
   const set = (field, value) => setForm((prev) => ({ ...prev, [field]: value }));
-
-  const purposeLabel = PURPOSES.find((p) => p.key === form.purpose)?.label || '';
-  const timingLabel = TIMINGS.find((t) => t.key === form.timing)?.label || '';
-  const refusalLabel = REFUSAL.find((r) => r.key === form.refusal)?.label || '';
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -55,9 +61,9 @@ export default function PreAssessment() {
     const message = [
       '[Ön Değerlendirme Formu]',
       `Hedef ülke: ${form.country}`,
-      `Seyahat amacı: ${purposeLabel}`,
-      `Daha önce vize reddi: ${refusalLabel}`,
-      `Planlanan seyahat: ${timingLabel}`,
+      `Seyahat amacı: ${PURPOSE_TR_LABELS[form.purpose] || ''}`,
+      `Daha önce vize reddi: ${REFUSAL_TR_LABELS[form.refusal] || ''}`,
+      `Planlanan seyahat: ${TIMING_TR_LABELS[form.timing] || ''}`,
     ].join('\n');
     try {
       const res = await fetch('/api/contact', {
@@ -72,7 +78,7 @@ export default function PreAssessment() {
         }),
       });
       const json = await res.json();
-      if (!res.ok) throw new Error(json.error || 'Gönderilemedi, lütfen tekrar deneyin.');
+      if (!res.ok) throw new Error(json.error || t('preAssessment.genericError'));
       window.gtag?.('event', 'conversion', { send_to: 'AW-18327360593/zUw7CJzvhdQcENGolaNE' });
       setStatus('success');
     } catch (err) {
@@ -89,11 +95,11 @@ export default function PreAssessment() {
 
   return (
     <>
-      <Breadcrumbs items={[{ label: 'Ana Sayfa', to: '/' }, { label: 'Ön Değerlendirme' }]} />
+      <Breadcrumbs items={[{ label: t('common.breadcrumbHome'), to: '/' }, { label: t('preAssessment.breadcrumb') }]} />
       <section className="page-header">
-        <span className="kicker">Ücretsiz Ön Değerlendirme</span>
-        <h1>3 Adımda Başvurunuzu Değerlendirelim</h1>
-        <p>Birkaç kısa soruyla durumunuzu bize aktarın; size en uygun vize planı için ücretsiz dönüş yapalım.</p>
+        <span className="kicker">{t('preAssessment.pageKicker')}</span>
+        <h1>{t('preAssessment.pageTitle')}</h1>
+        <p>{t('preAssessment.pageSubtitle')}</p>
       </section>
 
       <section className="section" style={{ paddingTop: '1rem' }}>
@@ -102,11 +108,11 @@ export default function PreAssessment() {
             {status === 'success' ? (
               <div style={{ textAlign: 'center', padding: '1rem 0' }}>
                 <div className="admin-success-banner">
-                  Ön değerlendirme talebiniz alındı. En kısa sürede sizi arayarak değerlendirmemizi paylaşacağız.
+                  {t('preAssessment.successMessage')}
                 </div>
                 <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap', marginTop: '1.5rem' }}>
-                  <Link to="/surec" className="btn btn-secondary">Süreci İnceleyin</Link>
-                  <Link to="/" className="btn btn-gold">Ana Sayfaya Dön</Link>
+                  <Link to="/surec" className="btn btn-secondary">{t('preAssessment.successCtaProcess')}</Link>
+                  <Link to="/" className="btn btn-gold">{t('preAssessment.successCtaHome')}</Link>
                 </div>
               </div>
             ) : (
@@ -117,28 +123,28 @@ export default function PreAssessment() {
                     <span key={i} className={`wizard-progress-dot ${i + 1 <= step ? 'active' : ''}`} />
                   ))}
                 </div>
-                <p className="form-note" style={{ marginBottom: '1.5rem' }}>Adım {step} / {TOTAL_STEPS}</p>
+                <p className="form-note" style={{ marginBottom: '1.5rem' }}>{t('preAssessment.stepLabel')} {step} {t('preAssessment.stepOf')} {TOTAL_STEPS}</p>
 
                 {step === 1 && (
                   <div className="form-group">
-                    <label htmlFor="wizard-country">Hangi ülkeye başvurmak istiyorsunuz?</label>
+                    <label htmlFor="wizard-country">{t('preAssessment.step1Question')}</label>
                     <select
                       id="wizard-country"
                       value={form.country}
                       onChange={(e) => set('country', e.target.value)}
                     >
-                      <option value="" disabled>Ülke seçin…</option>
+                      <option value="" disabled>{t('preAssessment.countryPlaceholder')}</option>
                       {countries.map((c) => (
                         <option value={c.title} key={c.id}>{c.title}</option>
                       ))}
-                      <option value="Diğer / Emin değilim">Diğer / Emin değilim</option>
+                      <option value="Diğer / Emin değilim">{t('preAssessment.otherCountry')}</option>
                     </select>
                   </div>
                 )}
 
                 {step === 2 && (
                   <fieldset className="wizard-options">
-                    <legend>Seyahat amacınız nedir?</legend>
+                    <legend>{t('preAssessment.step2Question')}</legend>
                     {PURPOSES.map((p) => (
                       <label className={`wizard-option ${form.purpose === p.key ? 'selected' : ''}`} key={p.key}>
                         <input
@@ -157,7 +163,7 @@ export default function PreAssessment() {
                 {step === 3 && (
                   <>
                     <fieldset className="wizard-options">
-                      <legend>Daha önce vize reddi aldınız mı?</legend>
+                      <legend>{t('preAssessment.step3RefusalQuestion')}</legend>
                       {REFUSAL.map((r) => (
                         <label className={`wizard-option ${form.refusal === r.key ? 'selected' : ''}`} key={r.key}>
                           <input
@@ -172,17 +178,17 @@ export default function PreAssessment() {
                       ))}
                     </fieldset>
                     <fieldset className="wizard-options" style={{ marginTop: '1.25rem' }}>
-                      <legend>Seyahatinizi ne zaman planlıyorsunuz?</legend>
-                      {TIMINGS.map((t) => (
-                        <label className={`wizard-option ${form.timing === t.key ? 'selected' : ''}`} key={t.key}>
+                      <legend>{t('preAssessment.step3TimingQuestion')}</legend>
+                      {TIMINGS.map((tm) => (
+                        <label className={`wizard-option ${form.timing === tm.key ? 'selected' : ''}`} key={tm.key}>
                           <input
                             type="radio"
                             name="timing"
-                            value={t.key}
-                            checked={form.timing === t.key}
-                            onChange={() => set('timing', t.key)}
+                            value={tm.key}
+                            checked={form.timing === tm.key}
+                            onChange={() => set('timing', tm.key)}
                           />
-                          {t.label}
+                          {tm.label}
                         </label>
                       ))}
                     </fieldset>
@@ -193,7 +199,7 @@ export default function PreAssessment() {
                   <form onSubmit={handleSubmit}>
                     {error && <div className="admin-login-error">{error}</div>}
                     <div className="form-group">
-                      <label htmlFor="wizard-name">Ad Soyad</label>
+                      <label htmlFor="wizard-name">{t('preAssessment.nameLabel')}</label>
                       <input
                         type="text"
                         id="wizard-name"
@@ -203,7 +209,7 @@ export default function PreAssessment() {
                       />
                     </div>
                     <div className="form-group">
-                      <label htmlFor="wizard-phone">Telefon</label>
+                      <label htmlFor="wizard-phone">{t('preAssessment.phoneLabel')}</label>
                       <input
                         type="tel"
                         id="wizard-phone"
@@ -213,7 +219,7 @@ export default function PreAssessment() {
                       />
                     </div>
                     <div className="form-group">
-                      <label htmlFor="wizard-email">E-posta</label>
+                      <label htmlFor="wizard-email">{t('preAssessment.emailLabel')}</label>
                       <input
                         type="email"
                         id="wizard-email"
@@ -223,14 +229,14 @@ export default function PreAssessment() {
                       />
                     </div>
                     <p className="form-note" style={{ marginBottom: '1rem' }}>
-                      Formu göndererek{' '}
-                      <Link to="/gizlilik-politikasi" style={{ color: 'var(--accent-color)' }}>Gizlilik Politikası ve KVKK Aydınlatma Metni</Link>
-                      {' '}kapsamında kişisel verilerinizin işlenmesini kabul etmiş olursunuz.
+                      {t('preAssessment.consentPre')}
+                      <Link to="/gizlilik-politikasi" style={{ color: 'var(--accent-color)' }}>{t('preAssessment.consentLink')}</Link>
+                      {t('preAssessment.consentPost')}
                     </p>
                     <div className="wizard-nav">
-                      <button type="button" className="btn btn-secondary" onClick={() => setStep(step - 1)}>Geri</button>
+                      <button type="button" className="btn btn-secondary" onClick={() => setStep(step - 1)}>{t('preAssessment.back')}</button>
                       <button type="submit" className="btn btn-gold" disabled={status === 'submitting'}>
-                        {status === 'submitting' ? 'Gönderiliyor…' : 'Değerlendirme Talep Et'}
+                        {status === 'submitting' ? t('preAssessment.submitting') : t('preAssessment.submit')}
                       </button>
                     </div>
                   </form>
@@ -239,7 +245,7 @@ export default function PreAssessment() {
                 {step < 4 && (
                   <div className="wizard-nav">
                     {step > 1 ? (
-                      <button type="button" className="btn btn-secondary" onClick={() => setStep(step - 1)}>Geri</button>
+                      <button type="button" className="btn btn-secondary" onClick={() => setStep(step - 1)}>{t('preAssessment.back')}</button>
                     ) : <span />}
                     <button
                       type="button"
@@ -247,7 +253,7 @@ export default function PreAssessment() {
                       disabled={!stepValid}
                       onClick={() => setStep(step + 1)}
                     >
-                      Devam Et
+                      {t('preAssessment.continue')}
                     </button>
                   </div>
                 )}
@@ -255,7 +261,7 @@ export default function PreAssessment() {
             )}
           </Reveal>
           <p className="form-note" style={{ textAlign: 'center', marginTop: '1.5rem' }}>
-            Formu doldurmak yerine doğrudan konuşmayı tercih ederseniz <Link to="/iletisim" style={{ color: 'var(--accent-color)' }}>iletişim sayfamızdan</Link> bize ulaşabilirsiniz.
+            {t('preAssessment.footerNotePre')}<Link to="/iletisim" style={{ color: 'var(--accent-color)' }}>{t('preAssessment.footerNoteLink')}</Link>{t('preAssessment.footerNotePost')}
           </p>
         </div>
       </section>
