@@ -30,8 +30,26 @@ const staticPages = [
 // diğer ülkelerden daha yüksek tutulur.
 const FEATURED_COUNTRY_IDS = ['abd', 'ingiltere', 'kanada', 'dubai'];
 
-function urlEntry(loc, priority) {
-  return `  <url>\n    <loc>${SITE_URL}${loc}</loc>\n    <lastmod>${today}</lastmod>\n    <priority>${priority}</priority>\n  </url>`;
+// Site üç dilde yayında (bkz. LocaleContext.jsx) — Türkçe önek almaz, EN/AR
+// /en ve /ar önekiyle aynı yolu paylaşır. Her temel yol için üç dilin de
+// <url> girdisi üretilir; her girdi diğer ikisine ve kendisine xhtml:link
+// rel="alternate" ile işaret eder, böylece Google hangi sayfaların birbirinin
+// dil karşılığı olduğunu anlar (x-default Türkçe sürüme işaret eder).
+const LOCALES = [
+  { code: 'tr', prefix: '' },
+  { code: 'en', prefix: '/en' },
+  { code: 'ar', prefix: '/ar' },
+];
+
+function urlEntry(basePath, priority) {
+  const alternateLinks = LOCALES
+    .map(({ code, prefix }) => `    <xhtml:link rel="alternate" hreflang="${code}" href="${SITE_URL}${prefix}${basePath}" />`)
+    .concat(`    <xhtml:link rel="alternate" hreflang="x-default" href="${SITE_URL}${basePath}" />`)
+    .join('\n');
+
+  return LOCALES
+    .map(({ prefix }) => `  <url>\n    <loc>${SITE_URL}${prefix}${basePath}</loc>\n    <lastmod>${today}</lastmod>\n    <priority>${priority}</priority>\n${alternateLinks}\n  </url>`)
+    .join('\n');
 }
 
 async function main() {
@@ -45,21 +63,24 @@ async function main() {
     });
   });
 
+  let blogCount = 0;
   try {
     const res = await fetch(`${SITE_URL}/api/blog`);
     const posts = await res.json();
     posts.forEach((post) => {
       entries.push(urlEntry(`/blog/${post.slug}`, '0.6'));
     });
-    console.log(`${posts.length} blog yazısı sitemap'e eklendi.`);
+    blogCount = posts.length;
+    console.log(`${posts.length} blog yazısı sitemap'e eklendi (x3 dil).`);
   } catch (err) {
     console.warn('Blog yazıları alınamadı, sitemap blog olmadan üretiliyor:', err.message);
   }
 
-  const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${entries.join('\n')}\n</urlset>\n`;
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${entries.join('\n')}\n</urlset>\n`;
   const outPath = path.join(__dirname, '..', '..', 'public', 'sitemap.xml');
   fs.writeFileSync(outPath, xml);
-  console.log(`Sitemap oluşturuldu: ${entries.length} URL — ${outPath}`);
+  const urlCount = staticPages.length + countries.length + countries.reduce((sum, c) => sum + c.types.length, 0) + blogCount;
+  console.log(`Sitemap oluşturuldu: ${urlCount} sayfa × 3 dil = ${urlCount * 3} URL — ${outPath}`);
 }
 
 main();
