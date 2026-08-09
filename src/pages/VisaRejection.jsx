@@ -100,7 +100,7 @@ export default function VisaRejection() {
             <div className="grid grid-3">
               {posts.map((post, i) => (
                 <Reveal as={Link} to={`/blog/${post.slug}`} className="card blog-card" delay={i * 60} key={post.id}>
-                  <span className="kicker" style={{ display: 'block', marginBottom: '0.5rem' }}>{getCategoryLabel(post.category)}</span>
+                  <span className="kicker" style={{ display: 'block', marginBottom: '0.5rem' }}>{getCategoryLabel(post.category, t)}</span>
                   <h3>{post.title}</h3>
                   {post.excerpt && <p>{post.excerpt}</p>}
                 </Reveal>

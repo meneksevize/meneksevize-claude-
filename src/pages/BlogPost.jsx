@@ -1,16 +1,21 @@
 import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+import { Link } from '../components/LocaleLink.jsx';
 import useDocumentMeta from '../hooks/useDocumentMeta.js';
+import { useLocale } from '../context/LocaleContext.jsx';
 import Breadcrumbs from '../components/Breadcrumbs.jsx';
+
+const DATE_LOCALES = { tr: 'tr-TR', en: 'en-US', ar: 'ar' };
 
 export default function BlogPost() {
   const { slug } = useParams();
+  const { t, locale } = useLocale();
   const [post, setPost] = useState(null);
   const [status, setStatus] = useState('loading');
 
   useEffect(() => {
     setStatus('loading');
-    fetch(`/api/blog/${slug}`)
+    fetch(`/api/blog/${slug}?lang=${locale}`)
       .then((res) => {
         if (!res.ok) throw new Error('not-found');
         return res.json();
@@ -20,11 +25,11 @@ export default function BlogPost() {
         setStatus('ready');
       })
       .catch(() => setStatus('error'));
-  }, [slug]);
+  }, [slug, locale]);
 
   useDocumentMeta(
-    post ? `${post.title} | Menekşe Vize Blog` : 'Blog | Menekşe Vize',
-    post?.excerpt || 'Menekşe Vize blog yazısı.',
+    post ? `${post.title}${t('blogPost.titleSuffix')}` : t('blogPost.fallbackMetaTitle'),
+    post?.excerpt || t('blogPost.fallbackExcerpt'),
     { path: `/blog/${slug}`, image: post?.coverImageUrl },
   );
 
@@ -59,7 +64,7 @@ export default function BlogPost() {
     return (
       <section className="section">
         <div className="container">
-          <p className="checklist-placeholder">Yükleniyor…</p>
+          <p className="checklist-placeholder">{t('blogPost.loading')}</p>
         </div>
       </section>
     );
@@ -69,9 +74,9 @@ export default function BlogPost() {
     return (
       <section className="section">
         <div className="container" style={{ textAlign: 'center' }}>
-          <h1 style={{ marginBottom: '1rem' }}>Yazı Bulunamadı</h1>
-          <p className="checklist-placeholder">Aradığınız blog yazısı yayından kaldırılmış olabilir.</p>
-          <Link to="/blog" className="btn btn-secondary" style={{ marginTop: '1.5rem', display: 'inline-block' }}>Blog&apos;a Dön</Link>
+          <h1 style={{ marginBottom: '1rem' }}>{t('blogPost.notFoundTitle')}</h1>
+          <p className="checklist-placeholder">{t('blogPost.notFoundText')}</p>
+          <Link to="/blog" className="btn btn-secondary" style={{ marginTop: '1.5rem', display: 'inline-block' }}>{t('blogPost.backToBlog')}</Link>
         </div>
       </section>
     );
@@ -80,8 +85,8 @@ export default function BlogPost() {
   return (
     <>
       <Breadcrumbs items={[
-        { label: 'Ana Sayfa', to: '/' },
-        { label: 'Blog', to: '/blog' },
+        { label: t('common.breadcrumbHome'), to: '/' },
+        { label: t('blogPage.breadcrumb'), to: '/blog' },
         { label: post.title },
       ]}
       />
@@ -89,11 +94,11 @@ export default function BlogPost() {
         className={post.coverImageUrl ? 'page-header has-photo' : 'page-header'}
         style={post.coverImageUrl ? { '--page-photo': `url(${post.coverImageUrl})` } : undefined}
       >
-        <span className="kicker">Blog</span>
+        <span className="kicker">{t('blogPage.pageKicker')}</span>
         <h1>{post.title}</h1>
         {post.publishedAt && (
           <p>
-            {new Date(post.publishedAt).toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' })}
+            {new Date(post.publishedAt).toLocaleDateString(DATE_LOCALES[locale], { day: 'numeric', month: 'long', year: 'numeric' })}
           </p>
         )}
       </section>
@@ -104,7 +109,7 @@ export default function BlogPost() {
           <div className="blog-content" dangerouslySetInnerHTML={{ __html: post.contentHtml }} />
 
           <div style={{ textAlign: 'center', marginTop: '3rem' }}>
-            <Link to="/blog" className="btn btn-secondary">Tüm Yazılar</Link>
+            <Link to="/blog" className="btn btn-secondary">{t('blogPost.allPosts')}</Link>
           </div>
         </div>
       </section>

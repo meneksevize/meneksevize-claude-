@@ -292,7 +292,7 @@ export default function Home() {
             <div className="grid grid-3">
               {latestPosts.map((post, i) => (
                 <Reveal as={Link} to={`/blog/${post.slug}`} className="card blog-card" delay={i * 60} key={post.id}>
-                  {post.category && <span className="kicker" style={{ display: 'block', marginBottom: '0.5rem' }}>{getCategoryLabel(post.category)}</span>}
+                  {post.category && <span className="kicker" style={{ display: 'block', marginBottom: '0.5rem' }}>{getCategoryLabel(post.category, t)}</span>}
                   <h3>{post.title}</h3>
                   {post.excerpt && <p>{post.excerpt}</p>}
                 </Reveal>
