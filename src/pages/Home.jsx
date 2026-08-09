@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '../components/LocaleLink.jsx';
 import useDocumentMeta from '../hooks/useDocumentMeta.js';
 import { useSiteData } from '../context/SiteDataContext.jsx';
+import { useLocale } from '../context/LocaleContext.jsx';
 import { photos } from '../data/photos.js';
 import Reveal from '../components/Reveal.jsx';
 import CountryFlag from '../components/CountryFlag.jsx';
@@ -12,66 +13,51 @@ import {
   ClockIcon, ChecklistIcon, RefreshIcon, ShieldIcon, StarIcon,
 } from '../components/icons.jsx';
 
-const FEATURED_DESTINATIONS = [
-  { id: 'abd', title: 'ABD', tag: 'Turistik, İş ve Öğrenci Vizesi', to: '/ulkeler/abd' },
-  { id: 'ingiltere', title: 'İngiltere', tag: 'Turistik ve İş Vizesi', to: '/ulkeler/ingiltere' },
-  { id: 'kanada', title: 'Kanada', tag: 'Ziyaretçi ve Öğrenci Vizesi', to: '/ulkeler/kanada' },
-  { id: 'dubai', title: 'Dubai', tag: 'Hızlı E-Vize Süreci', to: '/ulkeler/dubai' },
-  { id: 'schengen', title: 'Schengen', tag: '26 Ülke, Tek Vize', flag: '🇪🇺', to: '/blog/schengen-ulkelerinden-hangisine-basvurmaliyim' },
-];
-
-const whyUs = [
-  {
-    icon: ClockIcon,
-    title: 'Şeffaf Süreç Takibi',
-    text: 'Başvurunuzun hangi aşamada olduğunu her zaman bilirsiniz — sürpriz ya da belirsizlik yok.',
-  },
-  {
-    icon: ChecklistIcon,
-    title: 'Kişiye Özel Evrak Rehberi',
-    text: "Ülke ve vize tipinize göre özelleştirilmiş, adım adım evrak checklist'i hazırlıyoruz.",
-  },
-  {
-    icon: RefreshIcon,
-    title: 'Net İletişim',
-    text: 'Sorularınıza hızlı dönüş — telefon ve e-posta üzerinden doğrudan bize ulaşabilirsiniz.',
-  },
-  {
-    icon: ShieldIcon,
-    title: 'Dürüst Danışmanlık',
-    text: 'Nihai vize kararı ilgili konsolosluğa aittir; biz başvurunuzu en güçlü şekilde hazırlamanıza yardımcı oluruz.',
-  },
-];
-
-const processSteps = [
-  { title: 'Ön Görüşme', text: 'Ücretsiz görüşmede ihtiyacınızı ve uygun vize tipini belirliyoruz.' },
-  { title: 'Evrak Toplama', text: 'Size özel checklist ile gerekli belgeleri adım adım hazırlıyoruz.' },
-  { title: 'Randevu & Başvuru', text: 'Randevunuzu planlıyor, başvurunuzu eksiksiz şekilde teslim ediyoruz.' },
-  { title: 'Takip & Sonuç', text: 'Başvuru durumunuzu düzenli olarak sizinle paylaşıyoruz.' },
-];
-
 export default function Home() {
   const { countries, testimonials, faqs } = useSiteData();
+  const { t, locale } = useLocale();
   const faqTeasers = faqs.slice(0, 3);
   const [latestPosts, setLatestPosts] = useState([]);
 
+  const FEATURED_DESTINATIONS = [
+    { id: 'abd', title: 'ABD', tag: t('home.destTagAbd'), to: '/ulkeler/abd' },
+    { id: 'ingiltere', title: 'İngiltere', tag: t('home.destTagIngiltere'), to: '/ulkeler/ingiltere' },
+    { id: 'kanada', title: 'Kanada', tag: t('home.destTagKanada'), to: '/ulkeler/kanada' },
+    { id: 'dubai', title: 'Dubai', tag: t('home.destTagDubai'), to: '/ulkeler/dubai' },
+    { id: 'schengen', title: 'Schengen', tag: t('home.destTagSchengen'), flag: '🇪🇺', to: '/blog/schengen-ulkelerinden-hangisine-basvurmaliyim' },
+  ];
+
+  const whyUs = [
+    { icon: ClockIcon, title: t('home.why1Title'), text: t('home.why1Text') },
+    { icon: ChecklistIcon, title: t('home.why2Title'), text: t('home.why2Text') },
+    { icon: RefreshIcon, title: t('home.why3Title'), text: t('home.why3Text') },
+    { icon: ShieldIcon, title: t('home.why4Title'), text: t('home.why4Text') },
+  ];
+
+  const processSteps = [
+    { title: t('home.process1Title'), text: t('home.process1Text') },
+    { title: t('home.process2Title'), text: t('home.process2Text') },
+    { title: t('home.process3Title'), text: t('home.process3Text') },
+    { title: t('home.process4Title'), text: t('home.process4Text') },
+  ];
+
   useEffect(() => {
-    fetch('/api/blog')
+    fetch(`/api/blog?lang=${locale}`)
       .then((res) => res.json())
       .then((posts) => setLatestPosts(posts.slice(0, 3)))
       .catch(() => {});
-  }, []);
+  }, [locale]);
 
   // İstatistik bandındaki tüm değerler gerçek site verisinden türetilir —
   // uydurma başarı oranı/başvuru sayısı kullanılmaz.
   const eVisaCount = countries.filter((c) => c.tags?.includes('E-Vize')).length;
   const averageRating = testimonials.length > 0
-    ? (testimonials.reduce((sum, t) => sum + t.rating, 0) / testimonials.length).toFixed(1)
+    ? (testimonials.reduce((sum, t2) => sum + t2.rating, 0) / testimonials.length).toFixed(1)
     : null;
 
   useDocumentMeta(
-    'Menekşe Vize | Şeffaf ve Kişiye Özel Vize Danışmanlığı',
-    'Menekşe Vize; Schengen, ABD, İngiltere, Kanada ve daha fazlası için şeffaf süreç takibi ve kişiye özel evrak rehberliğiyle vize danışmanlığı sunar.',
+    t('home.metaTitle'),
+    t('home.metaDescription'),
     { image: photos.heroPlaneWindow, path: '/' },
   );
 
@@ -80,7 +66,7 @@ export default function Home() {
   useEffect(() => {
     if (testimonials.length === 0) return undefined;
 
-    const average = testimonials.reduce((sum, t) => sum + t.rating, 0) / testimonials.length;
+    const average = testimonials.reduce((sum, t2) => sum + t2.rating, 0) / testimonials.length;
 
     const schema = {
       '@context': 'https://schema.org',
@@ -92,11 +78,11 @@ export default function Home() {
         ratingValue: average.toFixed(1),
         reviewCount: testimonials.length,
       },
-      review: testimonials.map((t) => ({
+      review: testimonials.map((t2) => ({
         '@type': 'Review',
-        author: { '@type': 'Person', name: t.name },
-        reviewRating: { '@type': 'Rating', ratingValue: t.rating },
-        reviewBody: t.quote,
+        author: { '@type': 'Person', name: t2.name },
+        reviewRating: { '@type': 'Rating', ratingValue: t2.rating },
+        reviewBody: t2.quote,
       })),
     };
 
@@ -123,17 +109,17 @@ export default function Home() {
         <div className="hero-content hero-aurora-content">
           <span className="hero-badge">
             <StarIcon style={{ color: 'var(--gold)' }} />
-            {averageRating ? `${averageRating}/5 değerlendirme · ` : ''}{countries.length} ülke için vize danışmanlığı
+            {averageRating ? `${averageRating}/5 ${t('home.heroBadgeRatingSuffix')}` : ''}{countries.length} {t('home.heroBadgeCountriesSuffix')}
           </span>
-          <h1>Vize Sürecinizi <span className="highlight">Şeffaf</span> ve Öngörülebilir Hale Getiriyoruz</h1>
-          <p>Schengen, ABD, İngiltere, Kanada ve daha birçok ülke için başvurunuzu adım adım, kişiye özel evrak rehberliğiyle yönetiyoruz. Her aşamada nerede olduğunuzu bilirsiniz.</p>
+          <h1>{t('home.heroTitlePart1')}<span className="highlight">{t('home.heroTitleHighlight')}</span>{t('home.heroTitlePart3')}</h1>
+          <p>{t('home.heroSubtitle')}</p>
           <div className="hero-buttons">
-            <Link to="/on-degerlendirme" className="btn btn-gold">Ücretsiz Ön Değerlendirme</Link>
-            <Link to="/hizmetler" className="btn btn-accent">Hizmetlerimizi İnceleyin</Link>
+            <Link to="/on-degerlendirme" className="btn btn-gold">{t('home.ctaPreAssessment')}</Link>
+            <Link to="/hizmetler" className="btn btn-accent">{t('home.ctaServices')}</Link>
           </div>
 
           <div className="hero-destinations">
-            <span className="hero-destinations-label">Öne Çıkan Destinasyonlar</span>
+            <span className="hero-destinations-label">{t('home.featuredDestinationsLabel')}</span>
             <div className="hero-destinations-row">
               {FEATURED_DESTINATIONS.map((dest) => (
                 <Link to={dest.to} className="hero-destination-card" key={dest.id}>
@@ -151,21 +137,21 @@ export default function Home() {
           <Reveal as="div" className="stats-band">
             <div className="stats-band-item">
               <span className="stats-band-value"><CountUp value={countries.length} /></span>
-              <span className="stats-band-label">Ülke İçin Vize Rehberliği</span>
+              <span className="stats-band-label">{t('home.statCountries')}</span>
             </div>
             <div className="stats-band-item">
               <span className="stats-band-value"><CountUp value={eVisaCount} /></span>
-              <span className="stats-band-label">Ülkeye E-Vize Desteği</span>
+              <span className="stats-band-label">{t('home.statEVisa')}</span>
             </div>
             {averageRating && (
               <div className="stats-band-item">
                 <span className="stats-band-value"><CountUp value={averageRating} suffix="/5" decimals={1} /></span>
-                <span className="stats-band-label">Müşteri Değerlendirmesi</span>
+                <span className="stats-band-label">{t('home.statRating')}</span>
               </div>
             )}
             <div className="stats-band-item">
               <span className="stats-band-value"><CountUp value={6} /></span>
-              <span className="stats-band-label">Aşamalı Şeffaf Süreç Takibi</span>
+              <span className="stats-band-label">{t('home.statProcessSteps')}</span>
             </div>
           </Reveal>
         </div>
@@ -174,9 +160,9 @@ export default function Home() {
       <section className="section section-alt">
         <div className="container">
           <div className="section-head">
-            <span className="kicker">Neden Menekşe Vize</span>
-            <h2>Danışmanlıkta Netlik Esastır</h2>
-            <p>Abartılı vaatler yerine somut ve takip edilebilir bir süreç sunuyoruz.</p>
+            <span className="kicker">{t('home.whyUsKicker')}</span>
+            <h2>{t('home.whyUsTitle')}</h2>
+            <p>{t('home.whyUsSubtitle')}</p>
           </div>
           <div className="grid grid-4">
             {whyUs.map(({ icon: Icon, title, text }, i) => (
@@ -194,13 +180,13 @@ export default function Home() {
         <div className="container">
           <Reveal className="photo-feature">
             <div className="photo-feature-media">
-              <img src={photos.passportBoardingPass} alt="Pasaport ve uçuş bileti" loading="lazy" />
+              <img src={photos.passportBoardingPass} alt={t('home.photoAlt')} loading="lazy" />
             </div>
             <div className="photo-feature-text">
-              <span className="kicker">Evraktan Uçuşa</span>
-              <h2>Pasaportunuz Elinize Geçtiği Anda İşimiz Bitmiş Olur</h2>
-              <p>Ön görüşmeden randevuya, evrak toplamadan sonuç takibine kadar her adımda yanınızdayız. Siz sadece valizinizi hazırlamaya odaklanın.</p>
-              <Link to="/surec" className="btn btn-secondary">Süreci İnceleyin</Link>
+              <span className="kicker">{t('home.photoFeatureKicker')}</span>
+              <h2>{t('home.photoFeatureTitle')}</h2>
+              <p>{t('home.photoFeatureText')}</p>
+              <Link to="/surec" className="btn btn-secondary">{t('home.photoFeatureCta')}</Link>
             </div>
           </Reveal>
         </div>
@@ -209,9 +195,9 @@ export default function Home() {
       <section className="section section-alt">
         <div className="container">
           <div className="section-head">
-            <span className="kicker">Öne Çıkan Destinasyonlar</span>
-            <h2>En Çok Başvuru Aldığımız 5 Ülke</h2>
-            <p>En yoğun başvuru aldığımız bu beş ülkede uzmanlaştık; evrak rehberliğimiz burada en kapsamlı ve güncel içeriğe sahip. Diğer {countries.length - FEATURED_DESTINATIONS.length}+ ülke için üstteki "Ülkeler" menüsünü kullanabilirsiniz.</p>
+            <span className="kicker">{t('home.destinationsKicker')}</span>
+            <h2>{t('home.destinationsTitle')}</h2>
+            <p>{t('home.destinationsSubtitlePart1')}{countries.length - FEATURED_DESTINATIONS.length}{t('home.destinationsSubtitlePart2')}</p>
           </div>
           <div className="destination-feature-grid">
             {FEATURED_DESTINATIONS.map((dest, i) => (
@@ -230,7 +216,7 @@ export default function Home() {
             ))}
           </div>
           <p className="form-note" style={{ textAlign: 'center', marginTop: '1.5rem' }}>
-            Aradığınız ülke burada yoksa <Link to="/hizmetler" style={{ color: 'var(--accent-color)' }}>tüm ülkeler listemize</Link> göz atabilir veya <Link to="/iletisim" style={{ color: 'var(--accent-color)' }}>bize ulaşabilirsiniz</Link>.
+            {t('home.destinationsFallbackPre')}<Link to="/hizmetler" style={{ color: 'var(--accent-color)' }}>{t('home.destinationsFallbackLink1')}</Link>{t('home.destinationsFallbackMid')}<Link to="/iletisim" style={{ color: 'var(--accent-color)' }}>{t('home.destinationsFallbackLink2')}</Link>{t('home.destinationsFallbackEnd')}
           </p>
         </div>
       </section>
@@ -239,28 +225,28 @@ export default function Home() {
         <section className="section testimonial-wall-section">
           <div className="container">
             <div className="section-head">
-              <span className="kicker">Referanslar</span>
-              <h2>Müşterilerimiz Ne Diyor</h2>
-              <p>Süreci birlikte yürüttüğümüz müşterilerimizin deneyimleri.</p>
+              <span className="kicker">{t('home.testimonialsKicker')}</span>
+              <h2>{t('home.testimonialsTitle')}</h2>
+              <p>{t('home.testimonialsSubtitle')}</p>
             </div>
           </div>
           <div className="testimonial-marquee">
             <div className="testimonial-track">
-              {[...testimonials, ...testimonials, ...testimonials].map((t, i) => (
-                <div className="testimonial-wall-card" key={`${t.id}-${i}`}>
+              {[...testimonials, ...testimonials, ...testimonials].map((t2, i) => (
+                <div className="testimonial-wall-card" key={`${t2.id}-${i}`}>
                   <span className="testimonial-quote-mark">&ldquo;</span>
                   <div className="testimonial-stars">
                     {Array.from({ length: 5 }).map((_, starIndex) => (
                       <StarIcon
                         key={starIndex}
-                        style={{ color: starIndex < t.rating ? 'var(--gold)' : 'var(--border-color)' }}
+                        style={{ color: starIndex < t2.rating ? 'var(--gold)' : 'var(--border-color)' }}
                       />
                     ))}
                   </div>
-                  <p className="testimonial-quote">{t.quote}</p>
+                  <p className="testimonial-quote">{t2.quote}</p>
                   <div className="testimonial-author">
-                    <span className="testimonial-name">{t.name}</span>
-                    {t.location && <span className="testimonial-location">{t.location}</span>}
+                    <span className="testimonial-name">{t2.name}</span>
+                    {t2.location && <span className="testimonial-location">{t2.location}</span>}
                   </div>
                 </div>
               ))}
@@ -272,9 +258,9 @@ export default function Home() {
       <section className="section section-alt">
         <div className="container">
           <div className="section-head">
-            <span className="kicker">Nasıl Çalışır</span>
-            <h2>4 Adımda Vize Sürecinizi Yönetiyoruz</h2>
-            <p>Tam interaktif zaman çizelgesini süreç sayfasında inceleyebilirsiniz.</p>
+            <span className="kicker">{t('home.howItWorksKicker')}</span>
+            <h2>{t('home.howItWorksTitle')}</h2>
+            <p>{t('home.howItWorksSubtitle')}</p>
           </div>
           <div className="grid grid-4">
             {processSteps.map((step, i) => (
@@ -289,8 +275,8 @@ export default function Home() {
             textAlign: 'center', marginTop: '2.5rem', display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap',
           }}
           >
-            <Link to="/surec" className="btn btn-secondary">Tüm Süreci İncele</Link>
-            <Link to="/takip" className="btn btn-gold">Başvurunuzu Takip Edin</Link>
+            <Link to="/surec" className="btn btn-secondary">{t('home.ctaFullProcess')}</Link>
+            <Link to="/takip" className="btn btn-gold">{t('home.ctaTrackApplication')}</Link>
           </div>
         </div>
       </section>
@@ -299,9 +285,9 @@ export default function Home() {
         <section className="section">
           <div className="container">
             <div className="section-head">
-              <span className="kicker">Güncel</span>
-              <h2>Blog&apos;dan Son Yazılar</h2>
-              <p>Vize süreçleri, evrak ipuçları ve güncel gelişmeler üzerine rehberlerimiz.</p>
+              <span className="kicker">{t('home.blogKicker')}</span>
+              <h2>{t('home.blogTitle')}</h2>
+              <p>{t('home.blogSubtitle')}</p>
             </div>
             <div className="grid grid-3">
               {latestPosts.map((post, i) => (
@@ -313,7 +299,7 @@ export default function Home() {
               ))}
             </div>
             <div style={{ textAlign: 'center', marginTop: '2rem' }}>
-              <Link to="/blog" className="btn btn-secondary">Tüm Yazıları Okuyun</Link>
+              <Link to="/blog" className="btn btn-secondary">{t('home.blogCtaAll')}</Link>
             </div>
           </div>
         </section>
@@ -323,8 +309,8 @@ export default function Home() {
         <section className="section section-alt">
           <div className="container">
             <div className="section-head">
-              <span className="kicker">Merak Edilenler</span>
-              <h2>Sıkça Sorulan Sorular</h2>
+              <span className="kicker">{t('home.faqKicker')}</span>
+              <h2>{t('home.faqTitle')}</h2>
             </div>
             <div className="faq-group">
               {faqTeasers.map((item) => (
@@ -336,7 +322,7 @@ export default function Home() {
               ))}
             </div>
             <div style={{ textAlign: 'center' }}>
-              <Link to="/sss" className="btn btn-secondary">Tüm Soruları Gör</Link>
+              <Link to="/sss" className="btn btn-secondary">{t('home.faqCtaAll')}</Link>
             </div>
           </div>
         </section>
@@ -348,10 +334,10 @@ export default function Home() {
           <span className="aurora aurora-cta-2"></span>
         </div>
         <div className="container final-cta-content" style={{ textAlign: 'center' }}>
-          <span className="kicker">Hazır mısınız?</span>
-          <h2 style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', marginBottom: '1rem' }}>Vize Sürecinizi Bugün Başlatın</h2>
-          <p style={{ color: 'var(--text-muted)', maxWidth: 560, margin: '0 auto 2rem' }}>Ücretsiz ön görüşme ile size en uygun vize tipini ve süreç planını birlikte belirleyelim.</p>
-          <Link to="/iletisim" className="btn btn-gold btn-pulse">Hemen İletişime Geçin</Link>
+          <span className="kicker">{t('home.finalCtaKicker')}</span>
+          <h2 style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', marginBottom: '1rem' }}>{t('home.finalCtaTitle')}</h2>
+          <p style={{ color: 'var(--text-muted)', maxWidth: 560, margin: '0 auto 2rem' }}>{t('home.finalCtaText')}</p>
+          <Link to="/iletisim" className="btn btn-gold btn-pulse">{t('home.finalCtaButton')}</Link>
         </div>
       </section>
     </>
