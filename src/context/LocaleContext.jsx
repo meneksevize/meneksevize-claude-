@@ -34,11 +34,13 @@ export function LocaleProvider({ children }) {
     document.documentElement.dir = dir;
   }, [locale, dir]);
 
-  const t = useMemo(() => (key) => {
+  // `vars` opsiyoneldir: sözlükteki "{isim}" gibi yer tutucuları değiştirir
+  // (ör. t('contact.metaDescriptionTemplate', { phone, email })).
+  const t = useMemo(() => (key, vars) => {
     const value = getByPath(DICTS[locale], key);
-    if (value !== undefined) return value;
-    const fallback = getByPath(DICTS.tr, key);
-    return fallback !== undefined ? fallback : key;
+    const resolved = value !== undefined ? value : (getByPath(DICTS.tr, key) ?? key);
+    if (typeof resolved !== 'string' || !vars) return resolved;
+    return resolved.replace(/\{(\w+)\}/g, (match, name) => (vars[name] !== undefined ? vars[name] : match));
   }, [locale]);
 
   const prefix = locale === 'tr' ? '' : `/${locale}`;

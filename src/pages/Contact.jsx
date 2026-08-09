@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '../components/LocaleLink.jsx';
 import useDocumentMeta from '../hooks/useDocumentMeta.js';
 import { useSiteData } from '../context/SiteDataContext.jsx';
+import { useLocale } from '../context/LocaleContext.jsx';
 import { photos } from '../data/photos.js';
 import Reveal from '../components/Reveal.jsx';
 import {
@@ -9,16 +10,13 @@ import {
 } from '../components/icons.jsx';
 import Breadcrumbs from '../components/Breadcrumbs.jsx';
 
-const countryOptions = [
-  'Schengen Bölgesi', 'Amerika Birleşik Devletleri', 'İngiltere', 'Kanada', 'Dubai / BAE', 'Rusya', 'Avustralya', 'Diğer',
-];
-
-const emptyForm = {
-  name: '', email: '', phone: '', targetCountry: countryOptions[0], message: '',
-};
-
 export default function Contact() {
   const { settings } = useSiteData();
+  const { t } = useLocale();
+  const countryOptions = t('contact.countryOptions');
+  const emptyForm = {
+    name: '', email: '', phone: '', targetCountry: countryOptions[0], message: '',
+  };
   const phone = settings.phone || '';
   const phoneHref = `tel:+${(settings.whatsapp || phone).replace(/\D/g, '')}`;
   const whatsappHref = settings.whatsapp ? `https://wa.me/${settings.whatsapp.replace(/\D/g, '')}` : null;
@@ -28,8 +26,8 @@ export default function Contact() {
   const [error, setError] = useState('');
 
   useDocumentMeta(
-    'İletişim | Menekşe Vize',
-    `Menekşe Vize ile ücretsiz ön görüşme için hemen iletişime geçin. Telefon: ${phone || '—'}, E-posta: ${settings.email || '—'}`,
+    t('contact.metaTitle'),
+    t('contact.metaDescriptionTemplate', { phone: phone || '—', email: settings.email || '—' }),
   );
 
   const handleChange = (field, value) => {
@@ -48,7 +46,7 @@ export default function Contact() {
       });
       const json = await res.json();
       if (!res.ok) {
-        throw new Error(json.error || 'Gönderilemedi, lütfen tekrar deneyin.');
+        throw new Error(json.error || t('contact.genericError'));
       }
       window.gtag?.('event', 'conversion', { send_to: 'AW-18327360593/zUw7CJzvhdQcENGolaNE' });
       setStatus('success');
@@ -61,11 +59,11 @@ export default function Contact() {
 
   return (
     <>
-      <Breadcrumbs items={[{ label: 'Ana Sayfa', to: '/' }, { label: 'İletişim' }]} />
+      <Breadcrumbs items={[{ label: t('common.breadcrumbHome'), to: '/' }, { label: t('contact.breadcrumb') }]} />
       <section className="page-header has-photo" style={{ '--page-photo': `url(${photos.mapWithPins})` }}>
-        <span className="kicker">İletişim</span>
-        <h1>Ücretsiz Ön Görüşme İçin Bize Ulaşın</h1>
-        <p>Sorularınızı yanıtlamaktan ve size en uygun vize planını birlikte oluşturmaktan memnuniyet duyarız.</p>
+        <span className="kicker">{t('contact.pageKicker')}</span>
+        <h1>{t('contact.pageTitle')}</h1>
+        <p>{t('contact.pageSubtitle')}</p>
       </section>
 
       <section className="section" style={{ paddingTop: '1rem' }}>
@@ -76,7 +74,7 @@ export default function Contact() {
                 <div className="contact-info-item">
                   <div className="card-icon"><PhoneIcon /></div>
                   <div>
-                    <h3>Telefon</h3>
+                    <h3>{t('contact.phoneLabel')}</h3>
                     <a href={phoneHref}>{phone}</a>
                   </div>
                 </div>
@@ -86,7 +84,7 @@ export default function Contact() {
                 <div className="contact-info-item">
                   <div className="card-icon"><MailIcon /></div>
                   <div>
-                    <h3>E-posta</h3>
+                    <h3>{t('contact.emailLabel')}</h3>
                     <a href={`mailto:${settings.email}`}>{settings.email}</a>
                   </div>
                 </div>
@@ -96,8 +94,8 @@ export default function Contact() {
                 <div className="contact-info-item">
                   <div className="card-icon"><WhatsappIcon /></div>
                   <div>
-                    <h3>WhatsApp</h3>
-                    <a href={whatsappHref} target="_blank" rel="noopener noreferrer">Hızlı mesaj gönderin</a>
+                    <h3>{t('contact.whatsappLabel')}</h3>
+                    <a href={whatsappHref} target="_blank" rel="noopener noreferrer">{t('contact.whatsappCta')}</a>
                   </div>
                 </div>
               )}
@@ -106,7 +104,7 @@ export default function Contact() {
                 <div className="contact-info-item">
                   <div className="card-icon"><ClockIcon /></div>
                   <div>
-                    <h3>Çalışma Saatleri</h3>
+                    <h3>{t('contact.hoursLabel')}</h3>
                     <p style={{ color: 'var(--text-color)' }}>{settings.working_hours}</p>
                   </div>
                 </div>
@@ -116,28 +114,28 @@ export default function Contact() {
                 <div className="contact-info-item">
                   <div className="card-icon"><MapPinIcon /></div>
                   <div>
-                    <h3>Adres</h3>
+                    <h3>{t('contact.addressLabel')}</h3>
                     <p style={{ color: 'var(--text-color)' }}>{settings.address}</p>
                   </div>
                 </div>
               )}
 
-              <p className="form-note">Ücretsiz ön görüşme talebiniz için telefon, e-posta veya WhatsApp üzerinden bize ulaşabilirsiniz. Danışmanlık hizmetimiz uzaktan/online olarak da tam kapsamlı yürütülebilir; ofise gelmeniz gerekmez.</p>
+              <p className="form-note">{t('contact.infoNote')}</p>
             </Reveal>
 
             <Reveal as="div" className="card" delay={100}>
-              <h3 style={{ marginBottom: '1.5rem' }}>İletişim Formu</h3>
+              <h3 style={{ marginBottom: '1.5rem' }}>{t('contact.formTitle')}</h3>
 
               {status === 'success' ? (
                 <div className="admin-success-banner">
-                  Mesajınız alındı, en kısa sürede size dönüş yapacağız.
+                  {t('contact.successMessage')}
                 </div>
               ) : (
                 <form onSubmit={handleSubmit}>
                   {error && <div className="admin-login-error">{error}</div>}
 
                   <div className="form-group">
-                    <label htmlFor="name">Ad Soyad</label>
+                    <label htmlFor="name">{t('contact.nameLabel')}</label>
                     <input
                       type="text"
                       id="name"
@@ -147,7 +145,7 @@ export default function Contact() {
                     />
                   </div>
                   <div className="form-group">
-                    <label htmlFor="email">E-posta</label>
+                    <label htmlFor="email">{t('contact.emailFieldLabel')}</label>
                     <input
                       type="email"
                       id="email"
@@ -157,7 +155,7 @@ export default function Contact() {
                     />
                   </div>
                   <div className="form-group">
-                    <label htmlFor="phone">Telefon</label>
+                    <label htmlFor="phone">{t('contact.phoneFieldLabel')}</label>
                     <input
                       type="tel"
                       id="phone"
@@ -166,7 +164,7 @@ export default function Contact() {
                     />
                   </div>
                   <div className="form-group">
-                    <label htmlFor="country">Hedef Ülke</label>
+                    <label htmlFor="country">{t('contact.countryLabel')}</label>
                     <select
                       id="country"
                       value={form.targetCountry}
@@ -178,22 +176,22 @@ export default function Contact() {
                     </select>
                   </div>
                   <div className="form-group">
-                    <label htmlFor="message">Mesajınız</label>
+                    <label htmlFor="message">{t('contact.messageLabel')}</label>
                     <textarea
                       id="message"
                       value={form.message}
                       onChange={(e) => handleChange('message', e.target.value)}
                       required
-                      placeholder="Seyahat amacınızı ve tahmini tarihinizi kısaca belirtebilirsiniz."
+                      placeholder={t('contact.messagePlaceholder')}
                     />
                   </div>
                   <p className="form-note" style={{ marginBottom: '1rem' }}>
-                    Formu göndererek{' '}
-                    <Link to="/gizlilik-politikasi" style={{ color: 'var(--accent-color)' }}>Gizlilik Politikası ve KVKK Aydınlatma Metni</Link>
-                    {' '}kapsamında kişisel verilerinizin işlenmesini kabul etmiş olursunuz.
+                    {t('contact.consentPre')}
+                    <Link to="/gizlilik-politikasi" style={{ color: 'var(--accent-color)' }}>{t('contact.consentLink')}</Link>
+                    {t('contact.consentPost')}
                   </p>
                   <button type="submit" className="btn btn-gold" style={{ width: '100%' }} disabled={status === 'submitting'}>
-                    {status === 'submitting' ? 'Gönderiliyor…' : 'Gönder'}
+                    {status === 'submitting' ? t('contact.submitting') : t('contact.submit')}
                   </button>
                 </form>
               )}
@@ -203,7 +201,7 @@ export default function Contact() {
           {settings.address && (
             <Reveal as="div" className="contact-map" style={{ marginTop: '2.5rem' }}>
               <iframe
-                title="Konum"
+                title={t('contact.mapTitle')}
                 src={`https://www.google.com/maps?q=${encodeURIComponent(settings.address)}&output=embed`}
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
