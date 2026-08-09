@@ -1,24 +1,26 @@
 import {
   createContext, useCallback, useContext, useEffect, useMemo, useState,
 } from 'react';
+import { useLocale } from './LocaleContext.jsx';
 
 const SiteDataContext = createContext(null);
 
-async function fetchSiteData() {
-  const res = await fetch('/api/site-data');
+async function fetchSiteData(locale) {
+  const res = await fetch(`/api/site-data?lang=${locale}`);
   if (!res.ok) throw new Error('Site verisi alınamadı.');
   return res.json();
 }
 
 export function SiteDataProvider({ children }) {
+  const { locale } = useLocale();
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
 
   const reload = useCallback(() => {
-    fetchSiteData()
+    fetchSiteData(locale)
       .then(setData)
       .catch((err) => setError(err.message));
-  }, []);
+  }, [locale]);
 
   useEffect(() => {
     reload();
