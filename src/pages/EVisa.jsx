@@ -1,6 +1,7 @@
-import { Link } from 'react-router-dom';
+import { Link } from '../components/LocaleLink.jsx';
 import useDocumentMeta from '../hooks/useDocumentMeta.js';
 import { useSiteData } from '../context/SiteDataContext.jsx';
+import { useLocale } from '../context/LocaleContext.jsx';
 import { photos } from '../data/photos.js';
 import Reveal from '../components/Reveal.jsx';
 import CountryFlag from '../components/CountryFlag.jsx';
@@ -8,37 +9,30 @@ import Breadcrumbs from '../components/Breadcrumbs.jsx';
 
 export default function EVisa() {
   const { countries } = useSiteData();
+  const { t } = useLocale();
   const eVisaCountries = countries.filter((c) => c.tags?.includes('E-Vize'));
 
   useDocumentMeta(
-    'E-Vize Başvurusu Yapılan Ülkeler | Menekşe Vize',
-    'Dubai, Rusya, Hindistan, Mısır, Tayland, Vietnam ve Sri Lanka gibi tamamen online başvurulan e-Vize ülkeleri için hızlı süreç desteği.',
+    t('eVisa.metaTitle'),
+    t('eVisa.metaDescription'),
     { image: photos.passportBoardingPass, path: '/e-vize' },
   );
 
   return (
     <>
-      <Breadcrumbs items={[{ label: 'Ana Sayfa', to: '/' }, { label: 'E-Vize Ülkeleri' }]} />
+      <Breadcrumbs items={[{ label: t('common.breadcrumbHome'), to: '/' }, { label: t('eVisa.breadcrumb') }]} />
       <section className="page-header has-photo" style={{ '--page-photo': `url(${photos.passportBoardingPass})` }}>
-        <span className="kicker">Hızlı Süreç</span>
-        <h1>E-Vize Başvurusu Yapılan Ülkeler</h1>
-        <p>
-          Büyükelçilik randevusu gerektirmeyen, tamamen online başvurulan ve genellikle birkaç gün içinde
-          sonuçlanan e-Vize ülkeleri burada bir arada.
-        </p>
+        <span className="kicker">{t('eVisa.pageKicker')}</span>
+        <h1>{t('eVisa.pageTitle')}</h1>
+        <p>{t('eVisa.pageSubtitle')}</p>
       </section>
 
       <section className="section" style={{ paddingTop: '1rem' }}>
         <div className="container">
           <div className="section-head">
-            <span className="kicker">Neden E-Vize?</span>
-            <h2>Randevu Beklemeden, Evden Başvuru</h2>
-            <p>
-              E-Vize sistemi, pasaportunuzu büyükelçiliğe teslim etmenizi veya konsolosluk randevusu almanızı
-              gerektirmez — başvuru formu, dijital fotoğraf ve pasaport taraması ile tamamen online yürütülür.
-              Sonuç genellikle birkaç iş günü, bazı ülkelerde ise birkaç saat içinde e-postanıza ulaşır. Biz de bu
-              süreçte formun eksiksiz doldurulmasından belge hazırlığına kadar sizinle birlikte çalışıyoruz.
-            </p>
+            <span className="kicker">{t('eVisa.whyKicker')}</span>
+            <h2>{t('eVisa.whyTitle')}</h2>
+            <p>{t('eVisa.whyText')}</p>
           </div>
 
           <div className="country-tile-grid">
@@ -57,8 +51,7 @@ export default function EVisa() {
           </div>
 
           <p className="form-note" style={{ textAlign: 'center', maxWidth: 600, margin: '2rem auto 0' }}>
-            Listede aradığınız ülkeyi bulamadınız mı? <Link to="/hizmetler" style={{ color: 'var(--accent-color)' }}>tüm ülkeler sayfamıza</Link> göz atın
-            ya da <Link to="/iletisim" style={{ color: 'var(--accent-color)' }}>bizimle iletişime geçin</Link>.
+            {t('eVisa.notFoundPre')}<Link to="/hizmetler" style={{ color: 'var(--accent-color)' }}>{t('eVisa.notFoundLink1')}</Link>{t('eVisa.notFoundMid')}<Link to="/iletisim" style={{ color: 'var(--accent-color)' }}>{t('eVisa.notFoundLink2')}</Link>{t('eVisa.notFoundPost')}
           </p>
         </div>
       </section>
