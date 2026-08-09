@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+import { Link } from '../components/LocaleLink.jsx';
 import useDocumentMeta from '../hooks/useDocumentMeta.js';
+import { useLocale } from '../context/LocaleContext.jsx';
 import { photos } from '../data/photos.js';
 import Breadcrumbs from '../components/Breadcrumbs.jsx';
 
@@ -21,6 +23,7 @@ function formatAmount(amount, currency) {
 
 export default function Payment() {
   const { code } = useParams();
+  const { t } = useLocale();
   const [request, setRequest] = useState(null);
   const [loadError, setLoadError] = useState('');
   const [identityNumber, setIdentityNumber] = useState('');
@@ -32,13 +35,13 @@ export default function Payment() {
   const [checkoutFormContent, setCheckoutFormContent] = useState('');
   const formContainerRef = useRef(null);
 
-  useDocumentMeta('Ödeme | Menekşe Vize', 'Menekşe Vize hizmet bedelinizi güvenle ödeyin.');
+  useDocumentMeta(t('payment.metaTitle'), t('payment.metaDescription'));
 
   useEffect(() => {
     fetch(`/api/payments/public/${code}`)
       .then(async (res) => {
         const json = await res.json();
-        if (!res.ok) throw new Error(json.error || 'Ödeme talebi bulunamadı.');
+        if (!res.ok) throw new Error(json.error || t('payment.notFoundError'));
         setRequest(json);
       })
       .catch((err) => setLoadError(err.message));
@@ -77,7 +80,7 @@ export default function Payment() {
         }),
       });
       const json = await res.json();
-      if (!res.ok) throw new Error(json.error || 'Ödeme formu başlatılamadı.');
+      if (!res.ok) throw new Error(json.error || t('payment.formStartError'));
       setCheckoutFormContent(json.checkoutFormContent);
       setSubmitStatus('form-ready');
     } catch (err) {
@@ -88,11 +91,11 @@ export default function Payment() {
 
   return (
     <>
-      <Breadcrumbs items={[{ label: 'Ana Sayfa', to: '/' }, { label: 'Ödeme' }]} />
+      <Breadcrumbs items={[{ label: t('common.breadcrumbHome'), to: '/' }, { label: t('payment.breadcrumb') }]} />
       <section className="page-header has-photo" style={{ '--page-photo': `url(${photos.passportBoardingPass})` }}>
-        <span className="kicker">Güvenli Ödeme</span>
-        <h1>Hizmet Bedeli Ödemesi</h1>
-        <p>Size özel oluşturulan ödeme talebini aşağıda görebilir, kart bilgilerinizi güvenle girebilirsiniz.</p>
+        <span className="kicker">{t('payment.pageKicker')}</span>
+        <h1>{t('payment.pageTitle')}</h1>
+        <p>{t('payment.pageSubtitle')}</p>
       </section>
 
       <section className="section" style={{ paddingTop: '1rem' }}>
@@ -111,14 +114,15 @@ export default function Payment() {
 
               {request.status === 'paid' && (
                 <p className="form-note" style={{ color: 'var(--accent-color)' }}>
-                  Bu ödeme başarıyla alınmıştır. Teşekkür ederiz.
+                  {t('payment.paidNotice')}
                 </p>
               )}
 
               {request.status !== 'paid' && !request.iyzicoConfigured && (
                 <p className="form-note">
-                  Online ödeme sistemi şu anda aktif değil. Lütfen ödemenizi tamamlamak için{' '}
-                  <Link to="/iletisim" style={{ color: 'var(--accent-color)' }}>bizimle iletişime geçin</Link>.
+                  {t('payment.offlinePre')}
+                  <Link to="/iletisim" style={{ color: 'var(--accent-color)' }}>{t('payment.offlineLink')}</Link>
+                  {t('payment.offlinePost')}
                 </p>
               )}
 
@@ -128,12 +132,12 @@ export default function Payment() {
                   <div className="select-group" style={{ marginBottom: '1rem' }}>
                     <label>
                       <input type="checkbox" checked={isForeigner} onChange={(e) => setIsForeigner(e.target.checked)} style={{ width: 'auto', marginRight: '0.5rem' }} />
-                      Yabancı uyrukluyum (T.C. kimlik numaram yok)
+                      {t('payment.foreignerCheckbox')}
                     </label>
                   </div>
                   {!isForeigner && (
                     <div className="select-group" style={{ marginBottom: '1rem' }}>
-                      <label htmlFor="identityNumber">T.C. Kimlik Numarası</label>
+                      <label htmlFor="identityNumber">{t('payment.identityLabel')}</label>
                       <input
                         id="identityNumber"
                         value={identityNumber}
@@ -144,18 +148,18 @@ export default function Payment() {
                     </div>
                   )}
                   <div className="select-group" style={{ marginBottom: '1rem' }}>
-                    <label htmlFor="address">Adres</label>
+                    <label htmlFor="address">{t('payment.addressLabel')}</label>
                     <input id="address" value={address} onChange={(e) => setAddress(e.target.value)} required />
                   </div>
                   <div className="select-group" style={{ marginBottom: '1rem' }}>
-                    <label htmlFor="city">Şehir</label>
+                    <label htmlFor="city">{t('payment.cityLabel')}</label>
                     <select id="city" value={city} onChange={(e) => setCity(e.target.value)} required>
-                      <option value="" disabled>Seçiniz</option>
+                      <option value="" disabled>{t('payment.citySelectPlaceholder')}</option>
                       {CITIES.map((c) => <option key={c} value={c}>{c}</option>)}
                     </select>
                   </div>
                   <button type="submit" className="btn btn-gold" style={{ width: '100%' }} disabled={submitStatus === 'submitting'}>
-                    {submitStatus === 'submitting' ? 'Yönlendiriliyor…' : 'Ödemeye Geç'}
+                    {submitStatus === 'submitting' ? t('payment.redirecting') : t('payment.submit')}
                   </button>
                 </form>
               )}
