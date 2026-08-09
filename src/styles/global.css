@@ -81,6 +81,17 @@ h1, h2, h3, .logo {
   line-height: 1.2;
 }
 
+/* ---------- RTL (Arapça) düzeltmeleri ----------
+   Flexbox satırları `dir="rtl"` ile zaten otomatik olarak aynalanıyor (CSS
+   Flexbox spesifikasyonu `row` yönünü satır-içi yazı yönüne bağlar); bu blok
+   sadece otomatik olarak dönmeyen, açık text-align/ikon-yön kurallarını
+   hedefler. Sabit konumlu öğeler (WhatsApp/yukarı çık butonu, mobil tab bar)
+   kasıtlı olarak buraya dahil edilmedi — RTL destekleyen sitelerde de bu
+   öğeler genellikle aynı köşede sabit kalır. */
+[dir="rtl"] .breadcrumbs-list {
+  flex-direction: row-reverse;
+}
+
 a {
   color: inherit;
 }
@@ -253,6 +264,39 @@ img, svg {
   align-items: center;
   gap: 0.45rem;
   white-space: nowrap;
+}
+
+/* ---------- Dil Değiştirici ---------- */
+.lang-switcher {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+  background-color: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: 999px;
+  padding: 0.2rem;
+}
+
+.lang-switcher-btn {
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  padding: 0.35rem 0.6rem;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.lang-switcher-btn.active {
+  background-color: var(--accent-color);
+  color: #fff;
+}
+
+.lang-switcher-btn:not(.active):hover {
+  color: var(--text-color);
 }
 
 /* ---------- Navbar "Ülkeler" açılır menü ---------- */

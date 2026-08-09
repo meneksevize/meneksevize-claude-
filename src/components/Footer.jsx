@@ -1,10 +1,17 @@
-import { Link } from 'react-router-dom';
+import { Link } from './LocaleLink.jsx';
 import { useSiteData } from '../context/SiteDataContext.jsx';
+import { useLocale } from '../context/LocaleContext.jsx';
 import { InstagramIcon } from './icons.jsx';
 
 export default function Footer() {
   const { settings } = useSiteData();
+  const { t, locale } = useLocale();
   const phone = settings.phone || '';
+  // settings.footer_note admin panelden Türkçe girildiği için sadece Türkçe
+  // görünümde kullanılır; en/ar'da (henüz ayrı bir çeviri alanı olmadığından)
+  // sözlükteki çeviri gösterilir. Faz 3'te settings'e footer_note_en/ar
+  // eklenince bu ayrım API tarafına taşınabilir.
+  const footerNote = locale === 'tr' ? (settings.footer_note || t('footer.defaultNote')) : t('footer.defaultNote');
   const phoneHref = `tel:+${(settings.whatsapp || phone).replace(/\D/g, '')}`;
 
   return (
@@ -13,29 +20,29 @@ export default function Footer() {
         <div className="footer-grid">
           <div className="footer-brand">
             <Link to="/" className="logo">Menekşe<span>Vize</span></Link>
-            <p>{settings.footer_note || 'Schengen ve dünya genelinde vize başvurularınızda şeffaf süreç takibi ve kişiye özel evrak rehberliği sunan danışmanlık hizmeti.'}</p>
+            <p>{footerNote}</p>
           </div>
           <div className="footer-col">
-            <h4>Hızlı Linkler</h4>
+            <h4>{t('footer.quickLinks')}</h4>
             <ul>
-              <li><Link to="/hakkimizda">Hakkımızda</Link></li>
-              <li><Link to="/hizmetler">Hizmetler</Link></li>
-              <li><Link to="/e-vize">E-Vize Ülkeleri</Link></li>
-              <li><Link to="/surec">Süreç</Link></li>
-              <li><Link to="/vize-reddi">Vize Reddi</Link></li>
-              <li><Link to="/on-degerlendirme">Ücretsiz Ön Değerlendirme</Link></li>
-              <li><Link to="/evrak-rehberi">Evrak Rehberi</Link></li>
-              <li><Link to="/blog">Blog</Link></li>
-              <li><Link to="/sss">SSS</Link></li>
-              <li><Link to="/takip">Başvurumu Takip Et</Link></li>
+              <li><Link to="/hakkimizda">{t('footer.about')}</Link></li>
+              <li><Link to="/hizmetler">{t('footer.services')}</Link></li>
+              <li><Link to="/e-vize">{t('footer.eVisa')}</Link></li>
+              <li><Link to="/surec">{t('footer.process')}</Link></li>
+              <li><Link to="/vize-reddi">{t('footer.visaRejection')}</Link></li>
+              <li><Link to="/on-degerlendirme">{t('footer.preAssessment')}</Link></li>
+              <li><Link to="/evrak-rehberi">{t('footer.documentGuide')}</Link></li>
+              <li><Link to="/blog">{t('footer.blog')}</Link></li>
+              <li><Link to="/sss">{t('footer.faq')}</Link></li>
+              <li><Link to="/takip">{t('footer.track')}</Link></li>
             </ul>
           </div>
           <div className="footer-col">
-            <h4>İletişim</h4>
+            <h4>{t('footer.contactTitle')}</h4>
             <ul>
               {phone && <li><a href={phoneHref}>{phone}</a></li>}
               {settings.email && <li><a href={`mailto:${settings.email}`}>{settings.email}</a></li>}
-              <li><Link to="/iletisim">İletişim Formu</Link></li>
+              <li><Link to="/iletisim">{t('footer.contactForm')}</Link></li>
               <li>
                 <a
                   href="https://www.instagram.com/meneksevize"
@@ -44,22 +51,22 @@ export default function Footer() {
                   style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}
                 >
                   <InstagramIcon width={16} height={16} />
-                  Instagram
+                  {t('footer.instagram')}
                 </a>
               </li>
             </ul>
           </div>
         </div>
         <div className="footer-disclaimer">
-          Menekşe Vize özel bir vize danışmanlık firmasıdır. Resmi konsolosluk, büyükelçilik veya başvuru merkezi değildir. Sunulan hizmetler isteğe bağlı danışmanlık kapsamındadır.
+          {t('footer.disclaimer')}
         </div>
 
         <div className="footer-bottom">
-          <span>&copy; 2026 Menekşe Vize. Tüm hakları saklıdır.</span>
-          <Link to="/gizlilik-politikasi">Gizlilik Politikası (KVKK)</Link>
-          <Link to="/kullanim-kosullari">Kullanım Koşulları</Link>
-          <Link to="/iptal-iade-politikasi">İptal ve İade Politikası</Link>
-          <span>Nihai vize kararı ilgili konsolosluğa aittir.</span>
+          <span>{t('footer.copyright')}</span>
+          <Link to="/gizlilik-politikasi">{t('footer.privacyPolicy')}</Link>
+          <Link to="/kullanim-kosullari">{t('footer.termsOfService')}</Link>
+          <Link to="/iptal-iade-politikasi">{t('footer.refundPolicy')}</Link>
+          <span>{t('footer.finalDecisionNote')}</span>
         </div>
       </div>
     </footer>

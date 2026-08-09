@@ -10,6 +10,7 @@ import MobileTabBar from './components/MobileTabBar.jsx';
 import WhatsappFloatButton from './components/WhatsappFloatButton.jsx';
 import LiveChatWidget from './components/LiveChatWidget.jsx';
 import { SiteDataProvider, useSiteData } from './context/SiteDataContext.jsx';
+import { LocaleProvider, extractLocale, useLocale } from './context/LocaleContext.jsx';
 import { AdminAuthProvider } from './admin/AdminAuthContext.jsx';
 import RequireAdminAuth from './admin/RequireAdminAuth.jsx';
 import AdminLayout from './admin/AdminLayout.jsx';
@@ -114,15 +115,25 @@ function AdminProtectedLayout() {
 function LegacyCountryRedirect() {
   const { countryId, visaType } = useParams();
   const location = useLocation();
+  const { prefix } = useLocale();
   const target = visaType
-    ? `/ulkeler/${countryId}/${visaType}${location.search}`
-    : `/ulkeler/${countryId}${location.search}`;
+    ? `${prefix}/ulkeler/${countryId}/${visaType}${location.search}`
+    : `${prefix}/ulkeler/${countryId}${location.search}`;
   return <Navigate to={target} replace />;
 }
 
 export default function App() {
+  const location = useLocation();
+  // /en veya /ar önekini rota eşleştirmesinden önce soyar — böylece tüm rota
+  // tanımları tek kopya olarak kalır, sadece <Routes> hangi "sanal" yolu
+  // eşleştirdiğini değiştiririz. Gerçek tarayıcı adresi (öneki dahil) hiç
+  // dokunulmaz; LocaleProvider de aynı önekten dili okur.
+  const { strippedPathname } = extractLocale(location.pathname);
+  const routedLocation = { ...location, pathname: strippedPathname };
+
   return (
-    <Routes>
+    <LocaleProvider>
+      <Routes location={routedLocation}>
       <Route element={<PublicLayout />}>
         <Route path="/" element={<Home />} />
         <Route path="/hakkimizda" element={<About />} />
@@ -163,6 +174,7 @@ export default function App() {
           <Route path="settings" element={<AdminSettings />} />
         </Route>
       </Route>
-    </Routes>
+      </Routes>
+    </LocaleProvider>
   );
 }

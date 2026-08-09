@@ -1,23 +1,26 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink, Link } from './LocaleLink.jsx';
 import { useSiteData, getDocsKey } from '../context/SiteDataContext.jsx';
+import { useLocale } from '../context/LocaleContext.jsx';
 import { ChevronDownIcon, PhoneIcon } from './icons.jsx';
 import CountryFlag from './CountryFlag.jsx';
-
-const links = [
-  { to: '/hakkimizda', label: 'Hakkımızda' },
-  { to: '/hizmetler', label: 'Hizmetler' },
-  { to: '/surec', label: 'Süreç' },
-  { to: '/evrak-rehberi', label: 'Evrak Rehberi' },
-  { to: '/blog', label: 'Blog' },
-  { to: '/sss', label: 'SSS' },
-];
+import LanguageSwitcher from './LanguageSwitcher.jsx';
 
 export default function Navbar() {
   const { countries, settings } = useSiteData();
+  const { t } = useLocale();
   const [open, setOpen] = useState(false);
   const [countriesOpen, setCountriesOpen] = useState(false);
   const countriesRef = useRef(null);
+
+  const links = [
+    { to: '/hakkimizda', label: t('nav.about') },
+    { to: '/hizmetler', label: t('nav.services') },
+    { to: '/surec', label: t('nav.process') },
+    { to: '/evrak-rehberi', label: t('nav.documentGuide') },
+    { to: '/blog', label: t('nav.blog') },
+    { to: '/sss', label: t('nav.faq') },
+  ];
 
   const schengenCountries = useMemo(() => countries.filter((c) => getDocsKey(c) === 'schengen'), [countries]);
   const otherCountries = useMemo(() => countries.filter((c) => getDocsKey(c) !== 'schengen'), [countries]);
@@ -43,7 +46,7 @@ export default function Navbar() {
   return (
     <header className="navbar">
       <div className="disclaimer-bar">
-        Menekşe Vize özel bir vize danışmanlık hizmetidir; resmi konsolosluk, büyükelçilik veya başvuru merkezi değildir. Sunulan hizmetler isteğe bağlı danışmanlık kapsamındadır.
+        {t('disclaimerBar')}
       </div>
       <div className="nav-container">
         <NavLink to="/" className="logo" onClick={closeAll}>
@@ -53,7 +56,7 @@ export default function Navbar() {
         <button
           type="button"
           className={`hamburger ${open ? 'active' : ''}`}
-          aria-label="Menüyü aç/kapat"
+          aria-label={t('nav.menuToggle')}
           onClick={() => setOpen((v) => !v)}
         >
           <span></span>
@@ -69,13 +72,13 @@ export default function Navbar() {
               aria-expanded={countriesOpen}
               onClick={() => setCountriesOpen((v) => !v)}
             >
-              Ülkeler
+              {t('nav.countries')}
               <ChevronDownIcon width={14} height={14} />
             </button>
             {countriesOpen && (
               <div className="nav-countries-panel">
                 <div className="nav-countries-scroll">
-                  <div className="nav-countries-group-title">Schengen Bölgesi</div>
+                  <div className="nav-countries-group-title">{t('nav.schengenGroup')}</div>
                   <div className="nav-countries-list">
                     {schengenCountries.map((country) => (
                       <NavLink key={country.id} to={`/ulkeler/${country.id}`} onClick={closeAll}>
@@ -84,7 +87,7 @@ export default function Navbar() {
                       </NavLink>
                     ))}
                   </div>
-                  <div className="nav-countries-group-title">Diğer Ülkeler</div>
+                  <div className="nav-countries-group-title">{t('nav.otherGroup')}</div>
                   <div className="nav-countries-list">
                     {otherCountries.map((country) => (
                       <NavLink key={country.id} to={`/ulkeler/${country.id}`} onClick={closeAll}>
@@ -95,7 +98,7 @@ export default function Navbar() {
                   </div>
                 </div>
                 <Link to="/hizmetler" className="nav-countries-all" onClick={closeAll}>
-                  Tüm Ülkeleri Gör →
+                  {t('nav.seeAllCountries')}
                 </Link>
               </div>
             )}
@@ -117,8 +120,10 @@ export default function Navbar() {
             onClick={closeAll}
             className={({ isActive }) => (isActive ? 'active' : '')}
           >
-            İletişim
+            {t('nav.contact')}
           </NavLink>
+
+          <LanguageSwitcher onNavigate={closeAll} />
 
           {phone && (
             <a href={phoneHref} className="nav-cta nav-phone-cta" onClick={closeAll}>

@@ -1,0 +1,46 @@
+// Türkçe sözlük — site varsayılan dili. Diğer diller (en.js, ar.js) eksik bir
+// anahtar için buraya düşer (LocaleContext.t() fallback mantığı), bu yüzden
+// bu dosya her zaman en güncel/eksiksiz olmalı.
+export default {
+  common: {
+    langSwitcherLabel: 'Dil',
+  },
+  nav: {
+    countries: 'Ülkeler',
+    schengenGroup: 'Schengen Bölgesi',
+    otherGroup: 'Diğer Ülkeler',
+    seeAllCountries: 'Tüm Ülkeleri Gör →',
+    about: 'Hakkımızda',
+    services: 'Hizmetler',
+    process: 'Süreç',
+    documentGuide: 'Evrak Rehberi',
+    blog: 'Blog',
+    faq: 'SSS',
+    contact: 'İletişim',
+    menuToggle: 'Menüyü aç/kapat',
+  },
+  footer: {
+    quickLinks: 'Hızlı Linkler',
+    about: 'Hakkımızda',
+    services: 'Hizmetler',
+    eVisa: 'E-Vize Ülkeleri',
+    process: 'Süreç',
+    visaRejection: 'Vize Reddi',
+    preAssessment: 'Ücretsiz Ön Değerlendirme',
+    documentGuide: 'Evrak Rehberi',
+    blog: 'Blog',
+    faq: 'SSS',
+    track: 'Başvurumu Takip Et',
+    contactTitle: 'İletişim',
+    contactForm: 'İletişim Formu',
+    instagram: 'Instagram',
+    defaultNote: 'Schengen ve dünya genelinde vize başvurularınızda şeffaf süreç takibi ve kişiye özel evrak rehberliği sunan danışmanlık hizmeti.',
+    disclaimer: 'Menekşe Vize özel bir vize danışmanlık firmasıdır. Resmi konsolosluk, büyükelçilik veya başvuru merkezi değildir. Sunulan hizmetler isteğe bağlı danışmanlık kapsamındadır.',
+    copyright: '© 2026 Menekşe Vize. Tüm hakları saklıdır.',
+    privacyPolicy: 'Gizlilik Politikası (KVKK)',
+    termsOfService: 'Kullanım Koşulları',
+    refundPolicy: 'İptal ve İade Politikası',
+    finalDecisionNote: 'Nihai vize kararı ilgili konsolosluğa aittir.',
+  },
+  disclaimerBar: 'Menekşe Vize özel bir vize danışmanlık hizmetidir; resmi konsolosluk, büyükelçilik veya başvuru merkezi değildir. Sunulan hizmetler isteğe bağlı danışmanlık kapsamındadır.',
+};
