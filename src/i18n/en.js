@@ -16,6 +16,8 @@ export default {
     faq: 'FAQ',
     contact: 'Contact',
     menuToggle: 'Toggle menu',
+    documentsShort: 'Docs',
+    callNow: 'Call',
   },
   footer: {
     quickLinks: 'Quick Links',

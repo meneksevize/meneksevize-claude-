@@ -16,6 +16,8 @@ export default {
     faq: 'الأسئلة الشائعة',
     contact: 'اتصل بنا',
     menuToggle: 'فتح/إغلاق القائمة',
+    documentsShort: 'الوثائق',
+    callNow: 'اتصال',
   },
   footer: {
     quickLinks: 'روابط سريعة',

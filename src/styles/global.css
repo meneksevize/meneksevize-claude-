@@ -2338,6 +2338,17 @@ img, svg {
     background-color: var(--accent-soft);
   }
 
+  /* "Ara" sekmesi bilinçli olarak vurgulanıyor — mobil ziyaretçinin
+     telefonu arayabileceği en görünür, her sayfada sabit kalan yer. */
+  .mobile-tab-call {
+    color: #fff;
+    background-color: var(--accent-color);
+  }
+
+  .mobile-tab-call:active {
+    background-color: var(--accent-hover);
+  }
+
   body {
     padding-bottom: 4.4rem;
   }

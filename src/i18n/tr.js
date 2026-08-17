@@ -19,6 +19,8 @@ export default {
     faq: 'SSS',
     contact: 'İletişim',
     menuToggle: 'Menüyü aç/kapat',
+    documentsShort: 'Evrak',
+    callNow: 'Ara',
   },
   footer: {
     quickLinks: 'Hızlı Linkler',
