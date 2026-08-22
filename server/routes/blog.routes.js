@@ -29,6 +29,7 @@ function parseListRow(row, lang) {
     excerpt: pick(row, 'excerpt', lang),
     coverImageUrl: row.cover_image_url,
     publishedAt: row.published_at,
+    updatedAt: row.updated_at,
     category: row.category,
   };
 }

@@ -5,7 +5,6 @@ import { countries } from '../../src/data/countries.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const SITE_URL = 'https://meneksevize.com';
-const today = new Date().toISOString().slice(0, 10);
 
 const staticPages = [
   { loc: '/', priority: '1.0' },
@@ -41,14 +40,19 @@ const LOCALES = [
   { code: 'ar', prefix: '/ar' },
 ];
 
-function urlEntry(basePath, priority) {
+// lastmod yalnızca gerçekten bilindiğinde (blog yazılarının updated_at
+// değeri) yazılır. Önceden her URL'e "bugün" yazılıyordu — her deploy'da tüm
+// sitenin değiştiğini iddia etmek, Google'ın lastmod'a duyduğu güveni azaltır;
+// sahte tarih yerine tarihsiz bırakmak daha doğrudur.
+function urlEntry(basePath, priority, lastmod = null) {
   const alternateLinks = LOCALES
     .map(({ code, prefix }) => `    <xhtml:link rel="alternate" hreflang="${code}" href="${SITE_URL}${prefix}${basePath}" />`)
     .concat(`    <xhtml:link rel="alternate" hreflang="x-default" href="${SITE_URL}${basePath}" />`)
     .join('\n');
+  const lastmodLine = lastmod ? `    <lastmod>${lastmod}</lastmod>\n` : '';
 
   return LOCALES
-    .map(({ prefix }) => `  <url>\n    <loc>${SITE_URL}${prefix}${basePath}</loc>\n    <lastmod>${today}</lastmod>\n    <priority>${priority}</priority>\n${alternateLinks}\n  </url>`)
+    .map(({ prefix }) => `  <url>\n    <loc>${SITE_URL}${prefix}${basePath}</loc>\n${lastmodLine}    <priority>${priority}</priority>\n${alternateLinks}\n  </url>`)
     .join('\n');
 }
 
@@ -68,7 +72,8 @@ async function main() {
     const res = await fetch(`${SITE_URL}/api/blog`);
     const posts = await res.json();
     posts.forEach((post) => {
-      entries.push(urlEntry(`/blog/${post.slug}`, '0.6'));
+      const lastmod = (post.updatedAt || post.publishedAt || '').slice(0, 10) || null;
+      entries.push(urlEntry(`/blog/${post.slug}`, '0.6', lastmod));
     });
     blogCount = posts.length;
     console.log(`${posts.length} blog yazısı sitemap'e eklendi (x3 dil).`);

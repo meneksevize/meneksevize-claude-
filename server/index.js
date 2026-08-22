@@ -8,6 +8,7 @@ import compression from 'compression';
 
 import { db } from './db/connection.js';
 import { SQLiteSessionStore } from './db/sessionStore.js';
+import { resolveSeo, renderIndexHtml } from './lib/seo.js';
 import authRoutes from './routes/auth.routes.js';
 import siteDataRoutes from './routes/site-data.routes.js';
 import contactRoutes from './routes/contact.routes.js';
@@ -67,22 +68,38 @@ if (fs.existsSync(distPath)) {
     maxAge: '1y',
     immutable: true,
   }));
+  // index: false — kök yol ("/") dahil tüm sayfa istekleri aşağıdaki SEO
+  // enjeksiyon katmanından geçsin diye statik middleware'in index.html servis
+  // etmesi kapatılır (bkz. server/lib/seo.js).
   app.use(express.static(distPath, {
+    index: false,
     maxAge: '1h',
-    setHeaders: (res, filePath) => {
-      if (filePath.endsWith('index.html')) {
-        res.setHeader('Cache-Control', 'public, max-age=0');
-      }
-    },
   }));
   app.get('*', (req, res, next) => {
     if (req.path.startsWith('/api')) {
       next();
       return;
     }
-    res.sendFile(path.join(distPath, 'index.html'), {
-      headers: { 'Cache-Control': 'public, max-age=0' },
-    });
+    try {
+      const seo = resolveSeo(req.path);
+      if (seo.redirect) {
+        // Sorgu parametrelerini (gclid vb.) koruyarak kalıcı yönlendirme.
+        const query = req.originalUrl.includes('?') ? req.originalUrl.slice(req.originalUrl.indexOf('?')) : '';
+        res.redirect(301, `${seo.redirect}${query}`);
+        return;
+      }
+      res.status(seo.status)
+        .set('Cache-Control', 'public, max-age=0')
+        .type('html')
+        .send(renderIndexHtml(seo));
+    } catch (err) {
+      // Meta enjeksiyonu hiçbir koşulda sayfayı düşürmemeli — hata olursa
+      // eski davranışa (düz index.html) geri düşülür.
+      console.error('SEO meta enjeksiyonu başarısız, şablon olduğu gibi dönülüyor:', err.message);
+      res.sendFile(path.join(distPath, 'index.html'), {
+        headers: { 'Cache-Control': 'public, max-age=0' },
+      });
+    }
   });
 }
 

@@ -29,9 +29,17 @@ export default function CountryDetail() {
   const country = countries.find((c) => c.id === countryId);
   const docsByType = country ? visaDocuments[getDocsKey(country)] : null;
 
+  // EN/AR'de overview alanı çevrilmediği için API Türkçe metne düşer; yanlış
+  // dilde meta description yerine çevrilmiş intro kullanılır (sunucu tarafı
+  // enjeksiyonla — server/lib/seo.js — aynı kural).
+  const metaDescription = country
+    ? ((locale === 'tr' ? (country.overview || country.intro) : country.intro)
+      || t('countryDetail.metaDescriptionTemplate', { country: country.title }))
+    : undefined;
+
   useDocumentMeta(
     country ? t('countryDetail.metaTitleTemplate', { country: country.title }) : t('countryDetail.metaNotFoundTitle'),
-    country ? (country.overview || country.intro || t('countryDetail.metaDescriptionTemplate', { country: country.title })) : undefined,
+    metaDescription,
     { image: photos.passportBoardingPass, path: country ? `/ulkeler/${country.id}` : undefined },
   );
 
