@@ -58,6 +58,16 @@ app.use('/api/admin/applications', adminApplicationsRoutes);
 app.use('/api/payments', paymentsRoutes);
 app.use('/api/admin/payments', adminPaymentsRoutes);
 
+// sitemap.xml, deploy sonrası VPS'te `npm run sitemap:generate` ile public/
+// altına yeniden üretilir; dist/ içindeki kopya bir önceki build'den kalır.
+// Güncel dosyanın build beklemeden yayına girmesi için doğrudan public/'ten
+// servis edilir.
+app.get('/sitemap.xml', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'public', 'sitemap.xml'), {
+    headers: { 'Cache-Control': 'public, max-age=3600' },
+  });
+});
+
 const distPath = path.join(__dirname, '..', 'dist');
 if (fs.existsSync(distPath)) {
   // Vite, /assets altındaki dosya adlarına içerik hash'i ekler (örn. index-Ab12Cd.js);
