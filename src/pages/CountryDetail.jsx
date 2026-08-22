@@ -8,6 +8,7 @@ import Reveal from '../components/Reveal.jsx';
 import { CheckIcon } from '../components/icons.jsx';
 import CountryFlag from '../components/CountryFlag.jsx';
 import Breadcrumbs from '../components/Breadcrumbs.jsx';
+import RelatedPosts from '../components/RelatedPosts.jsx';
 
 // TR verisi Faz 3'e kadar her dilde aynı kalıyor (bkz. plan); bu yüzden "vize"
 // kelimesi tekrarını önleyen kontrol Türkçe'ye özel kalıyor. Arapça'da "vize"
@@ -29,11 +30,11 @@ export default function CountryDetail() {
   const country = countries.find((c) => c.id === countryId);
   const docsByType = country ? visaDocuments[getDocsKey(country)] : null;
 
-  // EN/AR'de overview alanı çevrilmediği için API Türkçe metne düşer; yanlış
-  // dilde meta description yerine çevrilmiş intro kullanılır (sunucu tarafı
-  // enjeksiyonla — server/lib/seo.js — aynı kural).
+  // overview artık üç dilde de dolu (bkz. translateOverviews.js) — API pick()
+  // ile doğru dili döner, sunucu tarafı enjeksiyon (server/lib/seo.js) da aynı
+  // metni kullanır.
   const metaDescription = country
-    ? ((locale === 'tr' ? (country.overview || country.intro) : country.intro)
+    ? (country.overview || country.intro
       || t('countryDetail.metaDescriptionTemplate', { country: country.title }))
     : undefined;
 
@@ -136,6 +137,8 @@ export default function CountryDetail() {
           </div>
         </div>
       </section>
+
+      <RelatedPosts countryId={country.id} />
     </>
   );
 }

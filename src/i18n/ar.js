@@ -538,6 +538,8 @@ export default {
     titleSuffix: ' | مدونة Menekşe Vize',
   },
   countryDetail: {
+    relatedPostsKicker: 'المدونة',
+    relatedPostsTitle: 'مقالات ذات صلة',
     metaTitleTemplate: 'تأشيرة {country} | Menekşe Vize',
     metaNotFoundTitle: 'الدولة غير موجودة | Menekşe Vize',
     metaDescriptionTemplate: 'أنواع التأشيرات المطلوبة والوثائق ومعلومات العملية لـ {country}.',

@@ -7,6 +7,7 @@ import { photos } from '../data/photos.js';
 import Reveal from '../components/Reveal.jsx';
 import CountryFlag from '../components/CountryFlag.jsx';
 import Breadcrumbs from '../components/Breadcrumbs.jsx';
+import RelatedPosts from '../components/RelatedPosts.jsx';
 import { CheckIcon } from '../components/icons.jsx';
 
 function buildTypeGuide(country, visaType, t) {
@@ -127,6 +128,8 @@ export default function CountryVisaType() {
           </div>
         </div>
       </section>
+
+      <RelatedPosts countryId={country.id} />
     </>
   );
 }

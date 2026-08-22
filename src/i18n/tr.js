@@ -541,6 +541,8 @@ export default {
     titleSuffix: ' | Menekşe Vize Blog',
   },
   countryDetail: {
+    relatedPostsKicker: 'BLOG',
+    relatedPostsTitle: 'İlgili Blog Yazıları',
     metaTitleTemplate: '{country} Vizesi | Menekşe Vize',
     metaNotFoundTitle: 'Ülke Bulunamadı | Menekşe Vize',
     metaDescriptionTemplate: '{country} için gerekli vize türleri, evraklar ve süreç bilgisi.',

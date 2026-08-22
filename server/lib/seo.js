@@ -155,9 +155,11 @@ export function resolveSeo(reqPath) {
     const row = stmtCountry.get(countryMatch[1]);
     if (!row) return notFoundSeo(locale, basePath);
     const title = pick(row, 'title', locale);
-    // TR'de zengin overview metni; EN/AR'de overview çevirisi yoksa Türkçe
-    // overview yerine çevrilmiş intro kullanılır (yanlış dilde açıklama olmasın).
-    const description = (locale === 'tr' ? (row.overview || row.intro) : (row[`intro_${locale}`] || null))
+    // Zengin overview metni tercih edilir; EN/AR'de yalnızca çevrilmiş alanlar
+    // kullanılır (Türkçe'ye düşülmez — yanlış dilde açıklama olmasın).
+    const description = (locale === 'tr'
+      ? (row.overview || row.intro)
+      : (row[`overview_${locale}`] || row[`intro_${locale}`] || null))
       || t(locale, 'countryDetail.metaDescriptionTemplate', { country: title });
     return {
       status: 200,
@@ -221,11 +223,17 @@ function escapeAttr(value) {
     .replace(/"/g, '&quot;');
 }
 
+// Şablon önbelleğe alınır ama dosyanın mtime'ı değişirse yeniden okunur —
+// böylece build sonrası (asset hash'leri değişir) restart edilmemiş bir süreç
+// asla eski asset'lere işaret eden bir index.html servis etmez.
+const TEMPLATE_PATH = path.join(__dirname, '..', '..', 'dist', 'index.html');
 let cachedTemplate = null;
+let cachedMtimeMs = 0;
 function template() {
-  // PM2 her build sonrası restart edildiği için bir kez okumak yeterli.
-  if (cachedTemplate === null) {
-    cachedTemplate = fs.readFileSync(path.join(__dirname, '..', '..', 'dist', 'index.html'), 'utf8');
+  const { mtimeMs } = fs.statSync(TEMPLATE_PATH);
+  if (cachedTemplate === null || mtimeMs !== cachedMtimeMs) {
+    cachedTemplate = fs.readFileSync(TEMPLATE_PATH, 'utf8');
+    cachedMtimeMs = mtimeMs;
   }
   return cachedTemplate;
 }

@@ -30,7 +30,7 @@ function parseCountryRow(row, lang) {
     docsKey: row.docs_key,
     tags: JSON.parse(row.tags),
     types: JSON.parse(row.types),
-    quickFacts: JSON.parse(row.quick_facts),
+    quickFacts: JSON.parse(pick(row, 'quick_facts', lang)),
   };
 }
 

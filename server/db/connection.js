@@ -48,6 +48,7 @@ ensureColumns('countries', [
   'services_description_en', 'services_description_ar',
   'intro_en', 'intro_ar',
   'overview_en', 'overview_ar',
+  'quick_facts_en', 'quick_facts_ar',
 ]);
 ensureColumns('visa_type_labels', ['label_en', 'label_ar']);
 ensureColumns('visa_documents', ['items_en', 'items_ar', 'note_en', 'note_ar']);

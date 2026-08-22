@@ -538,6 +538,8 @@ export default {
     titleSuffix: ' | Menekşe Vize Blog',
   },
   countryDetail: {
+    relatedPostsKicker: 'BLOG',
+    relatedPostsTitle: 'Related Blog Posts',
     metaTitleTemplate: '{country} Visa | Menekşe Vize',
     metaNotFoundTitle: 'Country Not Found | Menekşe Vize',
     metaDescriptionTemplate: 'Required visa types, documents, and process information for {country}.',
