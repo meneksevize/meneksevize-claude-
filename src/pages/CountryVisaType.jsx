@@ -8,6 +8,7 @@ import Reveal from '../components/Reveal.jsx';
 import CountryFlag from '../components/CountryFlag.jsx';
 import Breadcrumbs from '../components/Breadcrumbs.jsx';
 import RelatedPosts from '../components/RelatedPosts.jsx';
+import ConsultCta from '../components/ConsultCta.jsx';
 import { CheckIcon } from '../components/icons.jsx';
 
 function buildTypeGuide(country, visaType, t) {
@@ -119,13 +120,11 @@ export default function CountryVisaType() {
             {t('countryVisaType.disclaimer')}
           </p>
 
-          <div style={{
-            textAlign: 'center', marginTop: '2.5rem', display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap',
-          }}
-          >
+          <div style={{ textAlign: 'center', marginTop: '2rem' }}>
             <Link to={`/ulkeler/${country.id}`} className="btn btn-secondary">{t('countryVisaType.ctaOtherTypesTemplate', { country: country.title })}</Link>
-            <Link to="/iletisim" className="btn btn-gold">{t('countryVisaType.ctaConsult')}</Link>
           </div>
+
+          <ConsultCta countryTitle={country.title} />
         </div>
       </section>
 

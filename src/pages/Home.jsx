@@ -3,7 +3,7 @@ import { Link } from '../components/LocaleLink.jsx';
 import useDocumentMeta from '../hooks/useDocumentMeta.js';
 import { useSiteData } from '../context/SiteDataContext.jsx';
 import { useLocale } from '../context/LocaleContext.jsx';
-import { photos } from '../data/photos.js';
+import { photos, cardCover } from '../data/photos.js';
 import Reveal from '../components/Reveal.jsx';
 import CountryFlag from '../components/CountryFlag.jsx';
 import DestinationArt from '../components/DestinationArt.jsx';
@@ -262,10 +262,10 @@ export default function Home() {
             <h2>{t('home.howItWorksTitle')}</h2>
             <p>{t('home.howItWorksSubtitle')}</p>
           </div>
-          <div className="grid grid-4">
+          <div className="process-flow">
             {processSteps.map((step, i) => (
-              <Reveal as="div" className="card" delay={i * 70} key={step.title}>
-                <div className="card-icon">{i + 1}</div>
+              <Reveal as="div" className="process-step" delay={i * 90} key={step.title}>
+                <span className="process-step-num">{i + 1}</span>
                 <h3>{step.title}</h3>
                 <p>{step.text}</p>
               </Reveal>
@@ -292,9 +292,17 @@ export default function Home() {
             <div className="grid grid-3">
               {latestPosts.map((post, i) => (
                 <Reveal as={Link} to={`/blog/${post.slug}`} className="card blog-card" delay={i * 60} key={post.id}>
-                  {post.category && <span className="kicker" style={{ display: 'block', marginBottom: '0.5rem' }}>{getCategoryLabel(post.category, t)}</span>}
-                  <h3>{post.title}</h3>
-                  {post.excerpt && <p>{post.excerpt}</p>}
+                  {post.coverImageUrl && (
+                    <div className="blog-card-media">
+                      <img src={cardCover(post.coverImageUrl)} alt={post.title} loading="lazy" />
+                      {post.category && <span className="blog-card-chip">{getCategoryLabel(post.category, t)}</span>}
+                    </div>
+                  )}
+                  <div className="blog-card-body">
+                    {!post.coverImageUrl && post.category && <span className="kicker" style={{ marginBottom: 0 }}>{getCategoryLabel(post.category, t)}</span>}
+                    <h3>{post.title}</h3>
+                    {post.excerpt && <p>{post.excerpt}</p>}
+                  </div>
                 </Reveal>
               ))}
             </div>

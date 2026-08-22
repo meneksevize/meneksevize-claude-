@@ -537,6 +537,18 @@ export default {
     fallbackExcerpt: 'A Menekşe Vize blog post.',
     titleSuffix: ' | Menekşe Vize Blog',
   },
+  consult: {
+    kicker: 'FREE CONSULTATION',
+    titleTemplate: 'Take the first step for your {country} visa today',
+    titleGeneric: 'Take the first step for your visa application today',
+    text: "Let's assess your situation together — which documents you need and how the process works, all clarified in the first call. The consultation is free with no obligation to apply.",
+    call: 'Call Now',
+    whatsapp: 'Message on WhatsApp',
+    form: 'Pre-Assessment Form',
+    note: 'The final visa decision rests with the relevant consulate; we help you prepare the strongest possible application.',
+    waMessageTemplate: 'Hello, I would like to get information about the {country} visa.',
+    waMessageGeneric: 'Hello, I would like to get information about visa applications.',
+  },
   countryDetail: {
     relatedPostsKicker: 'BLOG',
     relatedPostsTitle: 'Related Blog Posts',

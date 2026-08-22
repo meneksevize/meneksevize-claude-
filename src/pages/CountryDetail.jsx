@@ -5,10 +5,29 @@ import { useSiteData, getDocsKey } from '../context/SiteDataContext.jsx';
 import { useLocale } from '../context/LocaleContext.jsx';
 import { photos } from '../data/photos.js';
 import Reveal from '../components/Reveal.jsx';
-import { CheckIcon } from '../components/icons.jsx';
+import {
+  CheckIcon, ClockIcon, ChecklistIcon, GlobeIcon, StarIcon, CreditCardIcon,
+} from '../components/icons.jsx';
 import CountryFlag from '../components/CountryFlag.jsx';
 import Breadcrumbs from '../components/Breadcrumbs.jsx';
 import RelatedPosts from '../components/RelatedPosts.jsx';
+import ConsultCta from '../components/ConsultCta.jsx';
+
+// Hızlı bilgi kartlarının dekoratif ikonları — quick_facts etiketleri sabit bir
+// sözlükten gelir (bkz. server/db/translateOverviews.js), üç dildeki anahtar
+// kelimelere göre eşleştirilir; eşleşme yoksa sıra döngüsüne düşülür.
+const QUICK_FACT_ICON_RULES = [
+  { pattern: /süre|geçerli|processing|validity|stay|مدة|صلاح/i, Icon: ClockIcon },
+  { pattern: /başkent|dil|capital|language|عاصمة|لغة/i, Icon: GlobeIcon },
+  { pattern: /para|currency|عملة/i, Icon: CreditCardIcon },
+  { pattern: /öne çıkan|highlight|أبرز|مميز/i, Icon: StarIcon },
+];
+const QUICK_FACT_ICON_FALLBACK = [ClockIcon, ChecklistIcon, GlobeIcon, StarIcon];
+
+function quickFactIcon(label, index) {
+  const rule = QUICK_FACT_ICON_RULES.find((r) => r.pattern.test(label || ''));
+  return rule ? rule.Icon : QUICK_FACT_ICON_FALLBACK[index % QUICK_FACT_ICON_FALLBACK.length];
+}
 
 // TR verisi Faz 3'e kadar her dilde aynı kalıyor (bkz. plan); bu yüzden "vize"
 // kelimesi tekrarını önleyen kontrol Türkçe'ye özel kalıyor. Arapça'da "vize"
@@ -68,13 +87,17 @@ export default function CountryDetail() {
 
       <section className="section" style={{ paddingTop: '1rem' }}>
         <div className="container">
-          <div className="grid grid-4" style={{ marginBottom: country.overview ? '3rem' : '4rem' }}>
-            {country.quickFacts.map((fact, i) => (
-              <Reveal as="div" className="card" delay={i * 70} key={fact.label}>
-                <h3 style={{ fontSize: '1rem' }}>{fact.label}</h3>
-                <p>{fact.value}</p>
-              </Reveal>
-            ))}
+          <div className="quick-facts-grid" style={{ marginBottom: country.overview ? '3rem' : '4rem' }}>
+            {country.quickFacts.map((fact, i) => {
+              const FactIcon = quickFactIcon(fact.label, i);
+              return (
+                <Reveal as="div" className="quick-fact-card" delay={i * 70} key={fact.label}>
+                  <span className="quick-fact-icon" aria-hidden="true"><FactIcon width={18} height={18} /></span>
+                  <span className="quick-fact-label">{fact.label}</span>
+                  <span className="quick-fact-value">{fact.value}</span>
+                </Reveal>
+              );
+            })}
           </div>
 
           {country.overview && (
@@ -131,10 +154,11 @@ export default function CountryDetail() {
             {t('countryDetail.disclaimer')}
           </p>
 
-          <div style={{ textAlign: 'center', marginTop: '2.5rem', display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+          <div style={{ textAlign: 'center', marginTop: '2rem' }}>
             <Link to="/surec" className="btn btn-secondary">{t('countryDetail.ctaProcess')}</Link>
-            <Link to="/iletisim" className="btn btn-gold">{t('countryDetail.ctaConsult')}</Link>
           </div>
+
+          <ConsultCta countryTitle={country.title} />
         </div>
       </section>
 

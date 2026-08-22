@@ -540,6 +540,18 @@ export default {
     fallbackExcerpt: 'Menekşe Vize blog yazısı.',
     titleSuffix: ' | Menekşe Vize Blog',
   },
+  consult: {
+    kicker: 'ÜCRETSİZ ÖN GÖRÜŞME',
+    titleTemplate: '{country} vizesi için bugün ilk adımı atın',
+    titleGeneric: 'Vize başvurunuz için bugün ilk adımı atın',
+    text: 'Durumunuzu birlikte değerlendirelim; hangi evraklar gerekiyor, süreç nasıl ilerliyor — hepsini ilk görüşmede netleştirelim. Görüşme ücretsizdir, başvuru zorunluluğu yoktur.',
+    call: 'Hemen Arayın',
+    whatsapp: "WhatsApp'tan Yazın",
+    form: 'Ön Değerlendirme Formu',
+    note: 'Nihai vize kararı ilgili konsolosluğa aittir; biz dosyanızı en güçlü şekilde hazırlamanıza yardımcı oluruz.',
+    waMessageTemplate: 'Merhaba, {country} vizesi hakkında bilgi almak istiyorum.',
+    waMessageGeneric: 'Merhaba, vize başvurusu hakkında bilgi almak istiyorum.',
+  },
   countryDetail: {
     relatedPostsKicker: 'BLOG',
     relatedPostsTitle: 'İlgili Blog Yazıları',

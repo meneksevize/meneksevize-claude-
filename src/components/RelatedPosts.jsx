@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from './LocaleLink.jsx';
 import { useLocale } from '../context/LocaleContext.jsx';
 import { getCategoryLabel } from '../data/blogCategories.js';
+import { cardCover } from '../data/photos.js';
 
 // Ülke ve vize tipi sayfalarında, o ülkeyle ilgili blog yazılarını listeler —
 // para kazandıran sayfalardan blog içeriğine iç link (ve tersi zaten mevcut)
@@ -39,9 +40,17 @@ export default function RelatedPosts({ countryId }) {
         <div className="grid grid-3">
           {posts.map((post) => (
             <Link to={`/blog/${post.slug}`} className="card blog-card" key={post.id}>
-              {post.category && <span className="kicker" style={{ display: 'block', marginBottom: '0.5rem' }}>{getCategoryLabel(post.category, t)}</span>}
-              <h3>{post.title}</h3>
-              {post.excerpt && <p>{post.excerpt}</p>}
+              {post.coverImageUrl && (
+                <div className="blog-card-media">
+                  <img src={cardCover(post.coverImageUrl)} alt={post.title} loading="lazy" />
+                  {post.category && <span className="blog-card-chip">{getCategoryLabel(post.category, t)}</span>}
+                </div>
+              )}
+              <div className="blog-card-body">
+                {!post.coverImageUrl && post.category && <span className="kicker" style={{ marginBottom: 0 }}>{getCategoryLabel(post.category, t)}</span>}
+                <h3>{post.title}</h3>
+                {post.excerpt && <p>{post.excerpt}</p>}
+              </div>
             </Link>
           ))}
         </div>

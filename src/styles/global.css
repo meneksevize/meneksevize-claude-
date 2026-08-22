@@ -152,6 +152,38 @@ img, svg {
   text-align: center;
 }
 
+/* Ortalanmış bölüm başlıklarında kicker'ın iki yanına ince altın çizgi —
+   simetrik olduğu için RTL'de ek kural gerektirmez. */
+.section-head .kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.section-head .kicker::before,
+.section-head .kicker::after {
+  content: "";
+  width: 30px;
+  height: 1px;
+  flex-shrink: 0;
+}
+
+.section-head .kicker::before {
+  background: linear-gradient(90deg, transparent, var(--gold));
+}
+
+.section-head .kicker::after {
+  background: linear-gradient(90deg, var(--gold), transparent);
+}
+
+[dir="rtl"] .section-head .kicker::before {
+  background: linear-gradient(90deg, var(--gold), transparent);
+}
+
+[dir="rtl"] .section-head .kicker::after {
+  background: linear-gradient(90deg, transparent, var(--gold));
+}
+
 .section-head h2 {
   font-size: clamp(1.8rem, 4vw, 2.5rem);
   margin-bottom: 0.75rem;
@@ -187,9 +219,11 @@ img, svg {
   position: sticky;
   top: 0;
   z-index: 100;
-  background-color: rgba(10, 11, 15, 0.85);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--border-color);
+  background-color: rgba(10, 11, 15, 0.72);
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  border-bottom: 1px solid rgba(124, 92, 255, 0.14);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.03), 0 10px 30px -18px rgba(0, 0, 0, 0.6);
 }
 
 .nav-container {
@@ -550,14 +584,15 @@ img, svg {
 }
 
 .btn-gold {
-  background-color: var(--gold);
+  background: linear-gradient(135deg, #f2ca74 0%, var(--gold) 45%, #d29a35 100%);
   color: #1a1305;
+  box-shadow: 0 4px 14px rgba(232, 182, 84, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.35);
 }
 
 .btn-gold:hover {
-  background-color: var(--gold-hover);
+  background: linear-gradient(135deg, #f6d488 0%, #ecbc5e 45%, #d9a13f 100%);
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(201, 162, 75, 0.25);
+  box-shadow: 0 10px 28px rgba(232, 182, 84, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.4);
 }
 
 .btn-secondary {
@@ -572,14 +607,35 @@ img, svg {
 }
 
 .btn-accent {
-  background-color: var(--accent-color);
+  background: linear-gradient(135deg, #937aff 0%, var(--accent-color) 50%, var(--accent-hover) 100%);
   color: #fff;
+  box-shadow: 0 4px 14px rgba(124, 92, 255, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.18);
 }
 
 .btn-accent:hover {
-  background-color: var(--accent-hover);
+  background: linear-gradient(135deg, #a18cff 0%, #8465ff 50%, #7250f5 100%);
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(124, 92, 255, 0.35);
+  box-shadow: 0 10px 28px rgba(124, 92, 255, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.22);
+}
+
+/* İkonlu butonlar (ConsultCta vb.) */
+.btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.btn-whatsapp {
+  background: linear-gradient(135deg, #34d872 0%, #22b95c 55%, #189a4b 100%);
+  color: #06220f;
+  box-shadow: 0 4px 14px rgba(37, 211, 102, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.btn-whatsapp:hover {
+  background: linear-gradient(135deg, #45e381 0%, #2bcb68 55%, #1ea854 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(37, 211, 102, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.34);
 }
 
 /* ---------- Hero / Karşılama Alanı ---------- */
@@ -1214,7 +1270,8 @@ img, svg {
   align-items: center;
   justify-content: center;
   margin-bottom: 1.25rem;
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;
+  box-shadow: 0 0 20px rgba(124, 92, 255, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.07);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .card:hover .card-icon {
@@ -1243,6 +1300,190 @@ img, svg {
   font-size: 1.05rem;
   line-height: 1.75;
   max-width: 68ch;
+}
+
+/* ---------- Hızlı Bilgi Kartları (ülke sayfası) ---------- */
+.quick-facts-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+}
+
+@media (max-width: 900px) {
+  .quick-facts-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+.quick-fact-card {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.45rem;
+  padding: 1.4rem 1.5rem 1.5rem;
+  border-radius: var(--radius);
+  border: 1px solid transparent;
+  background:
+    linear-gradient(180deg, rgba(35, 36, 56, 0.85), rgba(26, 27, 41, 0.95)) padding-box,
+    linear-gradient(160deg, rgba(232, 182, 84, 0.35), rgba(124, 92, 255, 0.25) 60%, rgba(47, 49, 69, 0.6)) border-box;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+}
+
+.quick-fact-card::before {
+  content: "";
+  position: absolute;
+  inset: auto auto 60% 55%;
+  width: 90%;
+  height: 90%;
+  background: radial-gradient(circle, rgba(232, 182, 84, 0.1) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+.quick-fact-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.4);
+}
+
+.quick-fact-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  color: var(--gold);
+  background: linear-gradient(150deg, var(--gold-soft) 0%, rgba(232, 182, 84, 0.05) 100%);
+  border: 1px solid rgba(232, 182, 84, 0.3);
+  margin-bottom: 0.35rem;
+}
+
+.quick-fact-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.quick-fact-value {
+  font-size: 0.98rem;
+  font-weight: 500;
+  color: var(--text-color);
+  line-height: 1.5;
+}
+
+@media (max-width: 600px) {
+  .quick-fact-card {
+    padding: 1.05rem 1.1rem 1.15rem;
+  }
+
+  .quick-fact-icon {
+    width: 32px;
+    height: 32px;
+  }
+
+  .quick-fact-value {
+    font-size: 0.88rem;
+  }
+}
+
+/* ---------- Dönüşüm Paneli (ülke/vize tipi sayfa sonu) ---------- */
+.consult-cta {
+  position: relative;
+  overflow: hidden;
+  margin-top: 3rem;
+  padding: 3rem 2rem 2.5rem;
+  text-align: center;
+  border-radius: 20px;
+  border: 1px solid transparent;
+  background:
+    linear-gradient(180deg, rgba(30, 30, 48, 0.95), rgba(21, 22, 35, 0.98)) padding-box,
+    linear-gradient(120deg, rgba(232, 182, 84, 0.55), rgba(124, 92, 255, 0.45) 55%, rgba(232, 182, 84, 0.25)) border-box;
+}
+
+.consult-cta-glow {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 55% at 50% -10%, rgba(124, 92, 255, 0.22) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 40% at 85% 110%, rgba(232, 182, 84, 0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.consult-cta > * {
+  position: relative;
+}
+
+.consult-cta .kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.consult-cta .kicker::before,
+.consult-cta .kicker::after {
+  content: "";
+  width: 26px;
+  height: 1px;
+  flex-shrink: 0;
+  background: linear-gradient(90deg, transparent, var(--gold));
+}
+
+.consult-cta .kicker::after {
+  background: linear-gradient(90deg, var(--gold), transparent);
+}
+
+[dir="rtl"] .consult-cta .kicker::before {
+  background: linear-gradient(90deg, var(--gold), transparent);
+}
+
+[dir="rtl"] .consult-cta .kicker::after {
+  background: linear-gradient(90deg, transparent, var(--gold));
+}
+
+.consult-cta-title {
+  font-size: clamp(1.5rem, 3.4vw, 2.1rem);
+  max-width: 560px;
+  margin: 0 auto 0.85rem;
+}
+
+.consult-cta-text {
+  color: var(--text-muted);
+  font-size: 0.98rem;
+  max-width: 520px;
+  margin: 0 auto 1.75rem;
+}
+
+.consult-cta-actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+}
+
+.consult-cta-note {
+  margin-top: 1.5rem;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  opacity: 0.85;
+  max-width: 560px;
+  margin-inline: auto;
+}
+
+@media (max-width: 600px) {
+  .consult-cta {
+    padding: 2.25rem 1.25rem 2rem;
+    margin-top: 2.25rem;
+  }
+
+  .consult-cta-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .consult-cta-actions .btn {
+    width: 100%;
+  }
 }
 
 /* ---------- Grid yardımcıları ---------- */
@@ -1400,6 +1641,7 @@ img, svg {
 }
 
 .blog-card-media {
+  position: relative;
   aspect-ratio: 16 / 10;
   overflow: hidden;
 }
@@ -1408,29 +1650,62 @@ img, svg {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.4s ease;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Kategori rozetinin okunabilirliği için alt kenara doğru koyulaşan perde */
+.blog-card-media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(10, 11, 20, 0) 50%, rgba(10, 11, 20, 0.55) 100%);
+  pointer-events: none;
 }
 
 .blog-card:hover .blog-card-media img {
-  transform: scale(1.05);
+  transform: scale(1.06);
 }
 
-.blog-card h3,
-.blog-card p,
-.blog-card-date {
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
+.blog-card-chip {
+  position: absolute;
+  bottom: 0.85rem;
+  inset-inline-start: 0.85rem;
+  z-index: 1;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gold);
+  background-color: rgba(14, 13, 8, 0.55);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(232, 182, 84, 0.35);
+  border-radius: 999px;
+  padding: 0.32rem 0.75rem;
 }
 
-.blog-card h3 {
-  margin-top: 1.5rem;
+.blog-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  flex: 1;
+  padding: 1.35rem 1.5rem 1.5rem;
+}
+
+.blog-card-body h3 {
   font-size: 1.15rem;
+  margin: 0;
 }
 
-.blog-card-date {
+.blog-card-body p {
+  margin: 0;
+}
+
+.blog-card-body .blog-card-date {
   color: var(--text-muted);
   font-size: 0.8rem;
-  margin: 0.5rem 0 1.5rem;
+  margin-top: auto;
+  padding-top: 0.5rem;
 }
 
 .blog-content {
@@ -2154,9 +2429,22 @@ img, svg {
 
 /* ---------- Footer ---------- */
 .site-footer {
+  position: relative;
   border-top: 1px solid var(--border-color);
   background-color: var(--surface-color);
   padding: 3.5rem 0 2rem;
+}
+
+/* Üst kenarda mor→altın ince ışık çizgisi */
+.site-footer::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 5%, var(--accent-color) 35%, var(--gold) 65%, transparent 95%);
+  opacity: 0.55;
 }
 
 .footer-grid {
@@ -2426,39 +2714,168 @@ img, svg {
 
 /* ---------- İstatistik Bandı ---------- */
 .stats-band {
+  position: relative;
+  overflow: hidden;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 1rem;
-  padding: 1.75rem 1.5rem;
-  background-color: var(--surface-color);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius);
+  padding: 2.25rem 1.5rem;
+  border-radius: 18px;
+  /* Çift arka plan: padding-box'ta koyu yüzey, border-box'ta altın→mor gradyan
+     kenarlık — 1px'lik "gradient border" efekti. */
+  border: 1px solid transparent;
+  background:
+    linear-gradient(180deg, rgba(35, 36, 56, 0.92), rgba(26, 27, 41, 0.98)) padding-box,
+    linear-gradient(120deg, rgba(232, 182, 84, 0.45), rgba(124, 92, 255, 0.4) 55%, rgba(232, 182, 84, 0.2)) border-box;
+}
+
+.stats-band::before {
+  content: "";
+  position: absolute;
+  top: -70%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70%;
+  height: 130%;
+  background: radial-gradient(ellipse at center, rgba(124, 92, 255, 0.16) 0%, transparent 65%);
+  pointer-events: none;
 }
 
 .stats-band-item {
+  position: relative;
   text-align: center;
+}
+
+.stats-band-item + .stats-band-item {
+  border-inline-start: 1px solid rgba(255, 255, 255, 0.07);
 }
 
 .stats-band-value {
   display: block;
   font-family: var(--font-serif);
-  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-size: clamp(1.9rem, 3.4vw, 2.6rem);
   font-weight: 700;
-  color: var(--gold);
   line-height: 1.2;
+  background: linear-gradient(160deg, #f6d78d 10%, var(--gold) 55%, #c9913a 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 .stats-band-label {
   display: block;
-  margin-top: 0.35rem;
-  font-size: 0.85rem;
+  margin-top: 0.4rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   color: var(--text-muted);
 }
 
 @media (max-width: 768px) {
   .stats-band {
     grid-template-columns: repeat(2, 1fr);
-    gap: 1.25rem 0.75rem;
+    gap: 1.5rem 0.75rem;
+    padding: 1.75rem 1rem;
+  }
+
+  /* 2x2 dizilimde yalnızca her satırın ikinci öğesine ayraç */
+  .stats-band-item + .stats-band-item {
+    border-inline-start: none;
+  }
+
+  .stats-band-item:nth-child(even) {
+    border-inline-start: 1px solid rgba(255, 255, 255, 0.07);
+  }
+}
+
+/* ---------- Süreç Zaman Çizelgesi (anasayfa "4 adım") ---------- */
+.process-flow {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.75rem;
+}
+
+/* Numara rozetlerinin arkasından geçen bağlantı çizgisi (yalnızca masaüstü).
+   Rozet yüksekliğinin ortası: kart üst boşluğu yok, rozet 52px → 26px. */
+.process-flow::before {
+  content: "";
+  position: absolute;
+  top: 26px;
+  left: 12%;
+  right: 12%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(232, 182, 84, 0.5) 15%, rgba(124, 92, 255, 0.5) 85%, transparent);
+}
+
+[dir="rtl"] .process-flow::before {
+  background: linear-gradient(90deg, transparent, rgba(124, 92, 255, 0.5) 15%, rgba(232, 182, 84, 0.5) 85%, transparent);
+}
+
+.process-step {
+  position: relative;
+  text-align: center;
+  padding: 0 0.5rem;
+}
+
+.process-step-num {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  margin-bottom: 1.15rem;
+  border-radius: 50%;
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--gold);
+  border: 1px solid transparent;
+  background:
+    linear-gradient(180deg, #232438, #171825) padding-box,
+    linear-gradient(160deg, rgba(232, 182, 84, 0.8), rgba(124, 92, 255, 0.55)) border-box;
+  box-shadow: 0 0 0 6px rgba(232, 182, 84, 0.05), 0 8px 22px rgba(0, 0, 0, 0.45);
+}
+
+.process-step h3 {
+  font-size: 1.12rem;
+  margin-bottom: 0.5rem;
+}
+
+.process-step p {
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  max-width: 26ch;
+  margin: 0 auto;
+}
+
+@media (max-width: 900px) {
+  .process-flow {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem 1.25rem;
+  }
+
+  .process-flow::before {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .process-step-num {
+    width: 44px;
+    height: 44px;
+    font-size: 1.15rem;
+    margin-bottom: 0.85rem;
+  }
+
+  .process-step h3 {
+    font-size: 1rem;
+  }
+
+  .process-step p {
+    font-size: 0.85rem;
   }
 }
 

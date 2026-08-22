@@ -4,7 +4,7 @@ import useDocumentMeta from '../hooks/useDocumentMeta.js';
 import { useLocale } from '../context/LocaleContext.jsx';
 import Reveal from '../components/Reveal.jsx';
 import Breadcrumbs from '../components/Breadcrumbs.jsx';
-import { photos } from '../data/photos.js';
+import { photos, cardCover } from '../data/photos.js';
 import { BLOG_CATEGORIES, getCategoryLabel } from '../data/blogCategories.js';
 
 const DATE_LOCALES = { tr: 'tr-TR', en: 'en-US', ar: 'ar' };
@@ -77,17 +77,20 @@ export default function Blog() {
               <Reveal as={Link} to={`/blog/${post.slug}`} className="card blog-card" delay={i * 60} key={post.id}>
                 {post.coverImageUrl && (
                   <div className="blog-card-media">
-                    <img src={post.coverImageUrl} alt={post.title} loading="lazy" />
+                    <img src={cardCover(post.coverImageUrl)} alt={post.title} loading="lazy" />
+                    {post.category && <span className="blog-card-chip">{getCategoryLabel(post.category, t)}</span>}
                   </div>
                 )}
-                {post.category && <span className="kicker" style={{ display: 'block', marginBottom: '0.5rem' }}>{getCategoryLabel(post.category, t)}</span>}
-                <h3>{post.title}</h3>
-                {post.excerpt && <p>{post.excerpt}</p>}
-                {post.publishedAt && (
-                  <p className="blog-card-date">
-                    {new Date(post.publishedAt).toLocaleDateString(DATE_LOCALES[locale], { day: 'numeric', month: 'long', year: 'numeric' })}
-                  </p>
-                )}
+                <div className="blog-card-body">
+                  {!post.coverImageUrl && post.category && <span className="kicker" style={{ marginBottom: 0 }}>{getCategoryLabel(post.category, t)}</span>}
+                  <h3>{post.title}</h3>
+                  {post.excerpt && <p>{post.excerpt}</p>}
+                  {post.publishedAt && (
+                    <p className="blog-card-date">
+                      {new Date(post.publishedAt).toLocaleDateString(DATE_LOCALES[locale], { day: 'numeric', month: 'long', year: 'numeric' })}
+                    </p>
+                  )}
+                </div>
               </Reveal>
             ))}
           </div>
