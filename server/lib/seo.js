@@ -50,7 +50,7 @@ function pick(row, field, lang) {
 }
 
 const stmtCountry = db.prepare(
-  'SELECT id, title, title_en, title_ar, intro, intro_en, intro_ar, overview, types FROM countries WHERE id = ?',
+  'SELECT id, title, title_en, title_ar, intro, intro_en, intro_ar, overview, overview_en, overview_ar, types FROM countries WHERE id = ?',
 );
 const stmtVisaLabel = db.prepare('SELECT label, label_en, label_ar FROM visa_type_labels WHERE key = ?');
 const stmtPost = db.prepare(
