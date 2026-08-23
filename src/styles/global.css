@@ -286,16 +286,22 @@ img, svg {
   border-radius: 2px;
 }
 
+/* Sitenin her sayfasında görünen tek sabit CTA — .btn-accent ile aynı gradyan/
+   gölge dili (bkz. aşağı), sadece navbar'a uyacak daha kompakt boyutlarda. */
 .nav-cta {
-  background-color: var(--accent-color);
+  background: linear-gradient(135deg, #937aff 0%, var(--accent-color) 50%, var(--accent-hover) 100%);
   color: #fff !important;
   padding: 0.55rem 1.2rem;
   border-radius: 8px;
   font-weight: 600 !important;
+  box-shadow: 0 4px 14px rgba(124, 92, 255, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .nav-cta:hover {
-  background-color: var(--accent-hover);
+  background: linear-gradient(135deg, #a18cff 0%, #8465ff 50%, #7250f5 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 22px rgba(124, 92, 255, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.24);
 }
 
 .nav-phone-cta {
