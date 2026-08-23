@@ -491,6 +491,8 @@ export default {
     ctaHome: 'العودة إلى الرئيسية',
     ctaCountries: 'استعرض الدول',
     ctaContact: 'تواصل معنا',
+    searchPlaceholder: 'ابحث عن دولة أو صفحة… (مثال: ألمانيا، دليل المستندات)',
+    searchNoResults: 'لم يتم العثور على نتائج. يمكنك تصفح الخيارات الشائعة أدناه.',
   },
   trackApplication: {
     metaTitle: 'تتبع الطلب | Menekşe Vize',

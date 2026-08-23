@@ -952,6 +952,172 @@ img, svg {
   }
 }
 
+/* ---------- 404 Sayfası ---------- */
+.notfound-hero {
+  text-align: center;
+}
+
+.notfound-medallion {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 92px;
+  height: 92px;
+  margin-bottom: 1.5rem;
+  border-radius: 50%;
+  color: var(--gold);
+  border: 1px solid transparent;
+  background:
+    linear-gradient(180deg, rgba(35, 36, 56, 0.9), rgba(23, 24, 37, 0.96)) padding-box,
+    linear-gradient(160deg, rgba(232, 182, 84, 0.85), rgba(124, 92, 255, 0.6)) border-box;
+  box-shadow: 0 0 0 8px rgba(232, 182, 84, 0.05), 0 20px 45px rgba(0, 0, 0, 0.5);
+}
+
+/* Ambient nefes alan halka — dikkat çeker ama rahatsız etmeyecek kadar yavaş */
+.notfound-medallion::after {
+  content: "";
+  position: absolute;
+  inset: -9px;
+  border-radius: 50%;
+  border: 1px solid rgba(232, 182, 84, 0.28);
+  animation: notfoundPulse 3.2s ease-in-out infinite;
+}
+
+@keyframes notfoundPulse {
+  0%, 100% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.14); opacity: 0; }
+}
+
+.notfound-code {
+  display: block;
+  font-family: var(--font-serif);
+  font-size: clamp(2.75rem, 8vw, 4.25rem);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  line-height: 1;
+  margin-bottom: 0.85rem;
+  background: linear-gradient(160deg, #f6d78d 8%, var(--gold) 45%, var(--accent-color) 105%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Arama kutusu — kayıp ziyaretçiye anasayfaya dönmek yerine aradığı ülkeyi/
+   sayfayı doğrudan bulma imkânı verir. */
+.notfound-search {
+  position: relative;
+  z-index: 5;
+  max-width: 460px;
+  margin: 2rem auto 0;
+}
+
+.notfound-search-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.notfound-search-icon {
+  position: absolute;
+  inset-inline-start: 1.1rem;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.notfound-search input {
+  width: 100%;
+  padding-inline-start: 3rem;
+  padding-inline-end: 1.2rem;
+  padding-block: 0.9rem;
+  background-color: rgba(26, 27, 41, 0.75);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
+  border-radius: 999px;
+  font-size: 0.96rem;
+  font-family: var(--font-sans);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.notfound-search input:focus {
+  outline: none;
+  border-color: var(--gold);
+  box-shadow: 0 0 0 4px var(--gold-soft);
+}
+
+.notfound-search-results {
+  position: absolute;
+  top: calc(100% + 0.65rem);
+  left: 0;
+  right: 0;
+  background-color: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.45);
+  padding: 0.5rem;
+  z-index: 20;
+  text-align: start;
+  max-height: 320px;
+  overflow-y: auto;
+  animation: notfoundDropdownIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes notfoundDropdownIn {
+  from { opacity: 0; transform: translateY(-6px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.notfound-search-result {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.65rem 0.8rem;
+  border-radius: 10px;
+  color: var(--text-color);
+  text-decoration: none;
+  font-size: 0.92rem;
+  font-weight: 500;
+}
+
+.notfound-search-result:hover,
+.notfound-search-result:focus-visible {
+  background-color: var(--surface-hover);
+  color: var(--gold);
+}
+
+.notfound-search-flag {
+  font-size: 1.05rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.notfound-search-empty {
+  padding: 0.75rem 0.6rem 0.4rem;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+@media (max-width: 600px) {
+  .notfound-medallion {
+    width: 76px;
+    height: 76px;
+  }
+
+  .notfound-search {
+    margin-top: 1.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .notfound-medallion::after,
+  .notfound-search-results {
+    animation: none;
+  }
+}
+
 /* ---------- Referans Duvarı (sonsuz kayan) ---------- */
 .testimonial-wall-section {
   overflow: hidden;

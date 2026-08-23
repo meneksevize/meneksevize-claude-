@@ -491,6 +491,8 @@ export default {
     ctaHome: 'Back to Home',
     ctaCountries: 'Explore Countries',
     ctaContact: 'Contact Us',
+    searchPlaceholder: 'Search countries or pages… (e.g. Germany, document guide)',
+    searchNoResults: 'No results found. Check the popular options below.',
   },
   trackApplication: {
     metaTitle: 'Track Application | Menekşe Vize',

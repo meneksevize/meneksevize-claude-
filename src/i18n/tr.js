@@ -494,6 +494,8 @@ export default {
     ctaHome: 'Ana Sayfaya Dön',
     ctaCountries: 'Ülkeleri İncele',
     ctaContact: 'Bize Ulaşın',
+    searchPlaceholder: 'Ülke veya sayfa ara… (ör. Almanya, evrak rehberi)',
+    searchNoResults: 'Sonuç bulunamadı. Aşağıdaki popüler seçeneklere göz atabilirsiniz.',
   },
   trackApplication: {
     metaTitle: 'Başvuru Takip | Menekşe Vize',
