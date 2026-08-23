@@ -14,6 +14,11 @@ const FIELDS = [
     label: 'Canlı Destek Widget Kodu (Tawk.to Property/Widget ID)',
     placeholder: 'örn: 60f1a2b3c4d5e6f7g8h9i0j1/default',
   },
+  {
+    key: 'google_review_link',
+    label: 'Google Yorum Linki',
+    placeholder: 'Google Business Profile açılınca oradan alınan "yorum yaz" linki (g.page/r/... veya search.google.com/local/writereview?placeid=...)',
+  },
 ];
 
 const TOGGLES = [

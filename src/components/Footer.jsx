@@ -1,7 +1,7 @@
 import { Link } from './LocaleLink.jsx';
 import { useSiteData } from '../context/SiteDataContext.jsx';
 import { useLocale } from '../context/LocaleContext.jsx';
-import { InstagramIcon } from './icons.jsx';
+import { InstagramIcon, StarIcon } from './icons.jsx';
 
 export default function Footer() {
   const { settings } = useSiteData();
@@ -54,6 +54,22 @@ export default function Footer() {
                   {t('footer.instagram')}
                 </a>
               </li>
+              {/* Google Business Profile açılıp admin panelden link girilene kadar
+                  bu satır hiç render olmaz — henüz olmayan bir yorum sayfasına
+                  götürmez. */}
+              {settings.google_review_link && (
+                <li>
+                  <a
+                    href={settings.google_review_link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}
+                  >
+                    <StarIcon width={14} height={14} style={{ color: 'var(--gold)' }} />
+                    {t('footer.leaveReview')}
+                  </a>
+                </li>
+              )}
             </ul>
           </div>
         </div>

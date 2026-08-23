@@ -6,7 +6,7 @@ import { useLocale } from '../context/LocaleContext.jsx';
 import { photos } from '../data/photos.js';
 import Reveal from '../components/Reveal.jsx';
 import {
-  PhoneIcon, MailIcon, WhatsappIcon, MapPinIcon, ClockIcon,
+  PhoneIcon, MailIcon, WhatsappIcon, MapPinIcon, ClockIcon, StarIcon,
 } from '../components/icons.jsx';
 import Breadcrumbs from '../components/Breadcrumbs.jsx';
 
@@ -116,6 +116,16 @@ export default function Contact() {
                   <div>
                     <h3>{t('contact.addressLabel')}</h3>
                     <p style={{ color: 'var(--text-color)' }}>{settings.address}</p>
+                  </div>
+                </div>
+              )}
+
+              {settings.google_review_link && (
+                <div className="contact-info-item">
+                  <div className="card-icon"><StarIcon /></div>
+                  <div>
+                    <h3>{t('footer.leaveReview')}</h3>
+                    <a href={settings.google_review_link} target="_blank" rel="noopener noreferrer">{t('contact.reviewCta')}</a>
                   </div>
                 </div>
               )}
