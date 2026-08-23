@@ -10,6 +10,7 @@ import Breadcrumbs from '../components/Breadcrumbs.jsx';
 import RelatedPosts from '../components/RelatedPosts.jsx';
 import ConsultCta from '../components/ConsultCta.jsx';
 import { CheckIcon } from '../components/icons.jsx';
+import { visaTypePhrase } from '../utils/visaTypePhrase.js';
 
 function buildTypeGuide(country, visaType, t) {
   const base = t(`countryVisaType.guideBase.${visaType}`);
@@ -21,11 +22,14 @@ function buildTypeGuide(country, visaType, t) {
 export default function CountryVisaType() {
   const { countryId, visaType } = useParams();
   const { countries, visaTypeLabels, visaDocuments } = useSiteData();
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
 
   const country = countries.find((c) => c.id === countryId);
   const docsByType = country ? visaDocuments[getDocsKey(country)] : null;
-  const typeLabel = visaTypeLabels[visaType] || visaType;
+  // "E-Vize"/"Doğum Vizesi" gibi etiketler "vize" kelimesini zaten içeriyor;
+  // visaTypePhrase bunu tekrar etmeden tam ifadeyi üretir (bkz. dosya), bu
+  // yüzden aşağıdaki tüm şablonlar {type}'ı doğrudan tam ifade olarak kullanır.
+  const typeLabel = visaTypePhrase(visaTypeLabels[visaType] || visaType, locale);
   const entry = docsByType?.[visaType] ?? { items: [], note: null };
   const introKey = `countryVisaType.intro.${visaType}`;
   const introResolved = t(introKey);
@@ -34,7 +38,11 @@ export default function CountryVisaType() {
 
   useDocumentMeta(
     country ? t('countryVisaType.metaTitleTemplate', { country: country.title, type: typeLabel }) : t('countryVisaType.metaNotFoundTitle'),
-    country ? t('countryVisaType.metaDescriptionTemplate', { country: country.title, typeLower: typeLabel.toLowerCase() }) : undefined,
+    country ? t('countryVisaType.metaDescriptionTemplate', {
+      country: country.title,
+      type: typeLabel,
+      typeLower: typeLabel.toLocaleLowerCase(locale === 'tr' ? 'tr-TR' : locale),
+    }) : undefined,
     { image: photos.passportBoardingPass, path: country ? `/ulkeler/${country.id}/${visaType}` : undefined },
   );
 

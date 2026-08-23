@@ -20,6 +20,7 @@ import tr from '../../src/i18n/tr.js';
 import en from '../../src/i18n/en.js';
 import ar from '../../src/i18n/ar.js';
 import { photos } from '../../src/data/photos.js';
+import { visaTypePhrase } from '../../src/utils/visaTypePhrase.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const SITE_URL = 'https://meneksevize.com';
@@ -76,8 +77,9 @@ function absoluteImage(image) {
 }
 
 // Açıklamalar (özellikle ülke overview metinleri) yüzlerce karakter olabilir;
-// meta description için kelime sınırında kısaltıyoruz.
-function truncate(text, max = 200) {
+// meta description için kelime sınırında kısaltıyoruz. Google SERP'te açıklama
+// genelde ~155-160 karakterden sonra "…" ile kesiliyor — max bunun biraz altı.
+function truncate(text, max = 155) {
   if (!text || text.length <= max) return text;
   const cut = text.slice(0, max);
   const lastSpace = cut.lastIndexOf(' ');
@@ -180,13 +182,21 @@ export function resolveSeo(reqPath) {
     try { types = JSON.parse(row?.types || '[]'); } catch { /* bozuk veri → 404 */ }
     if (!row || !labelRow || !types.includes(typeMatch[2])) return notFoundSeo(locale, basePath);
     const countryTitle = pick(row, 'title', locale);
-    const typeLabel = pick(labelRow, 'label', locale);
+    // "E-Vize"/"Doğum Vizesi" gibi etiketler "vize" kelimesini zaten içeriyor;
+    // visaTypePhrase bunu tekrar etmeden tam ifadeyi üretir (bkz. src/utils).
+    const typePhrase = visaTypePhrase(pick(labelRow, 'label', locale), locale);
     return {
       status: 200,
       locale,
       basePath,
-      title: t(locale, 'countryVisaType.metaTitleTemplate', { country: countryTitle, type: typeLabel }),
-      description: t(locale, 'countryVisaType.metaDescriptionTemplate', { country: countryTitle, typeLower: typeLabel.toLocaleLowerCase(locale === 'tr' ? 'tr-TR' : locale) }),
+      title: t(locale, 'countryVisaType.metaTitleTemplate', { country: countryTitle, type: typePhrase }),
+      // AR şablonu {type} kullanır (Arapça'da küçük/büyük harf ayrımı yok);
+      // TR/EN {typeLower} kullanır — ikisi de geçirilir, hangisi gerekiyorsa o dolar.
+      description: t(locale, 'countryVisaType.metaDescriptionTemplate', {
+        country: countryTitle,
+        type: typePhrase,
+        typeLower: typePhrase.toLocaleLowerCase(locale === 'tr' ? 'tr-TR' : locale),
+      }),
       image: photos.passportBoardingPass,
     };
   }

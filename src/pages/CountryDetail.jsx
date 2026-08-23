@@ -12,6 +12,7 @@ import CountryFlag from '../components/CountryFlag.jsx';
 import Breadcrumbs from '../components/Breadcrumbs.jsx';
 import RelatedPosts from '../components/RelatedPosts.jsx';
 import ConsultCta from '../components/ConsultCta.jsx';
+import { visaTypePhrase } from '../utils/visaTypePhrase.js';
 
 // Hızlı bilgi kartlarının dekoratif ikonları — quick_facts etiketleri sabit bir
 // sözlükten gelir (bkz. server/db/translateOverviews.js), üç dildeki anahtar
@@ -27,18 +28,6 @@ const QUICK_FACT_ICON_FALLBACK = [ClockIcon, ChecklistIcon, GlobeIcon, StarIcon]
 function quickFactIcon(label, index) {
   const rule = QUICK_FACT_ICON_RULES.find((r) => r.pattern.test(label || ''));
   return rule ? rule.Icon : QUICK_FACT_ICON_FALLBACK[index % QUICK_FACT_ICON_FALLBACK.length];
-}
-
-// TR verisi Faz 3'e kadar her dilde aynı kalıyor (bkz. plan); bu yüzden "vize"
-// kelimesi tekrarını önleyen kontrol Türkçe'ye özel kalıyor. Arapça'da "vize"
-// tipi soyadları henüz çevrilmediği için doğal sıralama önek (تأشيرة X) yerine
-// aynı sonek deseni kullanılır — Faz 3'te visa_type_labels çevrilince bu
-// mantık gözden geçirilebilir.
-function visaTypeHeading(label, typeKey, locale, t) {
-  const text = label || typeKey;
-  if (text.toLowerCase().includes('vize')) return text;
-  if (locale === 'ar') return `${t('countryDetail.visaTypePrefixAr')}${text}`;
-  return `${text}${t('countryDetail.visaTypeSuffix')}`;
 }
 
 export default function CountryDetail() {
@@ -118,9 +107,10 @@ export default function CountryDetail() {
           <div className="faq-group" style={{ marginBottom: 0 }}>
             {country.types.map((typeKey, i) => {
               const entry = docsByType?.[typeKey] ?? { items: [], note: null };
+              const typePhrase = visaTypePhrase(visaTypeLabels[typeKey] || typeKey, locale);
               return (
                 <details className="faq-item" open={i === 0} key={typeKey}>
-                  <summary>{visaTypeHeading(visaTypeLabels[typeKey], typeKey, locale, t)}</summary>
+                  <summary>{typePhrase}</summary>
                   <div className="faq-answer checklist-output" style={{ border: 'none', paddingTop: 0 }}>
                     {entry.items.length > 0 ? (
                       <ul>
@@ -141,7 +131,7 @@ export default function CountryDetail() {
                     )}
                     <p style={{ marginTop: '1rem' }}>
                       <Link to={`/ulkeler/${country.id}/${typeKey}`} style={{ color: 'var(--accent-color)' }}>
-                        {t('countryDetail.detailLinkTemplate', { country: country.title, visaType: visaTypeLabels[typeKey] })}
+                        {t('countryDetail.detailLinkTemplate', { country: country.title, visaType: typePhrase })}
                       </Link>
                     </p>
                   </div>
