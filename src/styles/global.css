@@ -309,6 +309,7 @@ img, svg {
   align-items: center;
   gap: 0.45rem;
   white-space: nowrap;
+  padding-right: 1.6rem;
 }
 
 /* ---------- Dil Değiştirici ---------- */
