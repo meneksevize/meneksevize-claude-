@@ -124,11 +124,11 @@ img, svg {
   }
 
   .section {
-    padding: 2.75rem 0;
+    padding: 2.1rem 0;
   }
 
   .section-head {
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
   }
 
   .section-head h2 {
@@ -961,6 +961,33 @@ img, svg {
   }
 }
 
+@media (max-width: 600px) {
+  .hero-aurora {
+    padding-top: 3.25rem;
+    padding-bottom: 2.75rem;
+  }
+
+  .hero-content h1 {
+    margin-bottom: 0.9rem;
+  }
+
+  .hero-content p {
+    margin-bottom: 1.75rem;
+  }
+
+  .hero-destinations {
+    margin-top: 1.75rem;
+  }
+
+  .hero-destinations-label {
+    margin-bottom: 0.75rem;
+  }
+
+  .hero-destinations-row {
+    gap: 0.6rem;
+  }
+}
+
 /* ---------- 404 Sayfası ---------- */
 .notfound-hero {
   text-align: center;
@@ -1679,6 +1706,7 @@ img, svg {
    sayfa uzunluğu ciddi ölçüde kısalır. */
 @media (max-width: 600px) {
   .grid-2, .grid-3, .grid-4 { grid-template-columns: repeat(2, 1fr); }
+  .grid { gap: 1rem; }
 
   .card {
     padding: 1.15rem;
@@ -1708,8 +1736,12 @@ img, svg {
 }
 
 @media (max-width: 800px) {
-  .photo-feature { grid-template-columns: 1fr; }
+  .photo-feature { grid-template-columns: 1fr; gap: 1.75rem; }
   .photo-feature.reverse .photo-feature-media { order: -1; }
+}
+
+@media (max-width: 600px) {
+  .photo-feature-media { aspect-ratio: 16 / 9; }
 }
 
 .photo-feature-media {
@@ -1870,10 +1902,18 @@ img, svg {
 .blog-card-body h3 {
   font-size: 1.15rem;
   margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .blog-card-body p {
   margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .blog-card-body .blog-card-date {
@@ -2010,16 +2050,17 @@ img, svg {
 @media (max-width: 640px) {
   .destination-feature-grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 0.85rem;
   }
 
   .destination-feature-card {
-    min-height: 200px;
-    padding: 1.25rem 1rem;
+    min-height: 150px;
+    padding: 1rem;
   }
 
   .destination-feature-art {
-    width: 130px;
-    height: 130px;
+    width: 110px;
+    height: 110px;
   }
 }
 

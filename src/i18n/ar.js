@@ -530,6 +530,7 @@ export default {
     filterAll: 'الكل',
     loading: 'جارٍ التحميل…',
     emptyCategory: 'لا توجد مقالات منشورة في هذه الفئة حتى الآن.',
+    loadMore: 'عرض المزيد',
   },
   blogPost: {
     loading: 'جارٍ التحميل…',

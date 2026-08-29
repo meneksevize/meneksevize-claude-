@@ -533,6 +533,7 @@ export default {
     filterAll: 'Tümü',
     loading: 'Yükleniyor…',
     emptyCategory: 'Bu kategoride henüz yayınlanmış bir yazı yok.',
+    loadMore: 'Daha Fazla Göster',
   },
   blogPost: {
     loading: 'Yükleniyor…',

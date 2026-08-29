@@ -530,6 +530,7 @@ export default {
     filterAll: 'All',
     loading: 'Loading…',
     emptyCategory: 'No posts have been published in this category yet.',
+    loadMore: 'Show More',
   },
   blogPost: {
     loading: 'Loading…',

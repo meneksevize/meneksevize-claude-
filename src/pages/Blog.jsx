@@ -8,11 +8,13 @@ import { photos, cardCover } from '../data/photos.js';
 import { BLOG_CATEGORIES, getCategoryLabel } from '../data/blogCategories.js';
 
 const DATE_LOCALES = { tr: 'tr-TR', en: 'en-US', ar: 'ar' };
+const PAGE_SIZE = 9;
 
 export default function Blog() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [category, setCategory] = useState('all');
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const { t, locale } = useLocale();
 
   useDocumentMeta(
@@ -33,6 +35,15 @@ export default function Blog() {
     () => (category === 'all' ? posts : posts.filter((p) => p.category === category)),
     [posts, category],
   );
+
+  // Kategori değişince sayfa uzunluğu yeniden makul bir başlangıç noktasına
+  // dönsün — filtre sonrası birden 74 kartın hepsi açık kalmasın.
+  useEffect(() => {
+    setVisibleCount(PAGE_SIZE);
+  }, [category]);
+
+  const visiblePosts = filteredPosts.slice(0, visibleCount);
+  const hasMore = visibleCount < filteredPosts.length;
 
   return (
     <>
@@ -73,7 +84,7 @@ export default function Blog() {
           )}
 
           <div className="grid grid-3">
-            {filteredPosts.map((post, i) => (
+            {visiblePosts.map((post, i) => (
               <Reveal as={Link} to={`/blog/${post.slug}`} className="card blog-card" delay={i * 60} key={post.id}>
                 {post.coverImageUrl && (
                   <div className="blog-card-media">
@@ -94,6 +105,18 @@ export default function Blog() {
               </Reveal>
             ))}
           </div>
+
+          {hasMore && (
+            <div style={{ textAlign: 'center', marginTop: '2rem' }}>
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={() => setVisibleCount((v) => v + PAGE_SIZE)}
+              >
+                {t('blogPage.loadMore')}
+              </button>
+            </div>
+          )}
         </div>
       </section>
     </>
