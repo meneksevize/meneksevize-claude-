@@ -291,7 +291,9 @@ img, svg {
 .nav-cta {
   background: linear-gradient(135deg, #937aff 0%, var(--accent-color) 50%, var(--accent-hover) 100%);
   color: #fff !important;
-  padding: 0.55rem 1.2rem;
+  /* .nav-links a { padding: 0.35rem 0 } özgüllük olarak (0,1,1) — bu tek
+     sınıflı seçiciyi (0,1,0) eziyor, bu yüzden padding burada !important. */
+  padding: 0.55rem 1.4rem !important;
   border-radius: 8px;
   font-weight: 600 !important;
   box-shadow: 0 4px 14px rgba(124, 92, 255, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
@@ -307,9 +309,9 @@ img, svg {
 .nav-phone-cta {
   display: flex;
   align-items: center;
-  gap: 0.45rem;
+  justify-content: center;
+  gap: 0.5rem;
   white-space: nowrap;
-  padding-right: 1.6rem;
 }
 
 /* ---------- Dil Değiştirici ---------- */
