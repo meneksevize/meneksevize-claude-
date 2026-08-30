@@ -5,7 +5,7 @@ import { useLocale } from '../context/LocaleContext.jsx';
 
 const STORAGE_KEY = 'exitOfferLastShown';
 const COOLDOWN_MS = 24 * 60 * 60 * 1000; // Aynı ziyaretçiye günde en fazla 1 kez
-const ARM_DELAY_MS = 10000; // İlk 10sn içinde hiç tetiklenmesin — anında açılan
+const ARM_DELAY_MS = 5000; // İlk 5sn içinde hiç tetiklenmesin — anında açılan
 // bloklayıcı popup'lar Google'ın mobil "intrusive interstitial" cezasına
 // girer; gerçek bir çıkış niyeti sinyaline (fare/scroll) kadar beklemek bu
 // riski taşımaz çünkü ziyaretçi zaten içeriğe erişmiş oluyor.
