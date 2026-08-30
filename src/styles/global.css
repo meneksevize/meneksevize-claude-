@@ -1,5 +1,7 @@
 /* ---------- Fontlar ---------- */
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap');
+/* Google Fonts artık index.html'de render-blocking olmayan bir <link> ile
+   yükleniyor (bkz. index.html'deki not) — burada @import olarak tutmak
+   senkron/bloklayıcı bir ikinci indirmeye yol açardı. */
 
 /* ---------- Reset & Temel Ayarlar ---------- */
 * {

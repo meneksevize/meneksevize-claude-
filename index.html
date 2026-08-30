@@ -18,10 +18,17 @@
   <link rel="canonical" href="https://meneksevize.com/">
   <!-- Blog kapak görselleri Unsplash CDN'den geliyor; erken TLS bağlantısı kurulsun. -->
   <link rel="preconnect" href="https://images.unsplash.com">
-  <!-- Google Fonts (global.css @import) kritik render yolunda; erken bağlantı FCP'yi hızlandırır.
+  <!-- Google Fonts kritik render yolunda; erken bağlantı FCP'yi hızlandırır.
        fonts.gstatic.com font dosyaları CORS ile çekildiği için crossorigin gerekir. -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Google Fonts: global.css'teki @import yerine burada, render'ı bloklamayan
+       standart "media=print -> onload swap" deseniyle yükleniyor. @import,
+       tarayıcının parent stylesheet'i bitirmeden önce senkron olarak bu
+       dosyayı indirip parse etmesini gerektiriyordu (Lighthouse'ta ~1.3sn
+       render-blocking olarak ölçüldü); bu hâliyle ilk boyamayı beklemiyor. -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap"></noscript>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -43,7 +50,7 @@
     "url": "https://meneksevize.com/",
     "description": "Schengen, ABD, İngiltere, Kanada ve daha fazlası için şeffaf süreç takibi ve kişiye özel evrak rehberliğiyle vize danışmanlığı.",
     "image": "https://meneksevize.com/og-image.png",
-    "telephone": "+447908298949",
+    "telephone": "+905416500621",
     "email": "meneksevize@gmail.com",
     "areaServed": "TR",
     "priceRange": "$$",

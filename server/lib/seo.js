@@ -291,6 +291,14 @@ export function renderIndexHtml(seo) {
       }
     }
     if (seo.noindex) injected.push('  <meta name="robots" content="noindex">');
+    // Ana sayfanın LCP öğesi hero bölümünün arka plan fotoğrafı — bu bir
+    // <img> değil CSS background-image olduğu için tarayıcının preload
+    // scanner'ı onu ancak CSS uygulandıktan sonra keşfediyor (Lighthouse'ta
+    // ~3.8sn "resource load delay" olarak ölçüldü). Erkenden keşfedilsin
+    // diye sadece ana sayfada preload ipucu ekliyoruz.
+    if (seo.basePath === '/') {
+      injected.push('  <link rel="preload" as="image" fetchpriority="high" href="/photos/hero-plane-window.webp">');
+    }
     html = html.replace('</head>', `${injected.join('\n')}\n</head>`);
   } else if (seo.noindex) {
     html = html.replace('</head>', '  <meta name="robots" content="noindex">\n</head>');

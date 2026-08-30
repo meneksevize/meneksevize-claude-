@@ -13,3 +13,11 @@ server/data/*.db-shm
 server/data/sessions.db
 server/data/backups/
 .devserver-logs
+
+# sitemap.xml is a generated artifact (npm run sitemap:generate), served
+# directly from public/ by an Express route. It used to be committed, which
+# meant every deploy's `git checkout -- public/sitemap.xml` (needed to avoid
+# pull conflicts from the server's own regenerated copy) silently reset the
+# live sitemap back to whatever URL count was last committed — undoing every
+# blog-seed deploy that didn't immediately re-run sitemap:generate afterward.
+public/sitemap.xml
