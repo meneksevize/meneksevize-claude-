@@ -6,6 +6,13 @@ export default {
     langSwitcherLabel: 'Dil',
     breadcrumbHome: 'Ana Sayfa',
   },
+  exitOffer: {
+    kicker: 'Schengen Vizesi',
+    title: 'Schengen Vizesinde Netlik',
+    text: 'Schengen ülkeleri için vize danışmanlığı hizmetimiz {price} sabit fiyatla — evrak hazırlığından sonuç takibine kadar yanınızdayız.',
+    cta: 'Ücretsiz Ön Değerlendirme Al',
+    dismiss: 'Kapat',
+  },
   nav: {
     countries: 'Ülkeler',
     schengenGroup: 'Schengen Bölgesi',

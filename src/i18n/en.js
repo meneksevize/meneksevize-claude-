@@ -3,6 +3,13 @@ export default {
     langSwitcherLabel: 'Language',
     breadcrumbHome: 'Home',
   },
+  exitOffer: {
+    kicker: 'Schengen Visa',
+    title: 'Clarity on Your Schengen Visa',
+    text: 'Our visa consultancy service for Schengen countries is a flat {price} — from document preparation to result tracking, we\'re with you every step.',
+    cta: 'Get a Free Pre-Assessment',
+    dismiss: 'Close',
+  },
   nav: {
     countries: 'Countries',
     schengenGroup: 'Schengen Area',

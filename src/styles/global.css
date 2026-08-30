@@ -3158,3 +3158,148 @@ img, svg {
   gap: 1rem;
   margin-top: 1.75rem;
 }
+
+/* ---------- Çıkış Niyeti Teklifi ---------- */
+/* Yalnızca gerçek bir "ayrılıyor" sinyalinden sonra görünür (bkz.
+   ExitIntentOffer.jsx) — anında açılan bloklayıcı popup'lar Google'ın mobil
+   "intrusive interstitial" cezasına girer, bu tasarım o riski taşımaz. */
+.exit-offer-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  background: rgba(10, 11, 20, 0.72);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  animation: exitOfferFadeIn 0.35s ease;
+}
+
+@keyframes exitOfferFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.exit-offer-card {
+  position: relative;
+  width: 100%;
+  max-width: 460px;
+  background: var(--surface-color);
+  border: 1px solid rgba(232, 182, 84, 0.3);
+  border-radius: 20px;
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  overflow: hidden;
+  animation: exitOfferRise 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes exitOfferRise {
+  from { opacity: 0; transform: translateY(18px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.exit-offer-aurora {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.exit-offer-aurora-1 {
+  position: absolute;
+  width: 260px;
+  height: 260px;
+  top: -80px;
+  left: -60px;
+  border-radius: 50%;
+  filter: blur(70px);
+  opacity: 0.55;
+  mix-blend-mode: screen;
+  background: radial-gradient(circle, rgba(124, 92, 255, 0.8) 0%, transparent 68%);
+  animation: auroraFloat1 18s ease-in-out infinite;
+}
+
+.exit-offer-aurora-2 {
+  position: absolute;
+  width: 220px;
+  height: 220px;
+  bottom: -70px;
+  right: -50px;
+  border-radius: 50%;
+  filter: blur(70px);
+  opacity: 0.45;
+  mix-blend-mode: screen;
+  background: radial-gradient(circle, rgba(232, 182, 84, 0.55) 0%, transparent 68%);
+  animation: auroraFloat3 20s ease-in-out infinite;
+}
+
+.exit-offer-close {
+  position: absolute;
+  top: 1rem;
+  inset-inline-end: 1rem;
+  z-index: 2;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-color);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-muted);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.exit-offer-close:hover {
+  color: var(--text-color);
+  border-color: var(--accent-color);
+  background: var(--accent-soft);
+}
+
+.exit-offer-content {
+  position: relative;
+  z-index: 1;
+  padding: 2.75rem 2.25rem 2.25rem;
+  text-align: center;
+}
+
+.exit-offer-content .kicker {
+  margin-bottom: 1rem;
+}
+
+.exit-offer-content h2 {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: clamp(1.5rem, 4vw, 1.85rem);
+  text-wrap: balance;
+  margin-bottom: 0.85rem;
+}
+
+.exit-offer-content p {
+  color: var(--text-muted);
+  font-size: 0.98rem;
+  line-height: 1.6;
+  margin-bottom: 1.75rem;
+}
+
+.exit-offer-content .btn {
+  width: 100%;
+}
+
+@media (max-width: 480px) {
+  .exit-offer-content {
+    padding: 2.5rem 1.5rem 1.75rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .exit-offer-backdrop,
+  .exit-offer-card,
+  .exit-offer-aurora-1,
+  .exit-offer-aurora-2 {
+    animation: none;
+  }
+}

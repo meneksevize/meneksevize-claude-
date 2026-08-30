@@ -3,6 +3,13 @@ export default {
     langSwitcherLabel: 'اللغة',
     breadcrumbHome: 'الرئيسية',
   },
+  exitOffer: {
+    kicker: 'تأشيرة شنغن',
+    title: 'وضوح في تأشيرة شنغن',
+    text: 'تقدم خدمة استشارات التأشيرات لدينا لدول شنغن بسعر ثابت {price} — من تحضير الوثائق إلى متابعة النتيجة، نحن معك في كل خطوة.',
+    cta: 'احصل على تقييم مجاني مسبق',
+    dismiss: 'إغلاق',
+  },
   nav: {
     countries: 'الدول',
     schengenGroup: 'منطقة شنغن',

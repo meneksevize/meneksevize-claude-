@@ -9,6 +9,7 @@ import ScrollToTop from './components/ScrollToTop.jsx';
 import MobileTabBar from './components/MobileTabBar.jsx';
 import WhatsappFloatButton from './components/WhatsappFloatButton.jsx';
 import LiveChatWidget from './components/LiveChatWidget.jsx';
+import ExitIntentOffer from './components/ExitIntentOffer.jsx';
 import { SiteDataProvider, useSiteData } from './context/SiteDataContext.jsx';
 import { LocaleProvider, extractLocale, useLocale } from './context/LocaleContext.jsx';
 import { AdminAuthProvider } from './admin/AdminAuthContext.jsx';
@@ -78,6 +79,7 @@ function PublicLayoutInner() {
       <MobileTabBar />
       <WhatsappFloatButton />
       <LiveChatWidget />
+      <ExitIntentOffer />
     </>
   );
 }
