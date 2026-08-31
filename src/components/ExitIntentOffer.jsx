@@ -3,14 +3,13 @@ import { useLocation } from 'react-router-dom';
 import { Link } from './LocaleLink.jsx';
 import { useLocale } from '../context/LocaleContext.jsx';
 
+// Not: bileşen adı "ExitIntentOffer" olarak kaldı ama artık gerçek çıkış
+// niyeti sinyali (fare/scroll) beklemiyor — sahibinin isteğiyle sayfaya
+// girdikten 7sn sonra doğrudan gösteriliyor. Dosya adını değiştirmek
+// gereksiz risk taşıdığı için sadece davranış güncellendi.
 const STORAGE_KEY = 'exitOfferLastShown';
 const COOLDOWN_MS = 24 * 60 * 60 * 1000; // Aynı ziyaretçiye günde en fazla 1 kez
-const ARM_DELAY_MS = 5000; // İlk 5sn içinde hiç tetiklenmesin — anında açılan
-// bloklayıcı popup'lar Google'ın mobil "intrusive interstitial" cezasına
-// girer; gerçek bir çıkış niyeti sinyaline (fare/scroll) kadar beklemek bu
-// riski taşımaz çünkü ziyaretçi zaten içeriğe erişmiş oluyor.
-const SCROLL_ARM_PERCENT = 40; // Mobilde tetiklenmeden önce sayfanın en az bu kadarı görülmüş olmalı
-const SCROLL_UP_DELTA = 80; // ...ve ardından bu kadar hızlı yukarı kaydırma "ayrılıyor" sinyali sayılır
+const SHOW_DELAY_MS = 7000; // Sayfaya girdikten 7sn sonra doğrudan gösterilir.
 
 export default function ExitIntentOffer() {
   const { t } = useLocale();
@@ -30,44 +29,16 @@ export default function ExitIntentOffer() {
     }
     if (lastShown && Date.now() - Number(lastShown) < COOLDOWN_MS) return undefined;
 
-    let armed = false;
-    let shown = false;
-    const armTimer = setTimeout(() => { armed = true; }, ARM_DELAY_MS);
-
-    function trigger() {
-      if (shown || !armed) return;
-      shown = true;
+    const timer = setTimeout(() => {
       setVisible(true);
       try {
         localStorage.setItem(STORAGE_KEY, String(Date.now()));
       } catch {
         // yoksay
       }
-    }
+    }, SHOW_DELAY_MS);
 
-    function handleMouseLeave(e) {
-      if (e.clientY <= 0) trigger();
-    }
-
-    let maxScrollPercent = 0;
-    let lastY = window.scrollY;
-    function handleScroll() {
-      const scrollable = document.body.scrollHeight - window.innerHeight;
-      const percent = scrollable > 0 ? (window.scrollY / scrollable) * 100 : 0;
-      maxScrollPercent = Math.max(maxScrollPercent, percent);
-      const upwardDelta = lastY - window.scrollY;
-      if (maxScrollPercent > SCROLL_ARM_PERCENT && upwardDelta > SCROLL_UP_DELTA) trigger();
-      lastY = window.scrollY;
-    }
-
-    document.addEventListener('mouseleave', handleMouseLeave);
-    window.addEventListener('scroll', handleScroll, { passive: true });
-
-    return () => {
-      clearTimeout(armTimer);
-      document.removeEventListener('mouseleave', handleMouseLeave);
-      window.removeEventListener('scroll', handleScroll);
-    };
+    return () => clearTimeout(timer);
   }, [eligible]);
 
   useEffect(() => {
