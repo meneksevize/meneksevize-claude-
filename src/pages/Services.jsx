@@ -7,6 +7,9 @@ import { photos } from '../data/photos.js';
 import Reveal from '../components/Reveal.jsx';
 import CountryFlag from '../components/CountryFlag.jsx';
 import Breadcrumbs from '../components/Breadcrumbs.jsx';
+import {
+  CompassIcon, BuildingIcon, BookIcon, GearIcon, HouseIcon, GlobeIcon, CreditCardIcon, MapleIcon,
+} from '../components/icons.jsx';
 
 const typeFilters = ['all', 'turistik', 'ticari', 'ogrenci', 'calisma', 'aile-birlesimi', 'transit', 'e-vize', 'dogum'];
 
@@ -14,15 +17,18 @@ export default function Services() {
   const { countries, visaTypeLabels } = useSiteData();
   const { t } = useLocale();
 
+  // Sırayla typeFilters'ın (all hariç) aynı 8 vize tipiyle eşleşir — her
+  // birine sitenin geri kalanındaki kart-ikon dilinde (bkz. Home.jsx whyUs)
+  // temaya uygun bir ikon: Doğum Vizesi için Kanada'nın akçaağaç yaprağı gibi.
   const visaTypeInfo = [
-    { title: t('services.visaType1Title'), text: t('services.visaType1Text') },
-    { title: t('services.visaType2Title'), text: t('services.visaType2Text') },
-    { title: t('services.visaType3Title'), text: t('services.visaType3Text') },
-    { title: t('services.visaType4Title'), text: t('services.visaType4Text') },
-    { title: t('services.visaType5Title'), text: t('services.visaType5Text') },
-    { title: t('services.visaType6Title'), text: t('services.visaType6Text') },
-    { title: t('services.visaType7Title'), text: t('services.visaType7Text') },
-    { title: t('services.visaType8Title'), text: t('services.visaType8Text') },
+    { icon: CompassIcon, title: t('services.visaType1Title'), text: t('services.visaType1Text') },
+    { icon: BuildingIcon, title: t('services.visaType2Title'), text: t('services.visaType2Text') },
+    { icon: BookIcon, title: t('services.visaType3Title'), text: t('services.visaType3Text') },
+    { icon: GearIcon, title: t('services.visaType4Title'), text: t('services.visaType4Text') },
+    { icon: HouseIcon, title: t('services.visaType5Title'), text: t('services.visaType5Text') },
+    { icon: GlobeIcon, title: t('services.visaType6Title'), text: t('services.visaType6Text') },
+    { icon: CreditCardIcon, title: t('services.visaType7Title'), text: t('services.visaType7Text') },
+    { icon: MapleIcon, title: t('services.visaType8Title'), text: t('services.visaType8Text') },
   ];
 
   const regionLabels = {
@@ -64,10 +70,13 @@ export default function Services() {
             <h2>{t('services.infoTitle')}</h2>
           </div>
           <div className="grid grid-4" style={{ marginBottom: '4rem' }}>
-            {visaTypeInfo.map((item, i) => (
-              <Reveal as="div" className="card" delay={i * 50} key={item.title}>
-                <h3>{item.title}</h3>
-                <p>{item.text}</p>
+            {visaTypeInfo.map(({
+              icon: Icon, title, text,
+            }, i) => (
+              <Reveal as="div" className="card" delay={i * 50} key={title}>
+                <div className="card-icon"><Icon /></div>
+                <h3>{title}</h3>
+                <p>{text}</p>
               </Reveal>
             ))}
           </div>
