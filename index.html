@@ -22,19 +22,19 @@
        fonts.gstatic.com font dosyaları CORS ile çekildiği için crossorigin gerekir. -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <!-- Font dosyalarının kendisini de erkenden indir: "media=print -> onload"
-       deseni CSS'i erken indirse de, tarayıcı gerçek .woff2 dosyalarını ancak
-       o CSS'i uygulayıp @font-face kurallarını okuduktan sonra keşfediyor —
-       bu da JS ana iş parçacığı yoğunken (CPU kısıtlı mobilde) 3-4sn'ye kadar
-       gecikip hem geç metin boyanmasına hem de font-swap kaynaklı düzen
-       kaymasına (CLS) yol açıyordu. Doğrudan preload ile bu gecikme ortadan
-       kalkıyor. URL'ler Google Fonts'un hash'li dosya adları olduğundan sürüm
-       değişince sessizce işe yaramaz hale gelebilir — zararsız, sadece
-       kazanç kaybolur; gerektiğinde ağ sekmesinden güncellenebilir. -->
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7W0Q5nw.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa25L7W0Q5n-wU.woff2">
+  <!-- Yalnızca CLS'e (düzen kayması) sebep olan tek font dosyasını preload
+       ediyoruz — hero başlığının kullandığı Fraunces 600. "media=print ->
+       onload" deseni CSS'i erken indirse de, tarayıcı gerçek .woff2
+       dosyasını ancak o CSS'i uygulayıp @font-face kuralını okuduktan sonra
+       keşfediyor; bu da JS ana iş parçacığı yoğunken (CPU kısıtlı mobilde)
+       gecikip başlığın geç büyüyüp altındaki butonları itmesine (CLS
+       0.184) yol açıyordu. Denendi: 4 font dosyasının tamamını preload etmek
+       CLS'i 0'a indirdi ama JS bundle + hero görseliyle bant genişliği
+       rekabetine girip LCP/Speed Index'i belirgin kötüleştirdi — bu yüzden
+       sadece gerçek suçlu tek dosya preload ediliyor. URL Google Fonts'un
+       hash'li dosya adı olduğundan sürüm değişince sessizce işe yaramaz
+       hale gelebilir — zararsız, sadece kazanç kaybolur. -->
   <link rel="preload" as="font" type="font/woff2" crossorigin href="https://fonts.gstatic.com/s/fraunces/v38/6NU78FyLNQOQZAnv9bYEvDiIdE9Ea92uemAk_WBq8U_9v0c2Wa0KxC9TeP2Xz5c.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="https://fonts.gstatic.com/s/fraunces/v38/6NU78FyLNQOQZAnv9bYEvDiIdE9Ea92uemAk_WBq8U_9v0c2Wa0KxCFTeP2Xz5fU8w.woff2">
   <!-- Google Fonts: global.css'teki @import yerine burada, render'ı bloklamayan
        standart "media=print -> onload swap" deseniyle yükleniyor. @import,
        tarayıcının parent stylesheet'i bitirmeden önce senkron olarak bu
