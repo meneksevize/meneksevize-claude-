@@ -130,7 +130,7 @@ export default function CountryDetail() {
                       </div>
                     )}
                     <p style={{ marginTop: '1rem' }}>
-                      <Link to={`/ulkeler/${country.id}/${typeKey}`} style={{ color: 'var(--accent-color)' }}>
+                      <Link to={`/ulkeler/${country.id}/${typeKey}`} style={{ color: 'var(--link-color)' }}>
                         {t('countryDetail.detailLinkTemplate', { country: country.title, visaType: typePhrase })}
                       </Link>
                     </p>

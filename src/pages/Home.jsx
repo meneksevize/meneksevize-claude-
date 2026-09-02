@@ -216,7 +216,7 @@ export default function Home() {
             ))}
           </div>
           <p className="form-note" style={{ textAlign: 'center', marginTop: '1.5rem' }}>
-            {t('home.destinationsFallbackPre')}<Link to="/hizmetler" style={{ color: 'var(--accent-color)' }}>{t('home.destinationsFallbackLink1')}</Link>{t('home.destinationsFallbackMid')}<Link to="/iletisim" style={{ color: 'var(--accent-color)' }}>{t('home.destinationsFallbackLink2')}</Link>{t('home.destinationsFallbackEnd')}
+            {t('home.destinationsFallbackPre')}<Link to="/hizmetler" style={{ color: 'var(--link-color)' }}>{t('home.destinationsFallbackLink1')}</Link>{t('home.destinationsFallbackMid')}<Link to="/iletisim" style={{ color: 'var(--link-color)' }}>{t('home.destinationsFallbackLink2')}</Link>{t('home.destinationsFallbackEnd')}
           </p>
         </div>
       </section>

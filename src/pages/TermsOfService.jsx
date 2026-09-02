@@ -62,7 +62,7 @@ export default function TermsOfService() {
             <h2 style={{ fontSize: '1.3rem', marginTop: '2rem', marginBottom: '0.75rem' }}>{t('termsOfService.s8Title')}</h2>
             <p>
               {t('termsOfService.s8BodyPre')}
-              <a href={`mailto:${email}`} style={{ color: 'var(--accent-color)' }}>{email}</a>
+              <a href={`mailto:${email}`} style={{ color: 'var(--link-color)' }}>{email}</a>
               {t('termsOfService.s8BodyPost')}
             </p>
 

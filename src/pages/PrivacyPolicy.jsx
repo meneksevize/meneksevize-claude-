@@ -35,7 +35,7 @@ export default function PrivacyPolicy() {
             <h2 style={{ fontSize: '1.3rem', marginTop: '2rem', marginBottom: '0.75rem' }}>{t('privacyPolicy.s1Title')}</h2>
             <p>
               {t('privacyPolicy.s1BodyPre')}
-              <a href={`mailto:${email}`} style={{ color: 'var(--accent-color)' }}>{email}</a>
+              <a href={`mailto:${email}`} style={{ color: 'var(--link-color)' }}>{email}</a>
               {t('privacyPolicy.s1BodyPost')}
             </p>
 
@@ -72,7 +72,7 @@ export default function PrivacyPolicy() {
             <h2 style={{ fontSize: '1.3rem', marginTop: '2rem', marginBottom: '0.75rem' }}>{t('privacyPolicy.s8Title')}</h2>
             <p>
               {t('privacyPolicy.s8BodyPre')}
-              <a href={`mailto:${email}`} style={{ color: 'var(--accent-color)' }}>{email}</a>
+              <a href={`mailto:${email}`} style={{ color: 'var(--link-color)' }}>{email}</a>
               {t('privacyPolicy.s8BodyPost')}
             </p>
 

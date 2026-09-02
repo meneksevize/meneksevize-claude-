@@ -19,6 +19,13 @@
   --accent-color: #7c5cff;
   --accent-hover: #6a48f0;
   --accent-soft: rgba(124, 92, 255, 0.22);
+  /* Koyu zemin üzerindeki küçük gövde metni linkleri için: #7c5cff'in
+     kendisi burada 3.9:1 kontrast veriyordu (WCAG AA normal metin için
+     4.5:1 ister) — Lighthouse erişilebilirlik denetimi yakaladı. Aynı mor
+     ailesinden, daha aydınlık bir ton (5.8:1+) sadece metin linklerinde
+     kullanılıyor; buton/kenarlık gibi büyük/grafiksel kullanımlar
+     --accent-color'da kalıyor çünkü onlar zaten eşiği geçiyor. */
+  --link-color: #9c85ff;
   --gold: #e8b654;
   --gold-hover: #d1a03f;
   --gold-soft: rgba(232, 182, 84, 0.18);
@@ -2683,7 +2690,7 @@ img, svg {
   max-width: 320px;
 }
 
-.footer-col h4 {
+.footer-col h3 {
   font-family: var(--font-sans);
   font-size: 0.9rem;
   letter-spacing: 0.04em;
@@ -2845,14 +2852,17 @@ img, svg {
   }
 
   /* "Ara" sekmesi bilinçli olarak vurgulanıyor — mobil ziyaretçinin
-     telefonu arayabileceği en görünür, her sayfada sabit kalan yer. */
+     telefonu arayabileceği en görünür, her sayfada sabit kalan yer.
+     --accent-color üzerinde beyaz metin bu küçük font boyutunda 4.34:1
+     kontrast veriyordu (WCAG AA 4.5:1 ister) — --accent-hover'a çekmek
+     5.5:1'e çıkarıyor, ayrı bir renk tanımlamaya gerek kalmadı. */
   .mobile-tab-call {
     color: #fff;
-    background-color: var(--accent-color);
+    background-color: var(--accent-hover);
   }
 
   .mobile-tab-call:active {
-    background-color: var(--accent-hover);
+    background-color: #5838c2;
   }
 
   body {

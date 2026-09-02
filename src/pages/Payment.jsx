@@ -113,7 +113,7 @@ export default function Payment() {
               </div>
 
               {request.status === 'paid' && (
-                <p className="form-note" style={{ color: 'var(--accent-color)' }}>
+                <p className="form-note" style={{ color: 'var(--link-color)' }}>
                   {t('payment.paidNotice')}
                 </p>
               )}
@@ -121,7 +121,7 @@ export default function Payment() {
               {request.status !== 'paid' && !request.iyzicoConfigured && (
                 <p className="form-note">
                   {t('payment.offlinePre')}
-                  <Link to="/iletisim" style={{ color: 'var(--accent-color)' }}>{t('payment.offlineLink')}</Link>
+                  <Link to="/iletisim" style={{ color: 'var(--link-color)' }}>{t('payment.offlineLink')}</Link>
                   {t('payment.offlinePost')}
                 </p>
               )}

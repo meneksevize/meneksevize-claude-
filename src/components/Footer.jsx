@@ -23,7 +23,7 @@ export default function Footer() {
             <p>{footerNote}</p>
           </div>
           <div className="footer-col">
-            <h4>{t('footer.quickLinks')}</h4>
+            <h3>{t('footer.quickLinks')}</h3>
             <ul>
               <li><Link to="/hakkimizda">{t('footer.about')}</Link></li>
               <li><Link to="/hizmetler">{t('footer.services')}</Link></li>
@@ -38,7 +38,7 @@ export default function Footer() {
             </ul>
           </div>
           <div className="footer-col">
-            <h4>{t('footer.contactTitle')}</h4>
+            <h3>{t('footer.contactTitle')}</h3>
             <ul>
               {phone && <li><a href={phoneHref}>{phone}</a></li>}
               {settings.email && <li><a href={`mailto:${settings.email}`}>{settings.email}</a></li>}

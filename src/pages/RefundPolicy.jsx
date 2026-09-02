@@ -51,7 +51,7 @@ export default function RefundPolicy() {
             <h2 style={{ fontSize: '1.3rem', marginTop: '2rem', marginBottom: '0.75rem' }}>{t('refundPolicy.s4Title')}</h2>
             <p>
               {t('refundPolicy.s4Pre')}
-              <a href={`mailto:${email}`} style={{ color: 'var(--accent-color)' }}>{email}</a>
+              <a href={`mailto:${email}`} style={{ color: 'var(--link-color)' }}>{email}</a>
               {phone && <>{t('refundPolicy.s4PhoneClausePre')}{phone}{t('refundPolicy.s4PhoneClausePost')}</>}
               {t('refundPolicy.s4Post')}
             </p>

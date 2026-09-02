@@ -16,7 +16,7 @@ export default function Process() {
       body: (
         <>
           {t('process.step2BodyPre')}
-          <Link to="/evrak-rehberi" style={{ color: 'var(--accent-color)' }}>{t('process.step2BodyLink')}</Link>
+          <Link to="/evrak-rehberi" style={{ color: 'var(--link-color)' }}>{t('process.step2BodyLink')}</Link>
           {t('process.step2BodyPost')}
         </>
       ),

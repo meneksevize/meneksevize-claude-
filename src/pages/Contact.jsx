@@ -197,7 +197,7 @@ export default function Contact() {
                   </div>
                   <p className="form-note" style={{ marginBottom: '1rem' }}>
                     {t('contact.consentPre')}
-                    <Link to="/gizlilik-politikasi" style={{ color: 'var(--accent-color)' }}>{t('contact.consentLink')}</Link>
+                    <Link to="/gizlilik-politikasi" style={{ color: 'var(--link-color)' }}>{t('contact.consentLink')}</Link>
                     {t('contact.consentPost')}
                   </p>
                   <button type="submit" className="btn btn-gold" style={{ width: '100%' }} disabled={status === 'submitting'}>

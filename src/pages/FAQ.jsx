@@ -64,7 +64,7 @@ export default function FAQ() {
       <section className="page-header">
         <span className="kicker">{t('faqPage.pageKicker')}</span>
         <h1>{t('faqPage.pageTitle')}</h1>
-        <p>{t('faqPage.pageSubtitlePre')}<Link to="/iletisim" style={{ color: 'var(--accent-color)' }}>{t('faqPage.pageSubtitleLink')}</Link>{t('faqPage.pageSubtitlePost')}</p>
+        <p>{t('faqPage.pageSubtitlePre')}<Link to="/iletisim" style={{ color: 'var(--link-color)' }}>{t('faqPage.pageSubtitleLink')}</Link>{t('faqPage.pageSubtitlePost')}</p>
       </section>
 
       <section className="section" style={{ paddingTop: '1rem' }}>

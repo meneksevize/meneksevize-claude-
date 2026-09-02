@@ -230,7 +230,7 @@ export default function PreAssessment() {
                     </div>
                     <p className="form-note" style={{ marginBottom: '1rem' }}>
                       {t('preAssessment.consentPre')}
-                      <Link to="/gizlilik-politikasi" style={{ color: 'var(--accent-color)' }}>{t('preAssessment.consentLink')}</Link>
+                      <Link to="/gizlilik-politikasi" style={{ color: 'var(--link-color)' }}>{t('preAssessment.consentLink')}</Link>
                       {t('preAssessment.consentPost')}
                     </p>
                     <div className="wizard-nav">
@@ -261,7 +261,7 @@ export default function PreAssessment() {
             )}
           </Reveal>
           <p className="form-note" style={{ textAlign: 'center', marginTop: '1.5rem' }}>
-            {t('preAssessment.footerNotePre')}<Link to="/iletisim" style={{ color: 'var(--accent-color)' }}>{t('preAssessment.footerNoteLink')}</Link>{t('preAssessment.footerNotePost')}
+            {t('preAssessment.footerNotePre')}<Link to="/iletisim" style={{ color: 'var(--link-color)' }}>{t('preAssessment.footerNoteLink')}</Link>{t('preAssessment.footerNotePost')}
           </p>
         </div>
       </section>

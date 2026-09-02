@@ -85,7 +85,7 @@ export default function Services() {
             <span className="kicker">{t('services.countriesKicker')}</span>
             <h2>{t('services.countriesTitle')}</h2>
             <p>
-              {t('services.countriesSubtitlePre')}<Link to="/e-vize" style={{ color: 'var(--accent-color)' }}>{t('services.countriesSubtitleLink')}</Link>{t('services.countriesSubtitlePost')}
+              {t('services.countriesSubtitlePre')}<Link to="/e-vize" style={{ color: 'var(--link-color)' }}>{t('services.countriesSubtitleLink')}</Link>{t('services.countriesSubtitlePost')}
             </p>
           </div>
 
@@ -163,7 +163,7 @@ export default function Services() {
             </p>
             <p style={{ marginTop: '1rem' }}>
               {t('services.pricingP2Pre')}
-              <Link to="/iptal-iade-politikasi" style={{ color: 'var(--accent-color)' }}>{t('services.pricingP2Link')}</Link>
+              <Link to="/iptal-iade-politikasi" style={{ color: 'var(--link-color)' }}>{t('services.pricingP2Link')}</Link>
               {t('services.pricingP2Post')}
             </p>
           </Reveal>

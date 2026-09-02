@@ -135,7 +135,7 @@ export default function TrackApplication() {
               </div>
 
               <p className="form-note" style={{ textAlign: 'center', maxWidth: 600, margin: '2rem auto 0' }}>
-                {t('trackApplication.contactPre')}<Link to="/iletisim" style={{ color: 'var(--accent-color)' }}>{t('trackApplication.contactLink')}</Link>{t('trackApplication.contactPost')}
+                {t('trackApplication.contactPre')}<Link to="/iletisim" style={{ color: 'var(--link-color)' }}>{t('trackApplication.contactLink')}</Link>{t('trackApplication.contactPost')}
               </p>
             </>
           )}

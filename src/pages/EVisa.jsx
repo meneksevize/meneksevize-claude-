@@ -51,7 +51,7 @@ export default function EVisa() {
           </div>
 
           <p className="form-note" style={{ textAlign: 'center', maxWidth: 600, margin: '2rem auto 0' }}>
-            {t('eVisa.notFoundPre')}<Link to="/hizmetler" style={{ color: 'var(--accent-color)' }}>{t('eVisa.notFoundLink1')}</Link>{t('eVisa.notFoundMid')}<Link to="/iletisim" style={{ color: 'var(--accent-color)' }}>{t('eVisa.notFoundLink2')}</Link>{t('eVisa.notFoundPost')}
+            {t('eVisa.notFoundPre')}<Link to="/hizmetler" style={{ color: 'var(--link-color)' }}>{t('eVisa.notFoundLink1')}</Link>{t('eVisa.notFoundMid')}<Link to="/iletisim" style={{ color: 'var(--link-color)' }}>{t('eVisa.notFoundLink2')}</Link>{t('eVisa.notFoundPost')}
           </p>
         </div>
       </section>
