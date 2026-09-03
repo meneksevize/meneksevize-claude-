@@ -59,6 +59,7 @@ const stmtPost = db.prepare(
    FROM posts WHERE slug = ? AND is_published = 1`,
 );
 const stmtSetting = db.prepare('SELECT value FROM site_settings WHERE key = ?');
+const stmtTestimonials = db.prepare('SELECT name, rating, quote FROM testimonials WHERE is_published = 1 ORDER BY sort_order ASC');
 
 function setting(key) {
   return stmtSetting.get(key)?.value || '';
@@ -106,6 +107,36 @@ const STATIC_ROUTES = {
   '/iptal-iade-politikasi': { ns: 'refundPolicy' },
 };
 
+// Ana sayfadaki yıldız puanı (AggregateRating) şeması — Google'ın SERP'te
+// "5.0 ★★★★★ (X yorum)" zengin sonucunu (rich snippet) gösterebilmesi için
+// bu şemanın sunucu tarafında render edilen HTML'de bulunması gerekir.
+// Home.jsx daha önce bunu yalnızca client-side bir useEffect ile ekliyordu —
+// Googlebot JS render etse de dinamik olarak eklenen yapısal veri güvenilir
+// şekilde indexlenmeyebilir. Home.jsx'teki client tarafı, hidrasyon sonrası
+// bu ID'li elemanı silip aynısını yeniden ekliyor (bkz. o dosyadaki not).
+function buildAggregateRatingSchema() {
+  const rows = stmtTestimonials.all();
+  if (rows.length === 0) return null;
+  const average = rows.reduce((sum, row) => sum + row.rating, 0) / rows.length;
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'TravelAgency',
+    name: 'Menekşe Vize',
+    url: `${SITE_URL}/`,
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: average.toFixed(1),
+      reviewCount: rows.length,
+    },
+    review: rows.map((row) => ({
+      '@type': 'Review',
+      author: { '@type': 'Person', name: row.name },
+      reviewRating: { '@type': 'Rating', ratingValue: row.rating },
+      reviewBody: row.quote,
+    })),
+  };
+}
+
 function notFoundSeo(locale, basePath) {
   return {
     status: 404,
@@ -138,9 +169,12 @@ export function resolveSeo(reqPath) {
   // Statik sayfalar
   const staticRoute = STATIC_ROUTES[basePath];
   if (staticRoute) {
+    const aggregateRatingSchema = basePath === '/' ? buildAggregateRatingSchema() : null;
     const description = basePath === '/iletisim'
       ? t(locale, 'contact.metaDescriptionTemplate', { phone: setting('phone') || '—', email: setting('email') || '—' })
-      : t(locale, `${staticRoute.ns}.metaDescription`);
+      : basePath === '/'
+        ? t(locale, `${staticRoute.ns}.metaDescription`, { rating: aggregateRatingSchema?.aggregateRating.ratingValue || '5.0' })
+        : t(locale, `${staticRoute.ns}.metaDescription`);
     return {
       status: 200,
       locale,
@@ -148,6 +182,7 @@ export function resolveSeo(reqPath) {
       title: t(locale, `${staticRoute.ns}.metaTitle`),
       description,
       image: staticRoute.image,
+      aggregateRatingSchema,
     };
   }
 
@@ -298,6 +333,14 @@ export function renderIndexHtml(seo) {
     // diye sadece ana sayfada preload ipucu ekliyoruz.
     if (seo.basePath === '/') {
       injected.push('  <link rel="preload" as="image" fetchpriority="high" href="/photos/hero-plane-window.webp">');
+    }
+    // Yıldız puanı zengin sonucu (AggregateRating) — bkz. buildAggregateRatingSchema
+    // üstündeki not. id, Home.jsx'in client tarafındaki temizleme/yeniden-ekleme
+    // mantığıyla eşleşiyor.
+    if (seo.aggregateRatingSchema) {
+      // Bir yorum metninde olası "</script>" dizisi HTML'i erken kapatmasın.
+      const schemaJson = JSON.stringify(seo.aggregateRatingSchema).replace(/</g, '\\u003c');
+      injected.push(`  <script type="application/ld+json" id="aggregate-rating-jsonld">${schemaJson}</script>`);
     }
     html = html.replace('</head>', `${injected.join('\n')}\n</head>`);
   } else if (seo.noindex) {

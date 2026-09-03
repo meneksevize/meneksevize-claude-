@@ -52,8 +52,8 @@ export default {
   },
   disclaimerBar: 'Menekşe Vize is a private visa consultancy service; it is not an official consulate, embassy, or application center. The services offered are optional consultancy services.',
   home: {
-    metaTitle: 'Menekşe Vize | Transparent and Personalized Visa Consultancy',
-    metaDescription: 'Menekşe Vize offers visa consultancy with transparent process tracking and personalized document guidance for Schengen, the US, the UK, Canada, and more.',
+    metaTitle: 'Menekşe Vize | Free Pre-Assessment for 47 Countries',
+    metaDescription: 'Transparent visa consultancy for Schengen, the US, the UK, Canada, and 47 countries. Rated {rating}/5 by our clients — get a free pre-assessment today.',
     heroBadgeRatingSuffix: 'rating · ',
     heroBadgeCountriesSuffix: 'countries, visa consultancy',
     heroTitlePart1: 'We Make Your Visa Process ',

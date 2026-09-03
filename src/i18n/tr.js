@@ -55,8 +55,10 @@ export default {
   },
   disclaimerBar: 'Menekşe Vize özel bir vize danışmanlık hizmetidir; resmi konsolosluk, büyükelçilik veya başvuru merkezi değildir. Sunulan hizmetler isteğe bağlı danışmanlık kapsamındadır.',
   home: {
-    metaTitle: 'Menekşe Vize | Şeffaf ve Kişiye Özel Vize Danışmanlığı',
-    metaDescription: 'Menekşe Vize; Schengen, ABD, İngiltere, Kanada ve daha fazlası için şeffaf süreç takibi ve kişiye özel evrak rehberliğiyle vize danışmanlığı sunar.',
+    metaTitle: 'Menekşe Vize | 47 Ülke İçin Ücretsiz Ön Değerlendirme',
+    // {rating} gerçek testimonials ortalamasından türetilir (server/lib/seo.js)
+    // — sabit bir puan uydurmamak için burada değişken olarak tutuluyor.
+    metaDescription: 'Schengen, ABD, İngiltere, Kanada ve 47 ülke için şeffaf vize danışmanlığı. {rating}/5 puanla değerlendirilen hizmetimizle ücretsiz ön değerlendirme alın.',
     heroBadgeRatingSuffix: 'değerlendirme · ',
     heroBadgeCountriesSuffix: 'ülke için vize danışmanlığı',
     heroTitlePart1: 'Vize Sürecinizi ',

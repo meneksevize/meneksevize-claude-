@@ -57,7 +57,11 @@ export default function Home() {
 
   useDocumentMeta(
     t('home.metaTitle'),
-    t('home.metaDescription'),
+    // {rating} gerçek testimonials ortalamasından geliyor — sabit/uydurma bir
+    // puan yazılmıyor. averageRating boşsa (hiç yorum yoksa) 5.0'a düşer;
+    // bu site canlıda gerçek yorumlar taşıdığı için pratikte tetiklenmeyen
+    // savunmacı bir varsayılan.
+    t('home.metaDescription', { rating: averageRating || '5.0' }),
     { image: photos.heroPlaneWindow, path: '/' },
   );
 
@@ -86,6 +90,11 @@ export default function Home() {
       })),
     };
 
+    // server/lib/seo.js aynı şemayı artık statik HTML'e de gömüyor (Google'ın
+    // dinamik olarak eklenen yapısal veriyi güvenilir indexlemesi garanti
+    // değil) — bu yüzden önce olası sunucu-render edilmiş kopyayı kaldırıp
+    // tek bir örnek kalmasını garanti ediyoruz.
+    document.getElementById('aggregate-rating-jsonld')?.remove();
     const script = document.createElement('script');
     script.type = 'application/ld+json';
     script.id = 'aggregate-rating-jsonld';
