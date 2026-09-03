@@ -126,8 +126,8 @@ export default {
     destTagSchengen: '26 Countries, One Visa',
   },
   services: {
-    metaTitle: 'Our Services | Menekşe Vize',
-    metaDescription: 'Tourist, business, student, work, and family reunion visa consultancy services for Schengen, the US, the UK, Canada, Russia, Dubai/UAE, and Australia.',
+    metaTitle: 'Visa Consultancy for 47 Countries | Menekşe Vize',
+    metaDescription: 'Tourist, business, student, and work visa consultancy for Schengen, the US, the UK, Canada, and 47 countries. Start now with a free pre-assessment.',
     breadcrumbServices: 'Services',
     pageKicker: 'Our Services',
     pageTitle: 'Consultancy by Country and Visa Type',

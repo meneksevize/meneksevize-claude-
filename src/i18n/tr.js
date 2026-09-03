@@ -131,8 +131,8 @@ export default {
     destTagSchengen: '26 Ülke, Tek Vize',
   },
   services: {
-    metaTitle: 'Hizmetlerimiz | Menekşe Vize',
-    metaDescription: 'Schengen, ABD, İngiltere, Kanada, Rusya, Dubai/BAE ve Avustralya için turistik, ticari, öğrenci, çalışma ve aile birleşimi vize danışmanlığı hizmetleri.',
+    metaTitle: '47 Ülke İçin Vize Danışmanlığı | Menekşe Vize',
+    metaDescription: 'Schengen, ABD, İngiltere, Kanada ve 47 ülke için turistik, ticari, öğrenci ve çalışma vizesi danışmanlığı. Ücretsiz ön değerlendirme ile hemen başlayın.',
     breadcrumbServices: 'Hizmetler',
     pageKicker: 'Hizmetlerimiz',
     pageTitle: 'Ülke ve Vize Tipine Göre Danışmanlık',
