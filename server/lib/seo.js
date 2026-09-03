@@ -108,9 +108,14 @@ function truncate(text, max = 155) {
 // Statik sayfalar: basePath → i18n namespace + (varsa) sayfaya özel og görseli.
 // Anahtar isimleri sayfa bileşenlerindeki useDocumentMeta çağrılarıyla birebir.
 // breadcrumbKey verilmezse varsayılan `${ns}.breadcrumb` kullanılır — sadece
-// "services" bundan sapıyor (breadcrumbServices).
+// "services" bundan sapıyor (breadcrumbServices). `ogImage` yalnızca ana
+// sayfada var: gerçek hero fotoğrafı (heroPlaneWindow) dikey (1600×2508),
+// WhatsApp/Facebook'un beklediği ~1.91:1 yatay orana hiç uymuyor — `image`
+// (LCP preload + varsayılan og:image) hâlâ gerçek hero'ya işaret ediyor,
+// ama paylaşım kartı özelinde zaten sitede kullanılan yatay/jenerik
+// passportBoardingPass görseli tercih ediliyor.
 const STATIC_ROUTES = {
-  '/': { ns: 'home', image: photos.heroPlaneWindow },
+  '/': { ns: 'home', image: photos.heroPlaneWindow, ogImage: photos.passportBoardingPass },
   '/hakkimizda': { ns: 'about', image: photos.mapWithPins },
   '/hizmetler': { ns: 'services', breadcrumbKey: 'services.breadcrumbServices', image: photos.worldMap },
   '/surec': { ns: 'process', image: photos.planningNotebook },
@@ -236,6 +241,7 @@ export function resolveSeo(reqPath) {
       title: t(locale, `${staticRoute.ns}.metaTitle`),
       description,
       image: staticRoute.image,
+      ogImage: staticRoute.ogImage || staticRoute.image,
       breadcrumbSchema,
       faqSchema,
     };
@@ -391,13 +397,17 @@ export function renderIndexHtml(seo) {
     const prefix = seo.locale === 'tr' ? '' : `/${seo.locale}`;
     const canonical = seo.basePath === '/' ? `${SITE_URL}${prefix}/` : `${SITE_URL}${prefix}${seo.basePath}`;
     const dir = seo.locale === 'ar' ? 'rtl' : 'ltr';
-    const image = absoluteImage(seo.image);
+    // seo.image sayfanın gerçek LCP hero'su (preload için, aşağıda) —
+    // seo.ogImage varsa (şu an yalnızca ana sayfa) paylaşım kartları için
+    // ondan farklı, o oranına daha uygun bir görsel kullanılır.
+    const rawOgImage = seo.ogImage || seo.image;
+    const ogImage = absoluteImage(rawOgImage);
     // WhatsApp/Facebook önizleme kartını oluşturmadan önce görseli indirip
     // ölçmek zorunda kalmasın diye bilinen boyutları meta etiketi olarak
     // ekliyoruz. Blog yazılarının Unsplash URL'leri için bilinen bir boyut
     // yok (fotoğraftan fotoğrafa değişiyor) — o durumda hiç eklenmiyor,
     // yanlış bir boyut beyan etmektense hiç beyan etmemek daha doğru.
-    const imageDimensions = seo.image ? photoDimensions[seo.image] : DEFAULT_IMAGE_DIMENSIONS;
+    const imageDimensions = rawOgImage ? photoDimensions[rawOgImage] : DEFAULT_IMAGE_DIMENSIONS;
 
     html = html.replace('<html lang="tr">', `<html lang="${seo.locale}" dir="${dir}">`);
     html = html.replace(/<title>[^<]*<\/title>/, `<title>${escapeAttr(seo.title)}</title>`);
@@ -406,11 +416,11 @@ export function renderIndexHtml(seo) {
     html = replaceMeta(html, 'property', 'og:description', seo.description);
     html = replaceMeta(html, 'property', 'og:type', seo.ogType || 'website');
     html = replaceMeta(html, 'property', 'og:url', canonical);
-    html = replaceMeta(html, 'property', 'og:image', image);
+    html = replaceMeta(html, 'property', 'og:image', ogImage);
     html = replaceMeta(html, 'property', 'og:locale', OG_LOCALES[seo.locale]);
     html = replaceMeta(html, 'name', 'twitter:title', seo.title);
     html = replaceMeta(html, 'name', 'twitter:description', seo.description);
-    html = replaceMeta(html, 'name', 'twitter:image', image);
+    html = replaceMeta(html, 'name', 'twitter:image', ogImage);
     html = html.replace(/(<link rel="canonical" href=")[^"]*(")/, `$1${canonical}$2`);
 
     // hreflang: sayfanın üç dildeki karşılığı + x-default (TR varsayılan).
