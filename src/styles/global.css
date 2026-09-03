@@ -492,7 +492,7 @@ img, svg {
   margin-top: 0.5rem;
   padding-top: 0.65rem;
   border-top: 1px solid var(--border-color);
-  color: var(--accent-color);
+  color: var(--link-color);
   font-weight: 600;
   font-size: 0.88rem;
   text-decoration: none;
@@ -1364,7 +1364,7 @@ img, svg {
 }
 
 .breadcrumbs-list a:hover {
-  color: var(--accent-color);
+  color: var(--link-color);
 }
 
 .breadcrumbs-current {
@@ -1949,7 +1949,10 @@ img, svg {
 }
 
 .blog-content a {
-  color: var(--accent-color);
+  /* --accent-color burada 4.38:1 kontrast veriyordu (normal metin için
+     WCAG AA 4.5:1 ister) — --link-color aynı düzeltmeyi (bkz. :root notu)
+     74 blog yazısının gövde metnindeki tüm linklere de uyguluyor. */
+  color: var(--link-color);
 }
 
 .blog-content ul,
@@ -2180,7 +2183,7 @@ img, svg {
   align-items: center;
   gap: 0.4rem;
   margin-top: 0.75rem;
-  color: var(--accent-color);
+  color: var(--link-color);
   text-decoration: none;
   font-weight: 600;
   font-size: 0.9rem;
@@ -2263,7 +2266,7 @@ img, svg {
   border-radius: 50%;
   background-color: var(--bg-color);
   border: 2px solid var(--accent-color);
-  color: var(--accent-color);
+  color: var(--link-color);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2605,7 +2608,7 @@ img, svg {
 }
 
 .contact-info-item a:hover {
-  color: var(--accent-color);
+  color: var(--link-color);
 }
 
 .form-group {
@@ -2712,7 +2715,7 @@ img, svg {
 }
 
 .footer-col a:hover {
-  color: var(--accent-color);
+  color: var(--link-color);
 }
 
 .footer-bottom {
@@ -2847,7 +2850,7 @@ img, svg {
   }
 
   .mobile-tab.active {
-    color: var(--accent-color);
+    color: var(--link-color);
     background-color: var(--accent-soft);
   }
 

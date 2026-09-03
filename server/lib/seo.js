@@ -96,19 +96,19 @@ function truncate(text, max = 155) {
 const STATIC_ROUTES = {
   '/': { ns: 'home', image: photos.heroPlaneWindow },
   '/hakkimizda': { ns: 'about', image: photos.mapWithPins },
-  '/hizmetler': { ns: 'services', breadcrumbKey: 'services.breadcrumbServices' },
-  '/surec': { ns: 'process' },
-  '/evrak-rehberi': { ns: 'documentGuide' },
+  '/hizmetler': { ns: 'services', breadcrumbKey: 'services.breadcrumbServices', image: photos.worldMap },
+  '/surec': { ns: 'process', image: photos.planningNotebook },
+  '/evrak-rehberi': { ns: 'documentGuide', image: photos.cameraPassportFlatlay },
   '/sss': { ns: 'faqPage' },
-  '/iletisim': { ns: 'contact' },
-  '/blog': { ns: 'blogPage' },
-  '/takip': { ns: 'trackApplication' },
+  '/iletisim': { ns: 'contact', image: photos.mapWithPins },
+  '/blog': { ns: 'blogPage', image: photos.planningNotebook },
+  '/takip': { ns: 'trackApplication', image: photos.cameraPassportFlatlay },
   '/e-vize': { ns: 'eVisa', image: photos.passportBoardingPass },
-  '/vize-reddi': { ns: 'visaRejection' },
+  '/vize-reddi': { ns: 'visaRejection', image: photos.planningNotebook },
   '/on-degerlendirme': { ns: 'preAssessment' },
-  '/gizlilik-politikasi': { ns: 'privacyPolicy' },
-  '/kullanim-kosullari': { ns: 'termsOfService' },
-  '/iptal-iade-politikasi': { ns: 'refundPolicy' },
+  '/gizlilik-politikasi': { ns: 'privacyPolicy', image: photos.planningNotebook },
+  '/kullanim-kosullari': { ns: 'termsOfService', image: photos.planningNotebook },
+  '/iptal-iade-politikasi': { ns: 'refundPolicy', image: photos.planningNotebook },
 };
 
 // Ana sayfadaki yıldız puanı (AggregateRating) şeması — Google'ın SERP'te
@@ -403,13 +403,17 @@ export function renderIndexHtml(seo) {
       }
     }
     if (seo.noindex) injected.push('  <meta name="robots" content="noindex">');
-    // Ana sayfanın LCP öğesi hero bölümünün arka plan fotoğrafı — bu bir
+    // Sayfanın LCP öğesi olan hero/page-header arka plan fotoğrafı — bu bir
     // <img> değil CSS background-image olduğu için tarayıcının preload
     // scanner'ı onu ancak CSS uygulandıktan sonra keşfediyor (Lighthouse'ta
-    // ~3.8sn "resource load delay" olarak ölçüldü). Erkenden keşfedilsin
-    // diye sadece ana sayfada preload ipucu ekliyoruz.
-    if (seo.basePath === '/') {
-      injected.push('  <link rel="preload" as="image" fetchpriority="high" href="/photos/hero-plane-window.webp">');
+    // ~3.8sn "resource load delay" olarak ölçüldü). seo.image zaten her
+    // gerçek görünür hero'yu taşıyor (ana sayfa, statik sayfalar, ülke
+    // detayı/vize tipi, blog yazısı) — og:image için kullanılan alanın
+    // aynısı, sadece burada da preload ipucuna dönüştürülüyor. Kapak
+    // fotoğrafı olmayan blog yazıları / sadece-metin sayfaları (SSS, ön
+    // değerlendirme) için seo.image tanımsız kalır, preload eklenmez.
+    if (seo.image) {
+      injected.push(`  <link rel="preload" as="image" fetchpriority="high" href="${escapeAttr(seo.image)}">`);
     }
     // Zengin sonuç şemaları (AggregateRating/BreadcrumbList/FAQPage) — id'ler
     // her birinin client tarafındaki temizleme/yeniden-ekleme mantığıyla
