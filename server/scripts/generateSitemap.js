@@ -64,6 +64,10 @@ function escapeXml(value) {
 // değeri) yazılır. Önceden her URL'e "bugün" yazılıyordu — her deploy'da tüm
 // sitenin değiştiğini iddia etmek, Google'ın lastmod'a duyduğu güveni azaltır;
 // sahte tarih yerine tarihsiz bırakmak daha doğrudur.
+// allUrls: sitemap XML'inin yanı sıra, aynı URL kümesini IndexNow'a (Bing +
+// Yandex) toplu göndermek için düz bir liste olarak da biriktiriyoruz.
+const allUrls = [];
+
 function urlEntry(basePath, priority, lastmod = null, image = null) {
   const alternateLinks = LOCALES
     .map(({ code, prefix }) => `    <xhtml:link rel="alternate" hreflang="${code}" href="${SITE_URL}${prefix}${basePath}" />`)
@@ -74,8 +78,36 @@ function urlEntry(basePath, priority, lastmod = null, image = null) {
   const imageLine = absImage ? `    <image:image>\n      <image:loc>${escapeXml(absImage)}</image:loc>\n    </image:image>\n` : '';
 
   return LOCALES
-    .map(({ prefix }) => `  <url>\n    <loc>${SITE_URL}${prefix}${basePath}</loc>\n${lastmodLine}    <priority>${priority}</priority>\n${imageLine}${alternateLinks}\n  </url>`)
+    .map(({ prefix }) => {
+      allUrls.push(`${SITE_URL}${prefix}${basePath}`);
+      return `  <url>\n    <loc>${SITE_URL}${prefix}${basePath}</loc>\n${lastmodLine}    <priority>${priority}</priority>\n${imageLine}${alternateLinks}\n  </url>`;
+    })
     .join('\n');
+}
+
+// IndexNow: Bing ve Yandex'e (Google desteklemiyor) içerik değiştiğinde
+// taramalarını beklemeden anında haber verir. Anahtar dosyası public/'te
+// (aynı ada sahip .txt) barındırılıyor — protokol bunu doğrulama için
+// kontrol eder. Başarısızlık sitemap üretimini asla engellemesin diye
+// hatalar yutuluyor, sadece loglanıyor.
+const INDEXNOW_KEY = '85262f51bdbe314b652198960365dc19';
+
+async function submitIndexNow(urls) {
+  try {
+    const res = await fetch('https://api.indexnow.org/indexnow', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json; charset=utf-8' },
+      body: JSON.stringify({
+        host: 'meneksevize.com',
+        key: INDEXNOW_KEY,
+        keyLocation: `${SITE_URL}/${INDEXNOW_KEY}.txt`,
+        urlList: urls,
+      }),
+    });
+    console.log(`IndexNow (Bing/Yandex): ${urls.length} URL gönderildi, yanıt ${res.status}.`);
+  } catch (err) {
+    console.warn('IndexNow gönderimi başarısız (sitemap yine de üretildi):', err.message);
+  }
 }
 
 async function main() {
@@ -108,6 +140,8 @@ async function main() {
   fs.writeFileSync(outPath, xml);
   const urlCount = staticPages.length + countries.length + countries.reduce((sum, c) => sum + c.types.length, 0) + blogCount;
   console.log(`Sitemap oluşturuldu: ${urlCount} sayfa × 3 dil = ${urlCount * 3} URL — ${outPath}`);
+
+  await submitIndexNow(allUrls);
 }
 
 main();
