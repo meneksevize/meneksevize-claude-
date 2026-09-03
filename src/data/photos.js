@@ -17,3 +17,19 @@ export const photos = {
   cameraPassportFlatlay: '/photos/camera-passport-flatlay.webp',
   mapWithPins: '/photos/map-with-pins.webp',
 };
+
+// `sips -g pixelWidth -g pixelHeight` ile ölçülen gerçek piksel boyutları —
+// server/lib/seo.js bunları og:image:width/height meta etiketleri için
+// kullanır (WhatsApp/Facebook'un önizleme kartını oluşturmadan önce görseli
+// indirip ölçmesini beklemeden hızlı render etmesini sağlar). Not:
+// heroPlaneWindow dikey (0.64 oranı) — standart OG oranı (~1.91:1) değil,
+// paylaşım kartlarında dar/kırpılmış görünebilir; bilinçli bir tasarım
+// tercihiyse dokunulmadı, aksi halde ayrı bir yatay OG görseli düşünülebilir.
+export const photoDimensions = {
+  [photos.heroPlaneWindow]: { width: 1600, height: 2508 },
+  [photos.passportBoardingPass]: { width: 1200, height: 696 },
+  [photos.worldMap]: { width: 1400, height: 930 },
+  [photos.planningNotebook]: { width: 1600, height: 1065 },
+  [photos.cameraPassportFlatlay]: { width: 1400, height: 896 },
+  [photos.mapWithPins]: { width: 1600, height: 1067 },
+};

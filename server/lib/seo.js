@@ -20,12 +20,13 @@ import { db } from '../db/connection.js';
 import tr from '../../src/i18n/tr.js';
 import en from '../../src/i18n/en.js';
 import ar from '../../src/i18n/ar.js';
-import { photos } from '../../src/data/photos.js';
+import { photos, photoDimensions } from '../../src/data/photos.js';
 import { visaTypePhrase } from '../../src/utils/visaTypePhrase.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const SITE_URL = 'https://meneksevize.com';
 const DEFAULT_IMAGE = `${SITE_URL}/og-image.png`;
+const DEFAULT_IMAGE_DIMENSIONS = { width: 1200, height: 630 };
 const DICTS = { tr, en, ar };
 const OG_LOCALES = { tr: 'tr_TR', en: 'en_US', ar: 'ar_AR' };
 const SUPPORTED_LANGS = new Set(['en', 'ar']);
@@ -391,6 +392,12 @@ export function renderIndexHtml(seo) {
     const canonical = seo.basePath === '/' ? `${SITE_URL}${prefix}/` : `${SITE_URL}${prefix}${seo.basePath}`;
     const dir = seo.locale === 'ar' ? 'rtl' : 'ltr';
     const image = absoluteImage(seo.image);
+    // WhatsApp/Facebook önizleme kartını oluşturmadan önce görseli indirip
+    // ölçmek zorunda kalmasın diye bilinen boyutları meta etiketi olarak
+    // ekliyoruz. Blog yazılarının Unsplash URL'leri için bilinen bir boyut
+    // yok (fotoğraftan fotoğrafa değişiyor) — o durumda hiç eklenmiyor,
+    // yanlış bir boyut beyan etmektense hiç beyan etmemek daha doğru.
+    const imageDimensions = seo.image ? photoDimensions[seo.image] : DEFAULT_IMAGE_DIMENSIONS;
 
     html = html.replace('<html lang="tr">', `<html lang="${seo.locale}" dir="${dir}">`);
     html = html.replace(/<title>[^<]*<\/title>/, `<title>${escapeAttr(seo.title)}</title>`);
@@ -420,6 +427,10 @@ export function renderIndexHtml(seo) {
       }
     }
     if (seo.noindex) injected.push('  <meta name="robots" content="noindex">');
+    if (imageDimensions) {
+      injected.push(`  <meta property="og:image:width" content="${imageDimensions.width}">`);
+      injected.push(`  <meta property="og:image:height" content="${imageDimensions.height}">`);
+    }
     // Sayfanın LCP öğesi olan hero/page-header arka plan fotoğrafı — bu bir
     // <img> değil CSS background-image olduğu için tarayıcının preload
     // scanner'ı onu ancak CSS uygulandıktan sonra keşfediyor (Lighthouse'ta
