@@ -569,7 +569,7 @@ export default {
   countryDetail: {
     relatedPostsKicker: 'BLOG',
     relatedPostsTitle: 'İlgili Blog Yazıları',
-    metaTitleTemplate: '{country} Vizesi | Menekşe Vize',
+    metaTitleTemplate: '{country} Vizesi Başvurusu | Menekşe Vize',
     metaNotFoundTitle: 'Ülke Bulunamadı | Menekşe Vize',
     metaDescriptionTemplate: '{country} için gerekli vize türleri, evraklar ve süreç bilgisi.',
     breadcrumbCountries: 'Ülkeler',

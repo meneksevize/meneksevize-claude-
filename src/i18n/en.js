@@ -564,7 +564,7 @@ export default {
   countryDetail: {
     relatedPostsKicker: 'BLOG',
     relatedPostsTitle: 'Related Blog Posts',
-    metaTitleTemplate: '{country} Visa | Menekşe Vize',
+    metaTitleTemplate: '{country} Visa Application | Menekşe Vize',
     metaNotFoundTitle: 'Country Not Found | Menekşe Vize',
     metaDescriptionTemplate: 'Required visa types, documents, and process information for {country}.',
     breadcrumbCountries: 'Countries',
