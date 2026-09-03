@@ -15,6 +15,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { marked } from 'marked';
 import { db } from '../db/connection.js';
 import tr from '../../src/i18n/tr.js';
 import en from '../../src/i18n/en.js';
@@ -60,6 +61,7 @@ const stmtPost = db.prepare(
 );
 const stmtSetting = db.prepare('SELECT value FROM site_settings WHERE key = ?');
 const stmtTestimonials = db.prepare('SELECT name, rating, quote FROM testimonials WHERE is_published = 1 ORDER BY sort_order ASC');
+const stmtFaqs = db.prepare('SELECT * FROM faqs ORDER BY sort_order ASC');
 
 function setting(key) {
   return stmtSetting.get(key)?.value || '';
@@ -89,10 +91,12 @@ function truncate(text, max = 155) {
 
 // Statik sayfalar: basePath → i18n namespace + (varsa) sayfaya özel og görseli.
 // Anahtar isimleri sayfa bileşenlerindeki useDocumentMeta çağrılarıyla birebir.
+// breadcrumbKey verilmezse varsayılan `${ns}.breadcrumb` kullanılır — sadece
+// "services" bundan sapıyor (breadcrumbServices).
 const STATIC_ROUTES = {
   '/': { ns: 'home', image: photos.heroPlaneWindow },
   '/hakkimizda': { ns: 'about', image: photos.mapWithPins },
-  '/hizmetler': { ns: 'services' },
+  '/hizmetler': { ns: 'services', breadcrumbKey: 'services.breadcrumbServices' },
   '/surec': { ns: 'process' },
   '/evrak-rehberi': { ns: 'documentGuide' },
   '/sss': { ns: 'faqPage' },
@@ -137,6 +141,47 @@ function buildAggregateRatingSchema() {
   };
 }
 
+// Breadcrumbs.jsx ile aynı şema şekli — items: [{ label, to? }, ...], son
+// öğe `to` almaz (mevcut sayfa). Client tarafındaki bileşen bunu şimdiden
+// tüm sayfalarda üretiyordu ama yalnızca JS ile; sunucu tarafında da aynısını
+// üreterek Google'ın gezinme yolunu (breadcrumb rich result) her sayfa için
+// güvenilir şekilde görmesini sağlıyoruz.
+function buildBreadcrumbSchema(items) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: items.map((item, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: item.label,
+      ...(item.to ? { item: `${SITE_URL}${item.to}` } : {}),
+    })),
+  };
+}
+
+function stripHtml(html) {
+  return html.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
+// FAQ.jsx ile aynı şema — yalnızca /sss sayfasında kullanılıyor, bu yüzden
+// buildAggregateRatingSchema/buildBreadcrumbSchema gibi genel değil.
+function buildFaqSchema(locale) {
+  const rows = stmtFaqs.all();
+  if (rows.length === 0) return null;
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: rows.map((row) => ({
+      '@type': 'Question',
+      name: pick(row, 'question', locale),
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: stripHtml(marked.parse(pick(row, 'answer', locale))),
+      },
+    })),
+  };
+}
+
 function notFoundSeo(locale, basePath) {
   return {
     status: 404,
@@ -175,6 +220,13 @@ export function resolveSeo(reqPath) {
       : basePath === '/'
         ? t(locale, `${staticRoute.ns}.metaDescription`, { rating: aggregateRatingSchema?.aggregateRating.ratingValue || '5.0' })
         : t(locale, `${staticRoute.ns}.metaDescription`);
+    // Ana sayfada breadcrumb yok (Home.jsx de render etmiyor); diğer tüm
+    // statik sayfalar "Ana Sayfa > <Sayfa>" iki seviyeli bir yol kullanıyor.
+    const breadcrumbSchema = basePath === '/' ? null : buildBreadcrumbSchema([
+      { label: t(locale, 'common.breadcrumbHome'), to: '/' },
+      { label: t(locale, staticRoute.breadcrumbKey || `${staticRoute.ns}.breadcrumb`) },
+    ]);
+    const faqSchema = basePath === '/sss' ? buildFaqSchema(locale) : null;
     return {
       status: 200,
       locale,
@@ -183,6 +235,8 @@ export function resolveSeo(reqPath) {
       description,
       image: staticRoute.image,
       aggregateRatingSchema,
+      breadcrumbSchema,
+      faqSchema,
     };
   }
 
@@ -205,6 +259,11 @@ export function resolveSeo(reqPath) {
       title: t(locale, 'countryDetail.metaTitleTemplate', { country: title }),
       description: truncate(description),
       image: photos.passportBoardingPass,
+      breadcrumbSchema: buildBreadcrumbSchema([
+        { label: t(locale, 'common.breadcrumbHome'), to: '/' },
+        { label: t(locale, 'countryDetail.breadcrumbCountries'), to: '/hizmetler' },
+        { label: t(locale, 'countryDetail.visaPageTitle', { country: title }) },
+      ]),
     };
   }
 
@@ -233,6 +292,12 @@ export function resolveSeo(reqPath) {
         typeLower: typePhrase.toLocaleLowerCase(locale === 'tr' ? 'tr-TR' : locale),
       }),
       image: photos.passportBoardingPass,
+      breadcrumbSchema: buildBreadcrumbSchema([
+        { label: t(locale, 'common.breadcrumbHome'), to: '/' },
+        { label: t(locale, 'countryVisaType.breadcrumbCountries'), to: '/hizmetler' },
+        { label: t(locale, 'countryVisaType.breadcrumbCountryVisaTemplate', { country: countryTitle }), to: `/ulkeler/${typeMatch[1]}` },
+        { label: t(locale, 'countryVisaType.breadcrumbTypeVisaTemplate', { type: typePhrase }) },
+      ]),
     };
   }
 
@@ -253,6 +318,11 @@ export function resolveSeo(reqPath) {
         published: row.published_at,
         modified: row.updated_at ? `${row.updated_at.replace(' ', 'T')}Z` : null,
       },
+      breadcrumbSchema: buildBreadcrumbSchema([
+        { label: t(locale, 'common.breadcrumbHome'), to: '/' },
+        { label: t(locale, 'blogPage.breadcrumb'), to: '/blog' },
+        { label: pick(row, 'title', locale) },
+      ]),
     };
   }
 
@@ -266,6 +336,13 @@ function escapeAttr(value) {
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;');
+}
+
+// JSON-LD script etiketi üretir; içerikte olası "</script>" dizisi (ör. bir
+// yorum/SSS metninde) HTML'i erken kapatmasın diye "<" karakterleri kaçırılır.
+function jsonLdTag(id, schema) {
+  const json = JSON.stringify(schema).replace(/</g, '\\u003c');
+  return `  <script type="application/ld+json" id="${id}">${json}</script>`;
 }
 
 // Şablon önbelleğe alınır ama dosyanın mtime'ı değişirse yeniden okunur —
@@ -334,14 +411,12 @@ export function renderIndexHtml(seo) {
     if (seo.basePath === '/') {
       injected.push('  <link rel="preload" as="image" fetchpriority="high" href="/photos/hero-plane-window.webp">');
     }
-    // Yıldız puanı zengin sonucu (AggregateRating) — bkz. buildAggregateRatingSchema
-    // üstündeki not. id, Home.jsx'in client tarafındaki temizleme/yeniden-ekleme
-    // mantığıyla eşleşiyor.
-    if (seo.aggregateRatingSchema) {
-      // Bir yorum metninde olası "</script>" dizisi HTML'i erken kapatmasın.
-      const schemaJson = JSON.stringify(seo.aggregateRatingSchema).replace(/</g, '\\u003c');
-      injected.push(`  <script type="application/ld+json" id="aggregate-rating-jsonld">${schemaJson}</script>`);
-    }
+    // Zengin sonuç şemaları (AggregateRating/BreadcrumbList/FAQPage) — id'ler
+    // her birinin client tarafındaki temizleme/yeniden-ekleme mantığıyla
+    // eşleşiyor (bkz. Home.jsx, Breadcrumbs.jsx, FAQ.jsx).
+    if (seo.aggregateRatingSchema) injected.push(jsonLdTag('aggregate-rating-jsonld', seo.aggregateRatingSchema));
+    if (seo.breadcrumbSchema) injected.push(jsonLdTag('breadcrumb-jsonld', seo.breadcrumbSchema));
+    if (seo.faqSchema) injected.push(jsonLdTag('faq-jsonld', seo.faqSchema));
     html = html.replace('</head>', `${injected.join('\n')}\n</head>`);
   } else if (seo.noindex) {
     html = html.replace('</head>', '  <meta name="robots" content="noindex">\n</head>');

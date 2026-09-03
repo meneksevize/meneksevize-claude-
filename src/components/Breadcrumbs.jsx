@@ -20,6 +20,10 @@ export default function Breadcrumbs({ items }) {
       })),
     };
 
+    // server/lib/seo.js aynı şemayı statik HTML'e de gömüyor — önce olası
+    // sunucu-render edilmiş kopyayı kaldırıp tek bir örnek kalmasını
+    // garanti ediyoruz (bkz. o dosyadaki not).
+    document.getElementById('breadcrumb-jsonld')?.remove();
     const script = document.createElement('script');
     script.type = 'application/ld+json';
     script.id = 'breadcrumb-jsonld';
