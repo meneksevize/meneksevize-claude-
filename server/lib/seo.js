@@ -126,34 +126,21 @@ const STATIC_ROUTES = {
   '/iptal-iade-politikasi': { ns: 'refundPolicy', image: photos.planningNotebook },
 };
 
-// Ana sayfadaki yıldız puanı (AggregateRating) şeması — Google'ın SERP'te
-// "5.0 ★★★★★ (X yorum)" zengin sonucunu (rich snippet) gösterebilmesi için
-// bu şemanın sunucu tarafında render edilen HTML'de bulunması gerekir.
-// Home.jsx daha önce bunu yalnızca client-side bir useEffect ile ekliyordu —
-// Googlebot JS render etse de dinamik olarak eklenen yapısal veri güvenilir
-// şekilde indexlenmeyebilir. Home.jsx'teki client tarafı, hidrasyon sonrası
-// bu ID'li elemanı silip aynısını yeniden ekliyor (bkz. o dosyadaki not).
-function buildAggregateRatingSchema() {
+// GERİ ALINDI (2026-09-03): burada daha önce testimonials'tan bir
+// AggregateRating/Review JSON-LD (TravelAgency şemasına gömülü) üretilip
+// statik HTML'e enjekte ediliyordu. Google'ın kendi kuralları bunu açıkça
+// yasaklıyor: "bir işletme kendi hakkındaki yorumları kendi sitesinde
+// işaretlerse, o sayfa yıldızlı yorum özelliği için uygun değildir" (self-
+// serving review). Yani bu hem hiçbir zaman yıldız göstermeyecekti hem de
+// yapısal veri spam tespiti riskini taşıyordu — kaldırıldı. Gerçek/meşru
+// yol Google Business Profile'ın kendi yorum sistemi (GBP doğrulaması
+// tamamlanınca). Ortalama puan yine de düz metin (meta açıklama) için
+// hesaplanmaya devam ediyor — bu politika yalnızca yapısal veriyi
+// yasaklıyor, sayfa metninde puandan bahsetmeyi değil.
+function getAverageRating() {
   const rows = stmtTestimonials.all();
   if (rows.length === 0) return null;
-  const average = rows.reduce((sum, row) => sum + row.rating, 0) / rows.length;
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'TravelAgency',
-    name: 'Menekşe Vize',
-    url: `${SITE_URL}/`,
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: average.toFixed(1),
-      reviewCount: rows.length,
-    },
-    review: rows.map((row) => ({
-      '@type': 'Review',
-      author: { '@type': 'Person', name: row.name },
-      reviewRating: { '@type': 'Rating', ratingValue: row.rating },
-      reviewBody: row.quote,
-    })),
-  };
+  return (rows.reduce((sum, row) => sum + row.rating, 0) / rows.length).toFixed(1);
 }
 
 // Breadcrumbs.jsx ile aynı şema şekli — items: [{ label, to? }, ...], son
@@ -179,7 +166,7 @@ function stripHtml(html) {
 }
 
 // FAQ.jsx ile aynı şema — yalnızca /sss sayfasında kullanılıyor, bu yüzden
-// buildAggregateRatingSchema/buildBreadcrumbSchema gibi genel değil.
+// buildBreadcrumbSchema gibi genel değil.
 function buildFaqSchema(locale) {
   const rows = stmtFaqs.all();
   if (rows.length === 0) return null;
@@ -229,11 +216,10 @@ export function resolveSeo(reqPath) {
   // Statik sayfalar
   const staticRoute = STATIC_ROUTES[basePath];
   if (staticRoute) {
-    const aggregateRatingSchema = basePath === '/' ? buildAggregateRatingSchema() : null;
     const description = basePath === '/iletisim'
       ? t(locale, 'contact.metaDescriptionTemplate', { phone: setting('phone') || '—', email: setting('email') || '—' })
       : basePath === '/'
-        ? t(locale, `${staticRoute.ns}.metaDescription`, { rating: aggregateRatingSchema?.aggregateRating.ratingValue || '5.0' })
+        ? t(locale, `${staticRoute.ns}.metaDescription`, { rating: getAverageRating() || '5.0' })
         : t(locale, `${staticRoute.ns}.metaDescription`);
     // Ana sayfada breadcrumb yok (Home.jsx de render etmiyor); diğer tüm
     // statik sayfalar "Ana Sayfa > <Sayfa>" iki seviyeli bir yol kullanıyor.
@@ -249,7 +235,6 @@ export function resolveSeo(reqPath) {
       title: t(locale, `${staticRoute.ns}.metaTitle`),
       description,
       image: staticRoute.image,
-      aggregateRatingSchema,
       breadcrumbSchema,
       faqSchema,
     };
@@ -447,10 +432,9 @@ export function renderIndexHtml(seo) {
     if (seo.image) {
       injected.push(`  <link rel="preload" as="image" fetchpriority="high" href="${escapeAttr(seo.image)}">`);
     }
-    // Zengin sonuç şemaları (AggregateRating/BreadcrumbList/FAQPage) — id'ler
+    // Zengin sonuç şemaları (BreadcrumbList/FAQPage/BlogPosting) — id'ler
     // her birinin client tarafındaki temizleme/yeniden-ekleme mantığıyla
-    // eşleşiyor (bkz. Home.jsx, Breadcrumbs.jsx, FAQ.jsx).
-    if (seo.aggregateRatingSchema) injected.push(jsonLdTag('aggregate-rating-jsonld', seo.aggregateRatingSchema));
+    // eşleşiyor (bkz. Breadcrumbs.jsx, FAQ.jsx, BlogPost.jsx).
     if (seo.breadcrumbSchema) injected.push(jsonLdTag('breadcrumb-jsonld', seo.breadcrumbSchema));
     if (seo.faqSchema) injected.push(jsonLdTag('faq-jsonld', seo.faqSchema));
     if (seo.blogPostingSchema) injected.push(jsonLdTag('blogpost-jsonld', seo.blogPostingSchema));

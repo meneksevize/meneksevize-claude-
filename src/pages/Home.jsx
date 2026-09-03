@@ -65,46 +65,16 @@ export default function Home() {
     { image: photos.heroPlaneWindow, path: '/' },
   );
 
-  // Bu sayfada aşağıda görünen gerçek müşteri yorumlarının ortalama puanını
-  // yansıtır — sayı/puan uydurulmaz, doğrudan testimonials tablosundan hesaplanır.
-  useEffect(() => {
-    if (testimonials.length === 0) return undefined;
-
-    const average = testimonials.reduce((sum, t2) => sum + t2.rating, 0) / testimonials.length;
-
-    const schema = {
-      '@context': 'https://schema.org',
-      '@type': 'TravelAgency',
-      name: 'Menekşe Vize',
-      url: 'https://meneksevize.com/',
-      aggregateRating: {
-        '@type': 'AggregateRating',
-        ratingValue: average.toFixed(1),
-        reviewCount: testimonials.length,
-      },
-      review: testimonials.map((t2) => ({
-        '@type': 'Review',
-        author: { '@type': 'Person', name: t2.name },
-        reviewRating: { '@type': 'Rating', ratingValue: t2.rating },
-        reviewBody: t2.quote,
-      })),
-    };
-
-    // server/lib/seo.js aynı şemayı artık statik HTML'e de gömüyor (Google'ın
-    // dinamik olarak eklenen yapısal veriyi güvenilir indexlemesi garanti
-    // değil) — bu yüzden önce olası sunucu-render edilmiş kopyayı kaldırıp
-    // tek bir örnek kalmasını garanti ediyoruz.
-    document.getElementById('aggregate-rating-jsonld')?.remove();
-    const script = document.createElement('script');
-    script.type = 'application/ld+json';
-    script.id = 'aggregate-rating-jsonld';
-    script.textContent = JSON.stringify(schema);
-    document.head.appendChild(script);
-
-    return () => {
-      document.getElementById('aggregate-rating-jsonld')?.remove();
-    };
-  }, [testimonials]);
+  // GERİ ALINDI (2026-09-03): burada testimonials'tan bir AggregateRating/
+  // Review JSON-LD (TravelAgency şemasına gömülü) üretilip enjekte
+  // ediliyordu. Google'ın kendi kuralları bunu açıkça yasaklıyor: bir
+  // işletme kendi hakkındaki yorumları kendi sitesinde işaretlerse, sayfa
+  // yıldızlı yorum özelliği için uygun değildir ("self-serving review").
+  // Yani bu hem hiçbir zaman yıldız göstermeyecekti hem de yapısal veri
+  // spam tespiti riski taşıyordu — kaldırıldı (server/lib/seo.js'teki
+  // eşleniği de kaldırıldı). Gerçek/meşru yol Google Business Profile'ın
+  // kendi yorum sistemi. averageRating yine de yukarıda hero rozeti/istatistik
+  // bandı ve meta açıklama için düz metin olarak hesaplanmaya devam ediyor.
 
   return (
     <>
