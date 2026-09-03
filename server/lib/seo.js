@@ -79,6 +79,21 @@ function absoluteImage(image) {
   return image.startsWith('/') ? `${SITE_URL}${image}` : image;
 }
 
+// posts.updated_at farklı script'lerden farklı biçimlerde geliyor: SQLite'ın
+// kendi `datetime('now')` varsayılanı boşluklu ve "Z" olmadan ("2026-08-30
+// 21:12:18"), bazı düzeltme script'lerimiz ise `new Date().toISOString()`
+// ile ("2026-08-30T21:12:18.622Z", zaten "Z" ile bitiyor). Eskiden ikisine de
+// körlemesine "T" + sonuna "Z" ekleniyordu — ikincisinde bu "...622ZZ" gibi
+// geçersiz, çift "Z"'li bir sonuç üretiyordu (BlogPosting şeması eklenirken
+// yakalandı). Bu fonksiyon her iki biçimi de tanıyıp tek bir geçerli ISO
+// 8601 dizesine normalize eder.
+function toIsoUtc(value) {
+  if (!value) return null;
+  const normalized = value.includes('T') ? value : value.replace(' ', 'T');
+  const withZ = normalized.endsWith('Z') ? normalized : `${normalized}Z`;
+  return new Date(withZ).toISOString();
+}
+
 // Açıklamalar (özellikle ülke overview metinleri) yüzlerce karakter olabilir;
 // meta description için kelime sınırında kısaltıyoruz. Google SERP'te açıklama
 // genelde ~155-160 karakterden sonra "…" ile kesiliyor — max bunun biraz altı.
@@ -306,23 +321,40 @@ export function resolveSeo(reqPath) {
   if (postMatch) {
     const row = stmtPost.get(postMatch[1]);
     if (!row) return notFoundSeo(locale, basePath);
+    const modified = toIsoUtc(row.updated_at);
+    const published = toIsoUtc(row.published_at);
+    const postTitle = pick(row, 'title', locale);
     return {
       status: 200,
       locale,
       basePath,
-      title: `${pick(row, 'title', locale)}${t(locale, 'blogPost.titleSuffix')}`,
+      title: `${postTitle}${t(locale, 'blogPost.titleSuffix')}`,
       description: pick(row, 'excerpt', locale) || t(locale, 'blogPost.fallbackExcerpt'),
       image: row.cover_image_url,
       ogType: 'article',
       article: {
-        published: row.published_at,
-        modified: row.updated_at ? `${row.updated_at.replace(' ', 'T')}Z` : null,
+        published,
+        modified,
       },
       breadcrumbSchema: buildBreadcrumbSchema([
         { label: t(locale, 'common.breadcrumbHome'), to: '/' },
         { label: t(locale, 'blogPage.breadcrumb'), to: '/blog' },
-        { label: pick(row, 'title', locale) },
+        { label: postTitle },
       ]),
+      // BlogPost.jsx ile aynı şema — aynı client-only sorun (Google'ın
+      // dinamik yapısal veriyi güvenilir indexlemesi garanti değil).
+      blogPostingSchema: {
+        '@context': 'https://schema.org',
+        '@type': 'BlogPosting',
+        headline: postTitle,
+        description: pick(row, 'excerpt', locale) || t(locale, 'blogPost.fallbackExcerpt'),
+        datePublished: published,
+        ...(modified ? { dateModified: modified } : {}),
+        image: absoluteImage(row.cover_image_url),
+        author: { '@type': 'Organization', name: 'Menekşe Vize' },
+        publisher: { '@type': 'Organization', name: 'Menekşe Vize' },
+        mainEntityOfPage: `${SITE_URL}${prefix}/blog/${postMatch[1]}`,
+      },
     };
   }
 
@@ -421,6 +453,7 @@ export function renderIndexHtml(seo) {
     if (seo.aggregateRatingSchema) injected.push(jsonLdTag('aggregate-rating-jsonld', seo.aggregateRatingSchema));
     if (seo.breadcrumbSchema) injected.push(jsonLdTag('breadcrumb-jsonld', seo.breadcrumbSchema));
     if (seo.faqSchema) injected.push(jsonLdTag('faq-jsonld', seo.faqSchema));
+    if (seo.blogPostingSchema) injected.push(jsonLdTag('blogpost-jsonld', seo.blogPostingSchema));
     html = html.replace('</head>', `${injected.join('\n')}\n</head>`);
   } else if (seo.noindex) {
     html = html.replace('</head>', '  <meta name="robots" content="noindex">\n</head>');

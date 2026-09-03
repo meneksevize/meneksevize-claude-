@@ -49,6 +49,10 @@ export default function BlogPost() {
       mainEntityOfPage: `https://meneksevize.com/blog/${slug}`,
     };
 
+    // server/lib/seo.js aynı şemayı statik HTML'e de gömüyor — önce olası
+    // sunucu-render edilmiş kopyayı kaldırıp tek bir örnek kalmasını
+    // garanti ediyoruz.
+    document.getElementById('blogpost-jsonld')?.remove();
     const script = document.createElement('script');
     script.type = 'application/ld+json';
     script.id = 'blogpost-jsonld';
