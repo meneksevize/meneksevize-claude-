@@ -2,26 +2,33 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { countries } from '../../src/data/countries.js';
+import { photos } from '../../src/data/photos.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const SITE_URL = 'https://meneksevize.com';
 
+// image: server/lib/seo.js'teki STATIC_ROUTES ile birebir aynı fotoğraflar —
+// Google Görseller'de keşfedilme şansı için sitemap'e <image:image> olarak
+// eklenir. Aynı fotoğrafı 47 ülke sayfasının hepsinde tekrarlamak (hepsi
+// passportBoardingPass kullanıyor) değer katmadığı için ülke sayfaları
+// bilinçli olarak resimsiz bırakıldı; blog yazıları ise her biri gerçek,
+// kendine özgü bir kapak fotoğrafı taşıdığından oradan geliyor.
 const staticPages = [
-  { loc: '/', priority: '1.0' },
-  { loc: '/hakkimizda', priority: '0.6' },
-  { loc: '/hizmetler', priority: '0.8' },
-  { loc: '/e-vize', priority: '0.7' },
-  { loc: '/vize-reddi', priority: '0.7' },
+  { loc: '/', priority: '1.0', image: photos.heroPlaneWindow },
+  { loc: '/hakkimizda', priority: '0.6', image: photos.mapWithPins },
+  { loc: '/hizmetler', priority: '0.8', image: photos.worldMap },
+  { loc: '/e-vize', priority: '0.7', image: photos.passportBoardingPass },
+  { loc: '/vize-reddi', priority: '0.7', image: photos.planningNotebook },
   { loc: '/on-degerlendirme', priority: '0.6' },
-  { loc: '/surec', priority: '0.5' },
-  { loc: '/evrak-rehberi', priority: '0.6' },
+  { loc: '/surec', priority: '0.5', image: photos.planningNotebook },
+  { loc: '/evrak-rehberi', priority: '0.6', image: photos.cameraPassportFlatlay },
   { loc: '/sss', priority: '0.5' },
-  { loc: '/iletisim', priority: '0.6' },
-  { loc: '/blog', priority: '0.6' },
-  { loc: '/takip', priority: '0.3' },
-  { loc: '/gizlilik-politikasi', priority: '0.3' },
-  { loc: '/kullanim-kosullari', priority: '0.3' },
-  { loc: '/iptal-iade-politikasi', priority: '0.3' },
+  { loc: '/iletisim', priority: '0.6', image: photos.mapWithPins },
+  { loc: '/blog', priority: '0.6', image: photos.planningNotebook },
+  { loc: '/takip', priority: '0.3', image: photos.cameraPassportFlatlay },
+  { loc: '/gizlilik-politikasi', priority: '0.3', image: photos.planningNotebook },
+  { loc: '/kullanim-kosullari', priority: '0.3', image: photos.planningNotebook },
+  { loc: '/iptal-iade-politikasi', priority: '0.3', image: photos.planningNotebook },
 ];
 
 // Anasayfada "Öne Çıkan Destinasyonlar" olarak vurgulanan, en yoğun başvuru
@@ -40,24 +47,39 @@ const LOCALES = [
   { code: 'ar', prefix: '/ar' },
 ];
 
+function absoluteImage(image) {
+  if (!image) return null;
+  return image.startsWith('/') ? `${SITE_URL}${image}` : image;
+}
+
+// Unsplash kapak URL'leri "?auto=format&fit=crop&..." gibi ham "&" karakterleri
+// taşıyor — bunlar XML'de kaçırılmazsa (&amp;) belge geçersiz hale gelir
+// (Google'ın sitemap ayrıştırıcısı satırı kesip atabilir). Statik sayfa
+// fotoğrafları hiç "&" içermiyor ama tutarlılık için hepsine uygulanıyor.
+function escapeXml(value) {
+  return value.replace(/&/g, '&amp;');
+}
+
 // lastmod yalnızca gerçekten bilindiğinde (blog yazılarının updated_at
 // değeri) yazılır. Önceden her URL'e "bugün" yazılıyordu — her deploy'da tüm
 // sitenin değiştiğini iddia etmek, Google'ın lastmod'a duyduğu güveni azaltır;
 // sahte tarih yerine tarihsiz bırakmak daha doğrudur.
-function urlEntry(basePath, priority, lastmod = null) {
+function urlEntry(basePath, priority, lastmod = null, image = null) {
   const alternateLinks = LOCALES
     .map(({ code, prefix }) => `    <xhtml:link rel="alternate" hreflang="${code}" href="${SITE_URL}${prefix}${basePath}" />`)
     .concat(`    <xhtml:link rel="alternate" hreflang="x-default" href="${SITE_URL}${basePath}" />`)
     .join('\n');
   const lastmodLine = lastmod ? `    <lastmod>${lastmod}</lastmod>\n` : '';
+  const absImage = absoluteImage(image);
+  const imageLine = absImage ? `    <image:image>\n      <image:loc>${escapeXml(absImage)}</image:loc>\n    </image:image>\n` : '';
 
   return LOCALES
-    .map(({ prefix }) => `  <url>\n    <loc>${SITE_URL}${prefix}${basePath}</loc>\n${lastmodLine}    <priority>${priority}</priority>\n${alternateLinks}\n  </url>`)
+    .map(({ prefix }) => `  <url>\n    <loc>${SITE_URL}${prefix}${basePath}</loc>\n${lastmodLine}    <priority>${priority}</priority>\n${imageLine}${alternateLinks}\n  </url>`)
     .join('\n');
 }
 
 async function main() {
-  const entries = staticPages.map((p) => urlEntry(p.loc, p.priority));
+  const entries = staticPages.map((p) => urlEntry(p.loc, p.priority, null, p.image));
 
   countries.forEach((country) => {
     const isFeatured = FEATURED_COUNTRY_IDS.includes(country.id);
@@ -73,7 +95,7 @@ async function main() {
     const posts = await res.json();
     posts.forEach((post) => {
       const lastmod = (post.updatedAt || post.publishedAt || '').slice(0, 10) || null;
-      entries.push(urlEntry(`/blog/${post.slug}`, '0.6', lastmod));
+      entries.push(urlEntry(`/blog/${post.slug}`, '0.6', lastmod, post.coverImageUrl));
     });
     blogCount = posts.length;
     console.log(`${posts.length} blog yazısı sitemap'e eklendi (x3 dil).`);
@@ -81,7 +103,7 @@ async function main() {
     console.warn('Blog yazıları alınamadı, sitemap blog olmadan üretiliyor:', err.message);
   }
 
-  const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${entries.join('\n')}\n</urlset>\n`;
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n${entries.join('\n')}\n</urlset>\n`;
   const outPath = path.join(__dirname, '..', '..', 'public', 'sitemap.xml');
   fs.writeFileSync(outPath, xml);
   const urlCount = staticPages.length + countries.length + countries.reduce((sum, c) => sum + c.types.length, 0) + blogCount;
