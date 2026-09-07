@@ -87,6 +87,9 @@ export default function Services() {
             <p>
               {t('services.countriesSubtitlePre')}<Link to="/e-vize" style={{ color: 'var(--link-color)' }}>{t('services.countriesSubtitleLink')}</Link>{t('services.countriesSubtitlePost')}
             </p>
+            <p>
+              {t('services.regimeTableLinkPre')}<Link to="/vize-rejim-tablosu" style={{ color: 'var(--link-color)' }}>{t('services.regimeTableLinkText')}</Link>{t('services.regimeTableLinkPost')}
+            </p>
           </div>
 
           <div className="filter-bar">

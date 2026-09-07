@@ -17,6 +17,7 @@ const staticPages = [
   { loc: '/', priority: '1.0', image: photos.heroPlaneWindow },
   { loc: '/hakkimizda', priority: '0.6', image: photos.mapWithPins },
   { loc: '/hizmetler', priority: '0.8', image: photos.worldMap },
+  { loc: '/vize-rejim-tablosu', priority: '0.7', image: photos.worldMap },
   { loc: '/e-vize', priority: '0.7', image: photos.passportBoardingPass },
   { loc: '/vize-reddi', priority: '0.7', image: photos.planningNotebook },
   { loc: '/on-degerlendirme', priority: '0.6' },

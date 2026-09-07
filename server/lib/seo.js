@@ -118,6 +118,7 @@ const STATIC_ROUTES = {
   '/': { ns: 'home', image: photos.heroPlaneWindow, ogImage: photos.passportBoardingPass },
   '/hakkimizda': { ns: 'about', image: photos.mapWithPins },
   '/hizmetler': { ns: 'services', breadcrumbKey: 'services.breadcrumbServices', image: photos.worldMap },
+  '/vize-rejim-tablosu': { ns: 'visaRegimeTable', image: photos.worldMap },
   '/surec': { ns: 'process', image: photos.planningNotebook },
   '/evrak-rehberi': { ns: 'documentGuide', image: photos.cameraPassportFlatlay },
   '/sss': { ns: 'faqPage' },
