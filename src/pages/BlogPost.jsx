@@ -5,7 +5,7 @@ import useDocumentMeta from '../hooks/useDocumentMeta.js';
 import { useLocale } from '../context/LocaleContext.jsx';
 import Breadcrumbs from '../components/Breadcrumbs.jsx';
 
-const DATE_LOCALES = { tr: 'tr-TR', en: 'en-US', ar: 'ar' };
+const DATE_LOCALES = { tr: 'tr-TR', en: 'en-US' };
 
 export default function BlogPost() {
   const { slug } = useParams();

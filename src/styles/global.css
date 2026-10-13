@@ -90,17 +90,6 @@ h1, h2, h3, .logo {
   line-height: 1.2;
 }
 
-/* ---------- RTL (Arapça) düzeltmeleri ----------
-   Flexbox satırları `dir="rtl"` ile zaten otomatik olarak aynalanıyor (CSS
-   Flexbox spesifikasyonu `row` yönünü satır-içi yazı yönüne bağlar); bu blok
-   sadece otomatik olarak dönmeyen, açık text-align/ikon-yön kurallarını
-   hedefler. Sabit konumlu öğeler (WhatsApp/yukarı çık butonu, mobil tab bar)
-   kasıtlı olarak buraya dahil edilmedi — RTL destekleyen sitelerde de bu
-   öğeler genellikle aynı köşede sabit kalır. */
-[dir="rtl"] .breadcrumbs-list {
-  flex-direction: row-reverse;
-}
-
 a {
   color: inherit;
 }
@@ -183,14 +172,6 @@ img, svg {
 
 .section-head .kicker::after {
   background: linear-gradient(90deg, var(--gold), transparent);
-}
-
-[dir="rtl"] .section-head .kicker::before {
-  background: linear-gradient(90deg, var(--gold), transparent);
-}
-
-[dir="rtl"] .section-head .kicker::after {
-  background: linear-gradient(90deg, transparent, var(--gold));
 }
 
 .section-head h2 {
@@ -1644,14 +1625,6 @@ img, svg {
   background: linear-gradient(90deg, var(--gold), transparent);
 }
 
-[dir="rtl"] .consult-cta .kicker::before {
-  background: linear-gradient(90deg, var(--gold), transparent);
-}
-
-[dir="rtl"] .consult-cta .kicker::after {
-  background: linear-gradient(90deg, transparent, var(--gold));
-}
-
 .consult-cta-title {
   font-size: clamp(1.5rem, 3.4vw, 2.1rem);
   max-width: 560px;
@@ -3038,10 +3011,6 @@ img, svg {
   right: 12%;
   height: 1px;
   background: linear-gradient(90deg, transparent, rgba(232, 182, 84, 0.5) 15%, rgba(124, 92, 255, 0.5) 85%, transparent);
-}
-
-[dir="rtl"] .process-flow::before {
-  background: linear-gradient(90deg, transparent, rgba(124, 92, 255, 0.5) 15%, rgba(232, 182, 84, 0.5) 85%, transparent);
 }
 
 .process-step {

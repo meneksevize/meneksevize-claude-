@@ -1,10 +1,10 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useLocale, extractLocale, SUPPORTED_LOCALES } from '../context/LocaleContext.jsx';
 
-const LABELS = { tr: 'TR', en: 'EN', ar: 'AR' };
+const LABELS = { tr: 'TR', en: 'EN' };
 
-// Mevcut sayfanın yolunu koruyarak sadece dil önekini değiştirir — İngilizce
-// bir ülke sayfasındayken Arapça'ya geçince aynı ülke sayfasının Arapça
+// Mevcut sayfanın yolunu koruyarak sadece dil önekini değiştirir — Türkçe
+// bir ülke sayfasındayken İngilizce'ye geçince aynı ülke sayfasının İngilizce
 // hâline gider, anasayfaya atmaz.
 export default function LanguageSwitcher({ onNavigate }) {
   const { locale: activeLocale } = useLocale();

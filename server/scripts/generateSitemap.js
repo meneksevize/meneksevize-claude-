@@ -37,15 +37,14 @@ const staticPages = [
 // diğer ülkelerden daha yüksek tutulur.
 const FEATURED_COUNTRY_IDS = ['abd', 'ingiltere', 'kanada', 'dubai'];
 
-// Site üç dilde yayında (bkz. LocaleContext.jsx) — Türkçe önek almaz, EN/AR
-// /en ve /ar önekiyle aynı yolu paylaşır. Her temel yol için üç dilin de
-// <url> girdisi üretilir; her girdi diğer ikisine ve kendisine xhtml:link
-// rel="alternate" ile işaret eder, böylece Google hangi sayfaların birbirinin
-// dil karşılığı olduğunu anlar (x-default Türkçe sürüme işaret eder).
+// Site iki dilde yayında (bkz. LocaleContext.jsx) — Türkçe önek almaz, EN
+// /en önekiyle aynı yolu paylaşır. Her temel yol için iki dilin de <url>
+// girdisi üretilir; her girdi diğerine ve kendisine xhtml:link rel="alternate"
+// ile işaret eder, böylece Google hangi sayfaların birbirinin dil karşılığı
+// olduğunu anlar (x-default Türkçe sürüme işaret eder).
 const LOCALES = [
   { code: 'tr', prefix: '' },
   { code: 'en', prefix: '/en' },
-  { code: 'ar', prefix: '/ar' },
 ];
 
 function absoluteImage(image) {
@@ -131,7 +130,7 @@ async function main() {
       entries.push(urlEntry(`/blog/${post.slug}`, '0.6', lastmod, post.coverImageUrl));
     });
     blogCount = posts.length;
-    console.log(`${posts.length} blog yazısı sitemap'e eklendi (x3 dil).`);
+    console.log(`${posts.length} blog yazısı sitemap'e eklendi (x${LOCALES.length} dil).`);
   } catch (err) {
     console.warn('Blog yazıları alınamadı, sitemap blog olmadan üretiliyor:', err.message);
   }
@@ -140,7 +139,7 @@ async function main() {
   const outPath = path.join(__dirname, '..', '..', 'public', 'sitemap.xml');
   fs.writeFileSync(outPath, xml);
   const urlCount = staticPages.length + countries.length + countries.reduce((sum, c) => sum + c.types.length, 0) + blogCount;
-  console.log(`Sitemap oluşturuldu: ${urlCount} sayfa × 3 dil = ${urlCount * 3} URL — ${outPath}`);
+  console.log(`Sitemap oluşturuldu: ${urlCount} sayfa × ${LOCALES.length} dil = ${urlCount * LOCALES.length} URL — ${outPath}`);
 
   await submitIndexNow(allUrls);
 }

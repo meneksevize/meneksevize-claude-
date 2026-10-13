@@ -3,8 +3,8 @@ import { useLocale, extractLocale } from '../context/LocaleContext.jsx';
 
 const SITE_URL = 'https://meneksevize.com';
 const DEFAULT_IMAGE = `${SITE_URL}/og-image.png`;
-const LOCALE_PREFIXES = { tr: '', en: '/en', ar: '/ar' };
-const OG_LOCALES = { tr: 'tr_TR', en: 'en_US', ar: 'ar_AR' };
+const LOCALE_PREFIXES = { tr: '', en: '/en' };
+const OG_LOCALES = { tr: 'tr_TR', en: 'en_US' };
 
 // og:image mutlak URL olmak zorundadır; yerel yollar ("/photos/x.webp") site
 // adresiyle tamamlanır.
@@ -86,12 +86,11 @@ export default function useDocumentMeta(title, description, options = {}) {
     setMetaByName('twitter:description', description);
     setMetaByName('twitter:image', absoluteImage(image));
 
-    // hreflang: Google'a aynı sayfanın üç dildeki karşılığını bildirir.
+    // hreflang: Google'a aynı sayfanın iki dildeki karşılığını bildirir.
     // x-default, dil/bölge algılanamayan ziyaretçiler için varsayılan olan
     // Türkçe sürümü işaret eder (bkz. plan — Türkçe ana dil).
     setAlternate('tr', `${SITE_URL}${basePath}`);
     setAlternate('en', `${SITE_URL}/en${basePath}`);
-    setAlternate('ar', `${SITE_URL}/ar${basePath}`);
     setAlternate('x-default', `${SITE_URL}${basePath}`);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [title, description, options.image, options.path, locale]);

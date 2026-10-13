@@ -4,9 +4,9 @@ import { db } from '../db/connection.js';
 
 const router = Router();
 
-const SUPPORTED_LANGS = new Set(['en', 'ar']);
+const SUPPORTED_LANGS = new Set(['en']);
 
-// Türkçe (tr) her zaman temel kolonlardır. en/ar istenirse ilgili _en/_ar
+// Türkçe (tr) her zaman temel kolonlardır. en istenirse ilgili _en
 // kardeş kolonu kullanılır; o alan için çeviri henüz girilmemişse (null/boş)
 // sessizce Türkçe'ye düşer — kısmi çeviri asla boş içerik göstermez.
 function pick(row, field, lang) {

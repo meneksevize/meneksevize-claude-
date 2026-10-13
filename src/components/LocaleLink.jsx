@@ -5,7 +5,7 @@ import { useLocale } from '../context/LocaleContext.jsx';
 // Sitedeki tüm <Link>/<NavLink> kullanımları bu dosyadan import edilir (bkz.
 // her sayfadaki `import { Link, NavLink } from '../components/LocaleLink.jsx'`)
 // böylece JSX'teki `to="/hizmetler"` gibi mutlak yollar hiç değişmeden, aktif
-// dile göre otomatik olarak /en veya /ar önekini alır. Dış linkler
+// dile göre otomatik olarak /en önekini alır. Dış linkler
 // (http/https/mailto/tel/#) ve zaten önekli yollar dokunulmadan geçer.
 function localize(to, prefix) {
   if (typeof to !== 'string') return to;

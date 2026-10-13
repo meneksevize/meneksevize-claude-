@@ -3,7 +3,7 @@ import { marked } from 'marked';
 import { db } from '../db/connection.js';
 
 const router = Router();
-const SUPPORTED_LANGS = new Set(['en', 'ar']);
+const SUPPORTED_LANGS = new Set(['en']);
 
 function pick(row, field, lang) {
   if (SUPPORTED_LANGS.has(lang)) {
@@ -14,7 +14,7 @@ function pick(row, field, lang) {
 }
 
 // Blog içeriğindeki markdown linkleri ("/ulkeler/almanya" gibi) her zaman
-// Türkçe (önek yok) yola işaret eder. EN/AR içerikte bu linkler render
+// Türkçe (önek yok) yola işaret eder. EN içerikte bu linkler render
 // edilirken doğru dil önekini almazsa kullanıcı dil değiştirmiş olur.
 function localizeContentLinks(html, lang) {
   if (!SUPPORTED_LANGS.has(lang)) return html;

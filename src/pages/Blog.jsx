@@ -7,7 +7,7 @@ import Breadcrumbs from '../components/Breadcrumbs.jsx';
 import { photos, cardCover } from '../data/photos.js';
 import { BLOG_CATEGORIES, getCategoryLabel } from '../data/blogCategories.js';
 
-const DATE_LOCALES = { tr: 'tr-TR', en: 'en-US', ar: 'ar' };
+const DATE_LOCALES = { tr: 'tr-TR', en: 'en-US' };
 const PAGE_SIZE = 9;
 
 export default function Blog() {

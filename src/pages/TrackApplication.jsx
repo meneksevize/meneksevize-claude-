@@ -17,7 +17,7 @@ const STAGE_LABEL_KEYS = {
   takip: 'process.step5Title',
   'sonuc-teslim': 'process.step6Title',
 };
-const DATE_LOCALES = { tr: 'tr-TR', en: 'en-US', ar: 'ar' };
+const DATE_LOCALES = { tr: 'tr-TR', en: 'en-US' };
 
 export default function TrackApplication() {
   const { countries } = useSiteData();

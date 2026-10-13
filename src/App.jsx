@@ -127,7 +127,7 @@ function LegacyCountryRedirect() {
 
 export default function App() {
   const location = useLocation();
-  // /en veya /ar önekini rota eşleştirmesinden önce soyar — böylece tüm rota
+  // /en önekini rota eşleştirmesinden önce soyar — böylece tüm rota
   // tanımları tek kopya olarak kalır, sadece <Routes> hangi "sanal" yolu
   // eşleştirdiğini değiştiririz. Gerçek tarayıcı adresi (öneki dahil) hiç
   // dokunulmaz; LocaleProvider de aynı önekten dili okur.

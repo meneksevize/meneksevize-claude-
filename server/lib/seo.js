@@ -19,7 +19,6 @@ import { marked } from 'marked';
 import { db } from '../db/connection.js';
 import tr from '../../src/i18n/tr.js';
 import en from '../../src/i18n/en.js';
-import ar from '../../src/i18n/ar.js';
 import { photos, photoDimensions } from '../../src/data/photos.js';
 import { visaTypePhrase } from '../../src/utils/visaTypePhrase.js';
 
@@ -27,9 +26,9 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const SITE_URL = 'https://meneksevize.com';
 const DEFAULT_IMAGE = `${SITE_URL}/og-image.png`;
 const DEFAULT_IMAGE_DIMENSIONS = { width: 1200, height: 630 };
-const DICTS = { tr, en, ar };
-const OG_LOCALES = { tr: 'tr_TR', en: 'en_US', ar: 'ar_AR' };
-const SUPPORTED_LANGS = new Set(['en', 'ar']);
+const DICTS = { tr, en };
+const OG_LOCALES = { tr: 'tr_TR', en: 'en_US' };
+const SUPPORTED_LANGS = new Set(['en']);
 
 // ---- i18n (LocaleContext.t() ile aynı mantık: nokta-yol + TR fallback + {var}) ----
 function getByPath(obj, dotPath) {
@@ -69,6 +68,9 @@ function setting(key) {
 }
 
 // ---- Yol çözümleme ----
+// "ar" artık desteklenen bir dil değil (iş kararı — bkz. resolveSeo'daki 301
+// yönlendirmesi), ama eski /ar/... URL'lerini tanıyıp yönlendirebilmek için
+// regex hâlâ onu da eşleştiriyor.
 function extractLocale(pathname) {
   const match = pathname.match(/^\/(en|ar)(\/.*)?$/);
   if (!match) return { locale: 'tr', basePath: pathname };
@@ -207,6 +209,14 @@ export function resolveSeo(reqPath) {
   const { locale, basePath: rawBase } = extractLocale(reqPath);
   const basePath = rawBase.length > 1 ? rawBase.replace(/\/+$/, '') : rawBase;
   const prefix = locale === 'tr' ? '' : `/${locale}`;
+
+  // Arapça desteği kaldırıldı (iş kararı, 2026-10-13) — eski /ar/... URL'leri
+  // client-side redirect yerine gerçek 301 ile Türkçe (varsayılan) sürüme
+  // yönlendirilir; böylece arama motorlarına kalıcı taşınma sinyali verilir
+  // ve indekslenmiş /ar/ URL'leri 404 olarak kalmaz.
+  if (locale === 'ar') {
+    return { redirect: basePath === '/' ? '/' : basePath };
+  }
 
   // Admin ve ödeme sayfaları: indexlenmemeli, varsayılan meta yeterli.
   if (basePath.startsWith('/admin') || basePath.startsWith('/odeme')) {
@@ -397,7 +407,7 @@ export function renderIndexHtml(seo) {
   if (seo.basePath !== null && seo.basePath !== undefined) {
     const prefix = seo.locale === 'tr' ? '' : `/${seo.locale}`;
     const canonical = seo.basePath === '/' ? `${SITE_URL}${prefix}/` : `${SITE_URL}${prefix}${seo.basePath}`;
-    const dir = seo.locale === 'ar' ? 'rtl' : 'ltr';
+    const dir = 'ltr';
     // seo.image sayfanın gerçek LCP hero'su (preload için, aşağıda) —
     // seo.ogImage varsa (şu an yalnızca ana sayfa) paylaşım kartları için
     // ondan farklı, o oranına daha uygun bir görsel kullanılır.
@@ -424,11 +434,10 @@ export function renderIndexHtml(seo) {
     html = replaceMeta(html, 'name', 'twitter:image', ogImage);
     html = html.replace(/(<link rel="canonical" href=")[^"]*(")/, `$1${canonical}$2`);
 
-    // hreflang: sayfanın üç dildeki karşılığı + x-default (TR varsayılan).
+    // hreflang: sayfanın iki dildeki karşılığı + x-default (TR varsayılan).
     const injected = [
       `  <link rel="alternate" hreflang="tr" href="${SITE_URL}${seo.basePath === '/' ? '/' : seo.basePath}">`,
       `  <link rel="alternate" hreflang="en" href="${SITE_URL}/en${seo.basePath === '/' ? '/' : seo.basePath}">`,
-      `  <link rel="alternate" hreflang="ar" href="${SITE_URL}/ar${seo.basePath === '/' ? '/' : seo.basePath}">`,
       `  <link rel="alternate" hreflang="x-default" href="${SITE_URL}${seo.basePath === '/' ? '/' : seo.basePath}">`,
     ];
     if (seo.article?.published) {

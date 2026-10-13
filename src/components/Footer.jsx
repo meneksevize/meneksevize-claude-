@@ -8,8 +8,8 @@ export default function Footer() {
   const { t, locale } = useLocale();
   const phone = settings.phone || '';
   // settings.footer_note admin panelden Türkçe girildiği için sadece Türkçe
-  // görünümde kullanılır; en/ar'da (henüz ayrı bir çeviri alanı olmadığından)
-  // sözlükteki çeviri gösterilir. Faz 3'te settings'e footer_note_en/ar
+  // görünümde kullanılır; en'de (henüz ayrı bir çeviri alanı olmadığından)
+  // sözlükteki çeviri gösterilir. Faz 3'te settings'e footer_note_en
   // eklenince bu ayrım API tarafına taşınabilir.
   const footerNote = locale === 'tr' ? (settings.footer_note || t('footer.defaultNote')) : t('footer.defaultNote');
   const phoneHref = `tel:+${(settings.whatsapp || phone).replace(/\D/g, '')}`;
