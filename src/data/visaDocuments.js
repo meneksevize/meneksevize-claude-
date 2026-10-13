@@ -94,6 +94,23 @@ export const visaData = {
       },
     },
   },
+  karadag: {
+    label: 'Karadağ',
+    types: {
+      turistik: {
+        items: ['Pasaport (geçerlilik süresi yeterli)', 'Doldurulmuş vize başvuru formu', 'Vesikalık fotoğraf', 'Gidiş-dönüş uçak bileti rezervasyonu', 'Otel/konaklama rezervasyonu', 'Banka hesap özeti (son 3 ay)', 'Uluslararası seyahat sağlık sigortası'],
+        note: 'Geçerli bir Schengen, ABD, İngiltere veya İrlanda vizesi/oturum izni olan Türk vatandaşları bu belgeyle 30 güne kadar vizesiz giriş yapabilir; bu koşulu taşımayanlar başvurusunu Ankara\'daki Karadağ Büyükelçiliği veya İstanbul Başkonsolosluğu\'na, seyahatten en az 4 hafta önce ve randevuyla yapmalıdır.',
+      },
+      ticari: {
+        items: ['Pasaport', 'Doldurulmuş vize başvuru formu', 'Vesikalık fotoğraf', 'Davet mektubu (iş ortağı/fuar)', 'Şirket faaliyet belgesi', 'Gidiş-dönüş uçak bileti ve otel rezervasyonu', 'Banka hesap özeti', 'Uluslararası seyahat sağlık sigortası'],
+        note: 'Davet mektubunun ziyaret amacını ve tarihleri net belirtmesi süreci hızlandırır.',
+      },
+      'aile-birlesimi': {
+        items: ['Pasaport', 'Doldurulmuş vize başvuru formu', 'Vesikalık fotoğraf', 'Davet eden kişinin ikamet/pasaport belgesi', 'Akrabalık belgesi', 'Banka hesap özeti', 'Uluslararası seyahat sağlık sigortası'],
+        note: 'Davet eden kişinin Karadağ\'daki ikamet durumunu ve aranızdaki akrabalık bağını gösteren belgeler birlikte sunulmalıdır.',
+      },
+    },
+  },
   avustralya: {
     label: 'Avustralya',
     types: {
