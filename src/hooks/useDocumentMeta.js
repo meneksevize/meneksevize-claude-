@@ -88,8 +88,9 @@ export default function useDocumentMeta(title, description, options = {}) {
 
     // hreflang: Google'a aynı sayfanın iki dildeki karşılığını bildirir.
     // x-default, dil/bölge algılanamayan ziyaretçiler için varsayılan olan
-    // Türkçe sürümü işaret eder (bkz. plan — Türkçe ana dil).
-    setAlternate('tr', `${SITE_URL}${basePath}`);
+    // Türkçe sürümü işaret eder (bkz. plan — Türkçe ana dil). "tr-TR" (salt
+    // "tr" değil) kullanılıyor — Türkiye hedeflemesini daha kesin bildirir.
+    setAlternate('tr-TR', `${SITE_URL}${basePath}`);
     setAlternate('en', `${SITE_URL}/en${basePath}`);
     setAlternate('x-default', `${SITE_URL}${basePath}`);
     // eslint-disable-next-line react-hooks/exhaustive-deps

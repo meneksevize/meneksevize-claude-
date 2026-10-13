@@ -435,8 +435,12 @@ export function renderIndexHtml(seo) {
     html = html.replace(/(<link rel="canonical" href=")[^"]*(")/, `$1${canonical}$2`);
 
     // hreflang: sayfanın iki dildeki karşılığı + x-default (TR varsayılan).
+    // "tr-TR" (salt "tr" değil) kullanılıyor — Google'a içeriğin özellikle
+    // Türkiye'yi hedeflediğini daha kesin bildirir (bkz. generateSitemap.js'teki
+    // LOCALES yorumu — 2026-10-13, MENA ülkelerinden gelen impressions'ları
+    // azaltma çalışmasının bir parçası).
     const injected = [
-      `  <link rel="alternate" hreflang="tr" href="${SITE_URL}${seo.basePath === '/' ? '/' : seo.basePath}">`,
+      `  <link rel="alternate" hreflang="tr-TR" href="${SITE_URL}${seo.basePath === '/' ? '/' : seo.basePath}">`,
       `  <link rel="alternate" hreflang="en" href="${SITE_URL}/en${seo.basePath === '/' ? '/' : seo.basePath}">`,
       `  <link rel="alternate" hreflang="x-default" href="${SITE_URL}${seo.basePath === '/' ? '/' : seo.basePath}">`,
     ];

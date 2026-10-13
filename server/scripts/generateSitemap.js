@@ -42,8 +42,14 @@ const FEATURED_COUNTRY_IDS = ['abd', 'ingiltere', 'kanada', 'dubai'];
 // girdisi üretilir; her girdi diğerine ve kendisine xhtml:link rel="alternate"
 // ile işaret eder, böylece Google hangi sayfaların birbirinin dil karşılığı
 // olduğunu anlar (x-default Türkçe sürüme işaret eder).
+// hreflang code'u "tr-TR" (dil+bölge) olarak veriliyor — salt "tr" yerine bu,
+// Google'a içeriğin özellikle Türkiye'yi hedeflediğini daha kesin bildirir
+// (bkz. 2026-10-13: Fas/Tunus/Cezayir/Mısır/Suriye/Irak/Yemen/BAE gibi Arapça
+// konuşulan ülkelerden gelen impressions'ların kaldırılan /ar/ sürümünden
+// kaynaklandığı tespit edilip giderildikten sonra, Türkiye payını daha da
+// güçlendirmek için eklendi). URL prefix'i etkilemez, sadece etiket metni.
 const LOCALES = [
-  { code: 'tr', prefix: '' },
+  { code: 'tr-TR', prefix: '' },
   { code: 'en', prefix: '/en' },
 ];
 
