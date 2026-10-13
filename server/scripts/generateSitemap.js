@@ -9,7 +9,7 @@ const SITE_URL = 'https://meneksevize.com';
 
 // image: server/lib/seo.js'teki STATIC_ROUTES ile birebir aynı fotoğraflar —
 // Google Görseller'de keşfedilme şansı için sitemap'e <image:image> olarak
-// eklenir. Aynı fotoğrafı 47 ülke sayfasının hepsinde tekrarlamak (hepsi
+// eklenir. Aynı fotoğrafı tüm ülke sayfalarında tekrarlamak (hepsi
 // passportBoardingPass kullanıyor) değer katmadığı için ülke sayfaları
 // bilinçli olarak resimsiz bırakıldı; blog yazıları ise her biri gerçek,
 // kendine özgü bir kapak fotoğrafı taşıdığından oradan geliyor.

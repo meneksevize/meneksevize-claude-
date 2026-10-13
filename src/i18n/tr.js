@@ -56,10 +56,10 @@ export default {
   },
   disclaimerBar: 'Menekşe Vize özel bir vize danışmanlık hizmetidir; resmi konsolosluk, büyükelçilik veya başvuru merkezi değildir. Sunulan hizmetler isteğe bağlı danışmanlık kapsamındadır.',
   home: {
-    metaTitle: 'Menekşe Vize | 47 Ülke İçin Ücretsiz Ön Değerlendirme',
+    metaTitle: 'Menekşe Vize | 48 Ülke İçin Ücretsiz Ön Değerlendirme',
     // {rating} gerçek testimonials ortalamasından türetilir (server/lib/seo.js)
     // — sabit bir puan uydurmamak için burada değişken olarak tutuluyor.
-    metaDescription: 'Schengen, ABD, İngiltere, Kanada ve 47 ülke için şeffaf vize danışmanlığı. {rating}/5 puanla değerlendirilen hizmetimizle ücretsiz ön değerlendirme alın.',
+    metaDescription: 'Schengen, ABD, İngiltere, Kanada ve 48 ülke için şeffaf vize danışmanlığı. {rating}/5 puanla değerlendirilen hizmetimizle ücretsiz ön değerlendirme alın.',
     heroBadgeRatingSuffix: 'değerlendirme · ',
     heroBadgeCountriesSuffix: 'ülke için vize danışmanlığı',
     heroTitlePart1: 'Vize Sürecinizi ',
@@ -132,12 +132,12 @@ export default {
     destTagSchengen: '26 Ülke, Tek Vize',
   },
   visaRegimeTable: {
-    metaTitle: 'Vize Rejim Tablosu: 47 Ülke Karşılaştırması | Menekşe Vize',
-    metaDescription: '47 ülkenin vize sistemi, başvuru yöntemi ve kalış süresini tek tabloda karşılaştırın — Schengen mi kendi e-Vizesi mi olduğunu hızlıca görün.',
+    metaTitle: 'Vize Rejim Tablosu: 48 Ülke Karşılaştırması | Menekşe Vize',
+    metaDescription: '48 ülkenin vize sistemi, başvuru yöntemi ve kalış süresini tek tabloda karşılaştırın — Schengen mi kendi e-Vizesi mi olduğunu hızlıca görün.',
     breadcrumb: 'Vize Rejim Tablosu',
     pageKicker: 'Karşılaştırma',
     pageTitle: 'Vize Rejim Tablosu',
-    pageSubtitle: '47 ülkenin vize sistemini, başvuru yöntemini ve kalış süresini tek bakışta karşılaştırın.',
+    pageSubtitle: '48 ülkenin vize sistemini, başvuru yöntemini ve kalış süresini tek bakışta karşılaştırın.',
     systemSchengen: 'Schengen',
     systemOwn: 'Kendi Sistemi',
     methodEVisa: 'E-Vize',
@@ -152,8 +152,8 @@ export default {
     footnotePost: ' talep edebilirsiniz.',
   },
   services: {
-    metaTitle: '47 Ülke İçin Vize Danışmanlığı | Menekşe Vize',
-    metaDescription: 'Schengen, ABD, İngiltere, Kanada ve 47 ülke için turistik, ticari, öğrenci ve çalışma vizesi danışmanlığı. Ücretsiz ön değerlendirme ile hemen başlayın.',
+    metaTitle: '48 Ülke İçin Vize Danışmanlığı | Menekşe Vize',
+    metaDescription: 'Schengen, ABD, İngiltere, Kanada ve 48 ülke için turistik, ticari, öğrenci ve çalışma vizesi danışmanlığı. Ücretsiz ön değerlendirme ile hemen başlayın.',
     breadcrumbServices: 'Hizmetler',
     pageKicker: 'Hizmetlerimiz',
     pageTitle: 'Ülke ve Vize Tipine Göre Danışmanlık',
