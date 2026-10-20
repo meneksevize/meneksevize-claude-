@@ -576,7 +576,7 @@ export default {
     allPosts: 'Tüm Yazılar',
     fallbackMetaTitle: 'Blog | Menekşe Vize',
     fallbackExcerpt: 'Menekşe Vize blog yazısı.',
-    titleSuffix: ' | Menekşe Vize Blog',
+    titleSuffix: ' | Menekşe Vize',
   },
   consult: {
     kicker: 'ÜCRETSİZ ÖN GÖRÜŞME',

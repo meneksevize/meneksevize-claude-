@@ -29,6 +29,27 @@ const app = express();
 
 app.set('trust proxy', 1);
 app.use(compression());
+
+// Güvenlik header'ları — site daha önce hiçbirini göndermiyordu (Lighthouse
+// "Best Practices" puanını düşürüyordu, ayrıca gerçek clickjacking/MIME-
+// sniffing riskiydi). Content-Security-Policy kasıtlı olarak eklenmedi:
+// site Google Ads/Fonts, Unsplash görselleri, bir canlı destek widget'ı ve
+// iyzipay ödeme akışı gibi birçok üçüncü taraf kaynak kullanıyor — doğru
+// bir CSP her birini tek tek test ederek oluşturulmalı, aceleyle eklenen
+// yanlış bir CSP ödeme akışını sessizce kırabilir. Aşağıdakiler ise hiçbir
+// üçüncü taraf entegrasyonunu etkilemeyen, risksiz, standart başlıklar.
+app.use((req, res, next) => {
+  res.set('X-Content-Type-Options', 'nosniff');
+  res.set('X-Frame-Options', 'SAMEORIGIN');
+  res.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+  res.set('Permissions-Policy', 'geolocation=(), camera=(), microphone=()');
+  // Site zaten yalnızca HTTPS üzerinden servis ediliyor (http->https ve
+  // www->apex 301'leri nginx'te var) — HSTS bunu tarayıcıya da hatırlatıp
+  // downgrade saldırılarına karşı koruma ekliyor.
+  res.set('Strict-Transport-Security', 'max-age=63072000; includeSubDomains');
+  next();
+});
+
 app.use(express.json());
 
 app.use(session({
