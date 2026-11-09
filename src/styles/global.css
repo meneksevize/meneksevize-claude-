@@ -3355,3 +3355,85 @@ img, svg {
     font-size: 0.85rem;
   }
 }
+
+/* ---------- Schengen 90/180 Gün Hesaplayıcı ---------- */
+.schengen-stay-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 1rem;
+  align-items: start;
+}
+
+.schengen-stay-remove {
+  background: none;
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+  width: 44px;
+  height: 44px;
+  margin-top: 1.9rem;
+  border-radius: 8px;
+  font-size: 1.3rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.schengen-stay-remove:hover {
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+}
+
+.schengen-result {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  align-items: baseline;
+  background-color: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1.5rem 1.75rem;
+  margin-top: 1rem;
+}
+
+.schengen-result-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.schengen-result-value {
+  font-family: var(--font-serif);
+  font-size: 2.25rem;
+  font-weight: 600;
+  color: var(--accent-color);
+  line-height: 1;
+}
+
+.schengen-result-full .schengen-result-item:nth-child(2) .schengen-result-value {
+  color: #d64545;
+}
+
+.schengen-result-label {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.schengen-result-note {
+  flex-basis: 100%;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+@media (max-width: 600px) {
+  .schengen-stay-row {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .schengen-stay-remove {
+    grid-column: 1 / -1;
+    width: 100%;
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+  }
+}

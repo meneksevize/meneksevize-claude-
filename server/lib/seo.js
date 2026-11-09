@@ -121,6 +121,7 @@ const STATIC_ROUTES = {
   '/hakkimizda': { ns: 'about', image: photos.mapWithPins },
   '/hizmetler': { ns: 'services', breadcrumbKey: 'services.breadcrumbServices', image: photos.worldMap },
   '/vize-rejim-tablosu': { ns: 'visaRegimeTable', image: photos.worldMap },
+  '/schengen-gun-hesaplayici': { ns: 'schengenCalculator', image: photos.planningNotebook },
   '/surec': { ns: 'process', image: photos.planningNotebook },
   '/evrak-rehberi': { ns: 'documentGuide', image: photos.cameraPassportFlatlay },
   '/sss': { ns: 'faqPage' },

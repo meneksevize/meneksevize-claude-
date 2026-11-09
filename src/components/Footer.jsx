@@ -29,6 +29,7 @@ export default function Footer() {
               <li><Link to="/hizmetler">{t('footer.services')}</Link></li>
               <li><Link to="/e-vize">{t('footer.eVisa')}</Link></li>
               <li><Link to="/vize-rejim-tablosu">{t('footer.visaRegimeTable')}</Link></li>
+              <li><Link to="/schengen-gun-hesaplayici">{t('footer.schengenCalculator')}</Link></li>
               <li><Link to="/surec">{t('footer.process')}</Link></li>
               <li><Link to="/vize-reddi">{t('footer.visaRejection')}</Link></li>
               <li><Link to="/on-degerlendirme">{t('footer.preAssessment')}</Link></li>

@@ -18,6 +18,7 @@ const staticPages = [
   { loc: '/hakkimizda', priority: '0.6', image: photos.mapWithPins },
   { loc: '/hizmetler', priority: '0.8', image: photos.worldMap },
   { loc: '/vize-rejim-tablosu', priority: '0.7', image: photos.worldMap },
+  { loc: '/schengen-gun-hesaplayici', priority: '0.7', image: photos.planningNotebook },
   { loc: '/e-vize', priority: '0.7', image: photos.passportBoardingPass },
   { loc: '/vize-reddi', priority: '0.7', image: photos.planningNotebook },
   { loc: '/on-degerlendirme', priority: '0.6' },

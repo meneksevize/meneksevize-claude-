@@ -21,6 +21,7 @@ import RequireAdminAuth from './admin/RequireAdminAuth.jsx';
 const Home = lazy(() => import('./pages/Home.jsx'));
 const Services = lazy(() => import('./pages/Services.jsx'));
 const VisaRegimeTable = lazy(() => import('./pages/VisaRegimeTable.jsx'));
+const SchengenCalculator = lazy(() => import('./pages/SchengenCalculator.jsx'));
 const EVisa = lazy(() => import('./pages/EVisa.jsx'));
 const Process = lazy(() => import('./pages/Process.jsx'));
 const DocumentGuide = lazy(() => import('./pages/DocumentGuide.jsx'));
@@ -142,6 +143,7 @@ export default function App() {
         <Route path="/hakkimizda" element={<About />} />
         <Route path="/hizmetler" element={<Services />} />
         <Route path="/vize-rejim-tablosu" element={<VisaRegimeTable />} />
+        <Route path="/schengen-gun-hesaplayici" element={<SchengenCalculator />} />
         <Route path="/e-vize" element={<EVisa />} />
         <Route path="/ulkeler/:countryId" element={<CountryDetail />} />
         <Route path="/ulkeler/:countryId/:visaType" element={<CountryVisaType />} />
