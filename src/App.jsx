@@ -14,7 +14,6 @@ import { SiteDataProvider, useSiteData } from './context/SiteDataContext.jsx';
 import { LocaleProvider, extractLocale, useLocale } from './context/LocaleContext.jsx';
 import { AdminAuthProvider } from './admin/AdminAuthContext.jsx';
 import RequireAdminAuth from './admin/RequireAdminAuth.jsx';
-import AdminLayout from './admin/AdminLayout.jsx';
 
 // Rota bazlı code-splitting: her sayfa ayrı bir chunk olarak yalnızca o rota
 // ziyaret edildiğinde indirilir — tek büyük JS paketi yerine ilk yükleme
@@ -41,6 +40,7 @@ const VisaRejection = lazy(() => import('./pages/VisaRejection.jsx'));
 const NotFound = lazy(() => import('./pages/NotFound.jsx'));
 const Payment = lazy(() => import('./pages/Payment.jsx'));
 const PaymentResult = lazy(() => import('./pages/PaymentResult.jsx'));
+const AdminLayout = lazy(() => import('./admin/AdminLayout.jsx'));
 const AdminLogin = lazy(() => import('./admin/pages/Login.jsx'));
 const AdminDashboard = lazy(() => import('./admin/pages/Dashboard.jsx'));
 const AdminContacts = lazy(() => import('./admin/pages/ContactsAdmin.jsx'));
